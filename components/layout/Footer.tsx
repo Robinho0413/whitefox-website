@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
         <footer className="bg-secondary p-4">
             <div className="flex flex-row justify-between mx-8 text-center text-sm">
                 <p>&copy; {new Date().getFullYear()} Whitefox. Tous droits réservés</p>
-                <ul className='flex flex-row gap-8'>
+                <ul className='flex flex-col md:flex-row gap-8'>
                     <li>
                         <Link href="/">
                             Mentions légales

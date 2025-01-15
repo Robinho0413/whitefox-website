@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Switch } from "@/components/ui/switch";
 import Image from "next/image";
+import { Button } from "./button";
 
 const ThemeToggle: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -18,30 +18,26 @@ const ThemeToggle: React.FC = () => {
     }
   }, []);
 
-  const toggleTheme = (checked: boolean) => {
-    if (checked) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
+  const toggleTheme = () => {
+    if (isDarkMode) {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
+      setIsDarkMode(false);
+    } else {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+      setIsDarkMode(true);
     }
-    setIsDarkMode(checked);
   };
 
   return (
-    <div className="flex items-center">
-      {/* Icône pour mode clair */}
-      <span className={`mr-2 ${isDarkMode ? "opacity-0" : "opacity-100"} transition-opacity duration-300`}>
-        <Image src="/images/MaterialSymbolsLightModeRounded.svg" alt="Light mode" width={24} height={24} />
-      </span>
-      {/* Le Switch */}
-      <Switch checked={isDarkMode} onCheckedChange={toggleTheme} />
-      {/* Icône pour mode sombre */}
-      <span className={`ml-2 ${isDarkMode ? "opacity-100" : "opacity-0"} transition-opacity duration-300`}>
-        <Image src="/images/MaterialSymbolsDarkModeRounded.svg" alt="Dark mode" width={24} height={24} />
-      </span>
-    </div>
+    <Button onClick={toggleTheme} variant={"icon"} size={"icon"} className="flex items-center justify-center self-center">
+      {isDarkMode ? (
+        <Image src="/icon/IcOutlineLightMode.svg" alt="Light mode" width={20} height={20} />
+      ) : (
+        <Image src="/icon/IcOutlineDarkMode.svg" alt="Dark mode" width={20} height={20} />
+      )}
+    </Button>
   );
 };
 

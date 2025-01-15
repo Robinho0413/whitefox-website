@@ -82,7 +82,7 @@ const Carousel = () => {
                 </div>
             </div>
             <button
-                className="absolute top-1/2 left-4 lg:-left-16 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 duration-100"
+                className="absolute top-1/2 left-4 lg:-left-16 transform -translate-y-1/2 bg-primary-500/50 hover:bg-primary-500 rounded-full p-2 duration-100"
                 onClick={prevSlide}
                 aria-label="Previous slide"
             >
@@ -95,7 +95,7 @@ const Carousel = () => {
                 />
             </button>
             <button
-                className="absolute top-1/2 right-4 lg:-right-16 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 duration-100"
+                className="absolute top-1/2 right-4 lg:-right-16 transform -translate-y-1/2 bg-primary-500/50 hover:bg-primary-500 rounded-full p-2 duration-100"
                 onClick={nextSlide}
                 aria-label="Next slide"
             >
@@ -110,7 +110,7 @@ const Carousel = () => {
                 {items.map((_, index) => (
                     <button
                         key={index}
-                        className={`w-3 h-3 rounded-full focus:outline-none ${index === activeIndex ? 'bg-white' : 'bg-white bg-opacity-50'}`}
+                        className={`w-3 h-3 rounded-full focus:outline-none ${index === activeIndex ? 'bg-primary-500' : 'bg-primary/50'}`}
                         onClick={() => setActiveIndex(index)}
                         aria-label={`Go to slide ${index + 1}`}
                     />
