@@ -13,7 +13,7 @@ export function MapCard() {
     <Card className="w-full mx-auto">
       <CardHeader>
         <CardTitle>Localisation</CardTitle>
-        <CardDescription>Adresse du club</CardDescription>
+        <CardDescription>Adresse du lieu d'entrainement de notre club</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="w-full h-80 bg-gray-300 flex justify-center items-center">

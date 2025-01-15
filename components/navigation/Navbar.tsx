@@ -17,7 +17,7 @@ const Navbar = () => {
     ];
 
     return (
-        <div className="flex flex-row items-center justify-between bg-background h-16 px-8">
+        <div className="fixed top-0 left-0 w-full z-50 flex flex-row items-center justify-between bg-background h-16 px-8">
             <Link href="/" className="text-2xl font-bold">
                 WHITE<span className='text-primary-500'>FOX</span>
             </Link>

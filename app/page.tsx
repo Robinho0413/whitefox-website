@@ -1,7 +1,6 @@
 import Image from "next/image";
-
+import { Button } from "@/components/ui/button"
 import { metadata } from './metadata';
-
 export { metadata };
 
 export default function Home() {
@@ -10,16 +9,17 @@ export default function Home() {
       <Image
         src="/images/bg-image.jpg"
         alt="Background Image"
-        layout="fill"
-        objectFit="cover"
+        fill
+        style={{ objectFit: 'cover' }}
         quality={100}
         className="z-0 opacity-50"
       />
-      <div className="absolute inset-0 bg-primary-500 opacity-50 z-10"></div>
-      <div className="absolute inset-0 flex items-center justify-center z-20">
-        <h1 className="flex flex-col gap-2 items-center justify-center text-5xl font-bold text-white bg-black bg-opacity-50 p-16 rounded">
-          <span className="text-3xl">Bienvenue chez</span>Whitefox Cheer
+      <div className="absolute inset-0 bg-black opacity-20 z-10"></div>
+      <div className="absolute inset-0 flex flex-col justify-end items-start space-y-12 z-20 p-16">
+        <h1 className="flex flex-col gap-1 text-8xl font-bold text-white">
+          <span className="text-5xl">Bienvenue chez</span>WHITEFOX Cheer
         </h1>
+        <Button className="text-lg font-semibold" size={"lg"}>En savoir plus sur notre club</Button>
       </div>
     </div>
   );

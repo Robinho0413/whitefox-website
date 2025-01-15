@@ -16,7 +16,7 @@ export function PhoneCard() {
     <Card className="w-[350px]">
       <CardHeader>
         <CardTitle>Téléphone</CardTitle>
-        <CardDescription>Numéro de téléphone</CardDescription>
+        <CardDescription>Notre numéro de téléphone</CardDescription>
       </CardHeader>
       <CardContent>
         <form>
