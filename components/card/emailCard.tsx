@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label"
 
 export function EmailCard() {
   return (
-    <Card className="w-[350px]">
+    <Card className="md:w-[350px]">
       <CardHeader>
         <CardTitle>Email</CardTitle>
         <CardDescription>Notre adresse email</CardDescription>

@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label"
 
 export function DispoCard() {
   return (
-    <Card className="w-[350px]">
+    <Card className="md:w-[350px]">
       <CardHeader>
         <CardTitle>Horaires d'ouverture</CardTitle>
         <CardDescription>Horaires à laquelle vous pouvez nous joindre</CardDescription>
