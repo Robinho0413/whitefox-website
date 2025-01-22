@@ -34,7 +34,7 @@ export default function HeroSection() {
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
                         style={{ y: buttonY }}
-                        transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
+                        transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
                     >
                         <Button className="w-full text-lg font-semibold" variant={"outline"} size={"lg"}>
                             En savoir plus sur notre club
