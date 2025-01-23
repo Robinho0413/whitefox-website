@@ -1,10 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import previousEnabled from "../icons/PreviousEnabled";
-import previousDisabled from "../icons/PreviousDisabled";
-import nextEnabled from "../icons/NextEnabled";
-import nextDisabled from "../icons/NextDisabled";
 import { motion } from "framer-motion";
 
 const Carousel = () => {
@@ -214,11 +210,13 @@ const Carousel = () => {
                         <Image
                             src={
                                 activeIndex !== 0
-                                    ? previousEnabled
-                                    : previousDisabled
+                                    ? "/icon/previous-enabled.svg"
+                                    : "/icon/previous-disabled.svg"
                             }
                             alt="previous icon"
                             className="w-8 h-8"
+                            width={4}
+                            height={4}
                         />
                     </button>
                     <button
@@ -230,9 +228,11 @@ const Carousel = () => {
                         onClick={handleNext}
                     >
                         <Image
-                            src={activeIndex !== 2 ? nextEnabled : nextDisabled}
+                            src={activeIndex !== 2 ? "/icon/next-enabled.svg" : "/icon/next-enabled.svg"}
                             alt="next icon"
                             className="w-8 h-8"
+                            width={4}
+                            height={4}
                         />
                     </button>
                 </div>
