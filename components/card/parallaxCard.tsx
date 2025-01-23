@@ -3,8 +3,7 @@
 import Image from 'next/image';
 import { useTransform, motion, useScroll } from 'framer-motion';
 import { useRef } from 'react';
-import { Button } from '../ui/button';
-import Link from "next/link";
+import SeeMoreButton from '../ui/seeMoreButton';
 
 interface ParallaxCardProps {
   i: number;
@@ -12,13 +11,12 @@ interface ParallaxCardProps {
   description: string;
   src: string;
   url: string;
-  color: string;
   progress: any;
   range: any;
   targetScale: number;
 }
 
-const ParallaxCard: React.FC<ParallaxCardProps> = ({ i, title, description, src, url, color, progress, range, targetScale }) => {
+const ParallaxCard: React.FC<ParallaxCardProps> = ({ i, title, description, src, url, progress, range, targetScale }) => {
 
   const container = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -54,15 +52,24 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({ i, title, description, src,
             <h2 className='m-0 text-[28px]'>{title}</h2>
             <p className='text-[16px] line-clamp-5'>{description}</p>
             <span className='flex items-center gap-[5px]'>
-              {/* <a className='text-[12px] underline cursor-pointer' href={url} target="_blank">See more</a> */}
-              <a className='text-[12px] underline cursor-pointer' href={url} target="_blank">
-                <Button className="text-sm" variant={"outline"} size={"sm"}>
+            {/* <a
+                href={url}
+                target="_blank"
+                className="flex items-center gap-2 cursor-pointer group"
+              >
+                <Button className="text-sm" variant="link" size="sm">
                   En savoir plus
                 </Button>
+                <ArrowRight
+                  className="text-current transform transition-transform duration-300 ease-in-out group-hover:translate-x-2"
+                />
+              </a> */}
+              <a
+                href={url}
+                target="_blank"
+              >
+                <SeeMoreButton />
               </a>
-              <svg width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21.5303 6.53033C21.8232 6.23744 21.8232 5.76256 21.5303 5.46967L16.7574 0.696699C16.4645 0.403806 15.9896 0.403806 15.6967 0.696699C15.4038 0.989592 15.4038 1.46447 15.6967 1.75736L19.9393 6L15.6967 10.2426C15.4038 10.5355 15.4038 11.0104 15.6967 11.3033C15.9896 11.5962 16.4645 11.5962 16.7574 11.3033L21.5303 6.53033ZM0 6.75L21 6.75V5.25L0 5.25L0 6.75Z" fill="black" />
-              </svg>
             </span>
           </div>
         </div>
