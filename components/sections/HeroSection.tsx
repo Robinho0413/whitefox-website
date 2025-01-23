@@ -24,6 +24,21 @@ export default function HeroSection() {
                     className="z-0 opacity-90"
                 />
             </motion.div>
+            <motion.div
+                initial={{ x: "0%" }}
+                animate={{ x: "-100%" }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className="absolute w-full h-full bg-black z-10"
+            />
+            <motion.div
+                initial={{ x: "100%" }}
+                animate={{ x: "0%" }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className="absolute w-full h-full bg-black z-10"
+                style={{
+                    background: "linear-gradient(to right, black, transparent)"
+                }}
+            />
             <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
             <div className="absolute inset-0 flex flex-col justify-end items-start space-y-24 z-20 p-4 sm:p-16">
                 <h1 className="flex flex-col gap-1 font-bold text-white">
