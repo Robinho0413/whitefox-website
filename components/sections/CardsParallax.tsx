@@ -51,7 +51,7 @@ export default function CardsParallax() {
 
 
     return (
-        <div className="bg-background relative z-10 p-4 py-16">
+        <div className="bg-background relative z-10 p-4 md:py-16">
             {
                 projects.map((project, i) => {
                     const targetScale = 1 - ((projects.length - i) * 0.05);
