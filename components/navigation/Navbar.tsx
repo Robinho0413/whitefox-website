@@ -28,7 +28,8 @@ const Navbar = () => {
         <div className="fixed top-0 left-0 w-full z-50 bg-background shadow-md">
             <div className="relative flex flex-row items-center justify-between h-16 px-4 md:px-8">
                 <Link href="/" className="text-2xl font-bold">
-                    WHITE<span className='text-primary-500'>FOX</span>
+                    {/* WHITE<span className='text-primary-500'>FOX</span> */}
+                    <img src="/images/logo-black.png" alt="Whitefox" className="h-12" />
                 </Link>
                 <div className='flex items-center gap-4 lg:gap-6'>
                     <div className="hidden lg:flex flex-row gap-10">
