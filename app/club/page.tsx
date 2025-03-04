@@ -81,7 +81,7 @@ export default function InfiniteBubbleCarousel() {
             return (
               <motion.div
                 key={bubble.id}
-                className="absolute w-40 h-40 rounded-full bg-black overflow-hidden flex flex-col items-center justify-center"
+                className="absolute w-40 h-40 rounded-full bg-neutral-800 overflow-hidden flex flex-col items-center justify-center"
                 style={{
                   zIndex: isActive ? 10 : isLeft || isRight ? 5 : 0,
                 }}
@@ -95,7 +95,7 @@ export default function InfiniteBubbleCarousel() {
               >
                 <div className="flex flex-col items-center justify-center">
                   <img src={bubble.image} alt="Bubble" className="w-20 h-20 object-cover rounded-full" />
-                  <h2 className="text-white text-center mt-2">{bubble.title}</h2>
+                  <h2 className="text-white text-center mt-2 uppercase">{bubble.title}</h2>
                 </div>
               </motion.div>
             );
