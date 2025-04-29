@@ -33,9 +33,9 @@ const ThemeToggle: React.FC = () => {
   return (
     <Button onClick={toggleTheme} variant={"icon"} size={"icon"} className="flex items-center justify-center self-center">
       {isDarkMode ? (
-        <Image src="/icon/IcOutlineLightMode.svg" alt="Light mode" width={20} height={20} />
+        <Image src="/whitefox-website/icon/IcOutlineLightMode.svg" alt="Light mode" width={20} height={20} />
       ) : (
-        <Image src="/icon/IcOutlineDarkMode.svg" alt="Dark mode" width={20} height={20} />
+        <Image src="/whitefox-website/icon/IcOutlineDarkMode.svg" alt="Dark mode" width={20} height={20} />
       )}
     </Button>
   );

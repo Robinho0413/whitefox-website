@@ -5,11 +5,12 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
 
 const bubbles = [
-  { id: 1, image: "/images/logo-black.png", title: "Respect" },
-  { id: 2, image: "/images/logo-black.png", title: "Solidarité" },
-  { id: 3, image: "/images/logo-black.png", title: "Excellence" },
+  { id: 1, image: "/whitefox-website/images/logo-black.png", title: "Respect" },
+  { id: 2, image: "/whitefox-website/images/logo-black.png", title: "Solidarité" },
+  { id: 3, image: "/whitefox-website/images/logo-black.png", title: "Excellence" },
 ];
 
 export default function InfiniteBubbleCarousel() {
@@ -58,7 +59,7 @@ export default function InfiniteBubbleCarousel() {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
           >
             <Button className="text-lg font-semibold" variant={"default"} size={"lg"}>
-              S'inscrire au club
+              S&apos;inscrire au club
             </Button>
           </motion.div>
         </Link>
@@ -94,7 +95,13 @@ export default function InfiniteBubbleCarousel() {
                 transition={{ duration: 0.5 }}
               >
                 <div className="flex flex-col items-center justify-center">
-                  <img src={bubble.image} alt="Bubble" className="w-20 h-20 object-cover rounded-full" />
+                  <Image
+                    src={bubble.image}
+                    alt="Bubble"
+                    width={80}
+                    height={80}
+                    className="object-cover rounded-full"
+                  />
                   <h2 className="text-white text-center mt-2 uppercase">{bubble.title}</h2>
                 </div>
               </motion.div>

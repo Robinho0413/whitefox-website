@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import ThemeToggle from '../ui/themeToggle';
 import MenuIcon from '../icons/MenuIcon';
 import { Button } from "@/components/ui/button"
+import Image from 'next/image';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,7 +30,13 @@ const Navbar = () => {
             <div className="relative flex flex-row items-center justify-between h-16 px-4 md:px-8">
                 <Link href="/" className="text-2xl font-bold">
                     {/* WHITE<span className='text-primary-500'>FOX</span> */}
-                    <img src="/images/logo-black.png" alt="Whitefox" className="h-12" />
+                    <Image
+                        src="/whitefox-website/images/logo-black.png"
+                        alt="Whitefox"
+                        width={48}
+                        height={48}
+                        className="h-12 w-auto"
+                    />
                 </Link>
                 <div className='flex items-center gap-4 lg:gap-6'>
                     <div className="hidden lg:flex flex-row gap-10">
@@ -60,20 +67,18 @@ const Navbar = () => {
                 </div>
             </div>
             <div
-                className={`lg:hidden absolute h-screen left-0 w-full bg-background/60 backdrop-blur-md flex flex-col gap-4 p-4 text-2xl transition-all duration-300 ease-in-out ${
-                    isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
-                }`}
+                className={`lg:hidden absolute h-screen left-0 w-full bg-background/60 backdrop-blur-md flex flex-col gap-4 p-4 text-2xl transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+                    }`}
             >
                 {navItems.map((item) => (
                     <div key={item.path} className="flex flex-col justify-center items-center group sm:px-4">
                         <Link
                             key={item.path}
                             href={item.path}
-                            className={`${
-                                pathname === item.path
+                            className={`${pathname === item.path
                                     ? 'text-primary-500'
                                     : 'text-foreground hover:text-primary-500'
-                            } p-3 duration-300 font-semibold`}
+                                } p-3 duration-300 font-semibold`}
                             onClick={toggleMenu}
                         >
                             {item.name}

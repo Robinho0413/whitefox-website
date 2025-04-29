@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image';
-import { useTransform, motion, useScroll } from 'framer-motion';
+import { useTransform, motion, useScroll, MotionValue } from 'framer-motion';
 import { useRef } from 'react';
 import SeeMoreButton from '../ui/seeMoreButton';
 
@@ -11,8 +11,8 @@ interface ParallaxCardProps {
   description: string;
   src: string;
   url: string;
-  progress: any;
-  range: any;
+  progress: MotionValue<number>;
+  range: [number, number];
   targetScale: number;
 }
 
@@ -41,7 +41,7 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({ i, title, description, src,
             >
               <Image
                 fill
-                src={`/images/${src}`}
+                src={`/whitefox-website/images/${src}`}
                 alt="image"
                 objectFit='cover'
               />

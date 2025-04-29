@@ -1,13 +1,13 @@
 'use client'
 
-import { useScroll, useTransform, motion } from 'framer-motion';
+import { useScroll, useTransform, motion, MotionValue } from 'framer-motion';
 import Lenis from 'lenis';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { StaticImageData } from 'next/image';
 
-import Picture1 from '@/public/images/bg-image.jpg';
-import Picture2 from '@/public/images/bg-image.jpg';
+import Picture1 from '@/public/images/bg-image.png';
+import Picture2 from '@/public/images/bg-image.png';
 
 export default function Home() {
     const container = useRef<HTMLDivElement>(null);
@@ -46,7 +46,7 @@ interface SlideProps {
     src: StaticImageData;
     direction: 'left' | 'right';
     left: string;
-    progress: any;
+    progress: MotionValue<number>;
     text: string;
 }
 

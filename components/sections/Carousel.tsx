@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 
 interface CarouselItemProps {
     item: {
@@ -14,7 +15,12 @@ interface CarouselItemProps {
 
 const CarouselItem: React.FC<CarouselItemProps> = ({ item, isActive }) => (
     <div className={`relative flex-shrink-0 w-full h-64 md:h-96 transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0 absolute top-0 left-0'}`}>
-        <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded-lg" />
+        <Image
+            src={item.image}
+            alt={item.name}
+            fill
+            className="w-full h-full object-cover rounded-lg"
+        />
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 overflow-hidden rounded-b-lg">
             <h3 className="text-white text-xl font-bold">{item.name}</h3>
             <p className="text-white text-sm mt-1">{item.description}</p>
@@ -34,13 +40,13 @@ const Carousel = () => {
         { id: 4, name: 'Grilled Salmon', description: 'Perfectly grilled salmon with lemon butter', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80' },
     ];
 
-    const nextSlide = () => {
+    const nextSlide = useCallback(() => {
         setActiveIndex((prevIndex) => (prevIndex + 1) % items.length);
-    };
+    }, [items.length]);
 
-    const prevSlide = () => {
+    const prevSlide = useCallback(() => {
         setActiveIndex((prevIndex) => (prevIndex - 1 + items.length) % items.length);
-    };
+    }, [items.length]);
 
     const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
         setTouchStart(e.targetTouches[0].clientX);
@@ -64,7 +70,7 @@ const Carousel = () => {
             nextSlide();
         }, 5000);
         return () => clearInterval(interval);
-    }, []);
+    }, [nextSlide]);
 
     return (
         <div className="relative w-full max-w-4xl mx-auto ">
@@ -86,8 +92,8 @@ const Carousel = () => {
                 onClick={prevSlide}
                 aria-label="Previous slide"
             >
-                <img
-                    src="/icon/arrowRight.svg"
+                <Image
+                    src="/whitefox-website/icon/arrowRight.svg"
                     alt="Next"
                     width={26}
                     height={26}
@@ -99,8 +105,8 @@ const Carousel = () => {
                 onClick={nextSlide}
                 aria-label="Next slide"
             >
-                <img
-                    src="/icon/arrowRight.svg"
+                <Image
+                    src="/whitefox-website/icon/arrowRight.svg"
                     alt="Next"
                     width={26}
                     height={26}
