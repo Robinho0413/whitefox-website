@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -15,13 +14,10 @@ export default function HeroSection() {
     return (
         <div className="relative w-full h-screen overflow-hidden">
             <motion.div style={{ y, scale }} className="absolute w-full h-full z-0">
-                <Image
+                <img
                     src="/whitefox-website/images/bg-image.png"
                     alt="Background Image"
-                    fill
-                    style={{ objectFit: "cover" }}
-                    quality={100}
-                    className="z-0 opacity-90"
+                    className="z-0 opacity-90 object-cover absolute inset-0 w-full h-full"
                 />
             </motion.div>
             <motion.div

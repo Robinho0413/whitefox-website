@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
 
 interface CarouselItemProps {
     item: {
@@ -15,10 +14,9 @@ interface CarouselItemProps {
 
 const CarouselItem: React.FC<CarouselItemProps> = ({ item, isActive }) => (
     <div className={`relative flex-shrink-0 w-full h-64 md:h-96 transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0 absolute top-0 left-0'}`}>
-        <Image
+        <img
             src={item.image}
             alt={item.name}
-            fill
             className="w-full h-full object-cover rounded-lg"
         />
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 overflow-hidden rounded-b-lg">
@@ -92,7 +90,7 @@ const Carousel = () => {
                 onClick={prevSlide}
                 aria-label="Previous slide"
             >
-                <Image
+                <img
                     src="/whitefox-website/icon/arrowRight.svg"
                     alt="Next"
                     width={26}
@@ -105,7 +103,7 @@ const Carousel = () => {
                 onClick={nextSlide}
                 aria-label="Next slide"
             >
-                <Image
+                <img
                     src="/whitefox-website/icon/arrowRight.svg"
                     alt="Next"
                     width={26}

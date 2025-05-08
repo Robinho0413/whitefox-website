@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image';
 import { useTransform, motion, useScroll, MotionValue } from 'framer-motion';
 import { useRef } from 'react';
 import SeeMoreButton from '../ui/seeMoreButton';
@@ -39,11 +38,10 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({ i, title, description, src,
               className='w-full h-full'
               style={{ scale: imageScale }}
             >
-              <Image
-                fill
+              <img
                 src={`/whitefox-website/images/${src}`}
                 alt="image"
-                objectFit='cover'
+                className='w-full h-full object-cover'
               />
             </motion.div>
           </div>

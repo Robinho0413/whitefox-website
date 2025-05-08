@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { Button } from "./button";
 
 const ThemeToggle: React.FC = () => {
@@ -33,9 +32,9 @@ const ThemeToggle: React.FC = () => {
   return (
     <Button onClick={toggleTheme} variant={"icon"} size={"icon"} className="flex items-center justify-center self-center">
       {isDarkMode ? (
-        <Image src="/whitefox-website/icon/IcOutlineLightMode.svg" alt="Light mode" width={20} height={20} />
+        <img src="/whitefox-website/icon/IcOutlineLightMode.svg" alt="Light mode" width={20} height={20} />
       ) : (
-        <Image src="/whitefox-website/icon/IcOutlineDarkMode.svg" alt="Dark mode" width={20} height={20} />
+        <img src="/whitefox-website/icon/IcOutlineDarkMode.svg" alt="Dark mode" width={20} height={20} />
       )}
     </Button>
   );

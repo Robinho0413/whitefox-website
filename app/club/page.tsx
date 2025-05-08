@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import Image from "next/image";
 
 const bubbles = [
   { id: 1, image: "/whitefox-website/images/logo-black.png", title: "Respect" },
@@ -95,12 +94,10 @@ export default function InfiniteBubbleCarousel() {
                 transition={{ duration: 0.5 }}
               >
                 <div className="flex flex-col items-center justify-center">
-                  <Image
+                  <img
                     src={bubble.image}
                     alt="Bubble"
-                    width={80}
-                    height={80}
-                    className="object-cover rounded-full"
+                    className="w-20 h-20 object-cover rounded-full"
                   />
                   <h2 className="text-white text-center mt-2 uppercase">{bubble.title}</h2>
                 </div>

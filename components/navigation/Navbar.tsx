@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 import ThemeToggle from '../ui/themeToggle';
 import MenuIcon from '../icons/MenuIcon';
 import { Button } from "@/components/ui/button"
-import Image from 'next/image';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,7 +29,7 @@ const Navbar = () => {
             <div className="relative flex flex-row items-center justify-between h-16 px-4 md:px-8">
                 <Link href="/" className="text-2xl font-bold">
                     {/* WHITE<span className='text-primary-500'>FOX</span> */}
-                    <Image
+                    <img
                         src="/whitefox-website/images/logo-black.png"
                         alt="Whitefox"
                         width={48}
