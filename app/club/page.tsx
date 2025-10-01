@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const bubbles = [
-  { id: 1, image: "/images/logo-black.png", title: "Respect" },
-  { id: 2, image: "/images/logo-black.png", title: "Solidarité" },
-  { id: 3, image: "/images/logo-black.png", title: "Excellence" },
+  { id: 1, image: "/images/solidarite.png", title: "Respect" },
+  { id: 2, image: "/images/solidarite.png", title: "Solidarité" },
+  { id: 3, image: "/images/solidarite.png", title: "Performance" },
 ];
 
 export default function InfiniteBubbleCarousel() {
@@ -45,20 +45,20 @@ export default function InfiniteBubbleCarousel() {
     <div className="relative flex flex-row justify-center items-center w-full overflow-hidden mt-10">
       <div className="relative flex flex-col justify-center w-full p-16 space-y-6">
         <div className="flex flex-col space-y-1">
-          <h2 className="text-3xl font-semibold">Bienvenue chez</h2>
+          <h2 className="text-3xl font-semibold">Bienvenue chez les</h2>
           <h1 className="text-7xl font-bold">Whitefox</h1>
         </div>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, impedit deleniti in ipsa blanditiis asperiores consequuntur dicta debitis a odio veritatis molestiae perspiciatis minus, voluptates quod commodi cum ducimus labore?
         </p>
-        <Link href={'/register'} className="w-full sm:w-auto">
+        <Link href={'/register'} className="w-full sm:w-fit">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
           >
             <Button className="text-lg font-semibold" variant={"default"} size={"lg"}>
-              S'inscrire au club
+              Modalités d'inscription
             </Button>
           </motion.div>
         </Link>
@@ -95,7 +95,7 @@ export default function InfiniteBubbleCarousel() {
               >
                 <div className="flex flex-col items-center justify-center">
                   <img src={bubble.image} alt="Bubble" className="w-20 h-20 object-cover rounded-full" />
-                  <h2 className="text-white text-center mt-2 uppercase">{bubble.title}</h2>
+                  <h2 className="text-white text-center mt-2">{bubble.title}</h2>
                 </div>
               </motion.div>
             );
