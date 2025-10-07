@@ -19,24 +19,18 @@ export default function HeroSection() {
                     src="/images/bg-image.jpg"
                     alt="Background Image"
                     fill
-                    style={{ objectFit: "cover" }}
+                    style={{ objectFit: "cover", objectPosition: "top" }}
                     quality={100}
                     className="z-0 opacity-90"
                 />
             </motion.div>
             <motion.div
-                initial={{ x: "0%" }}
-                animate={{ x: "-100%" }}
-                transition={{ duration: 1, ease: "easeOut" }}
-                className="absolute w-full h-full bg-black z-10"
-            />
-            <motion.div
-                initial={{ x: "100%" }}
-                animate={{ x: "0%" }}
-                transition={{ duration: 1, ease: "easeOut" }}
+                initial={{ opacity: 1, x: "0%" }}
+                animate={{ opacity: 0.2, x: "-60%" }}
+                transition={{ duration: 3, ease: "easeOut" }}
                 className="absolute w-full h-full bg-black z-10"
                 style={{
-                    background: "linear-gradient(to right, black, transparent)"
+                    background: "linear-gradient(to right, black 40%, rgba(0,0,0,0.5) 70%, transparent)"
                 }}
             />
             <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
