@@ -7,9 +7,10 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const bubbles = [
-  { id: 1, image: "/images/solidarite.png", title: "Respect" },
-  { id: 2, image: "/images/solidarite.png", title: "Solidarité" },
-  { id: 3, image: "/images/solidarite.png", title: "Performance" },
+  { id: 1, image: "/images/solidarite.png", title: "Honnêteté" },
+  { id: 2, image: "/images/solidarite.png", title: "Esprit d'équipe" },
+  { id: 3, image: "/images/solidarite.png", title: "Respect" },
+  { id: 4, image: "/images/solidarite.png", title: "Plaisir" },
 ];
 
 export default function InfiniteBubbleCarousel() {

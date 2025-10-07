@@ -13,7 +13,6 @@ const Navbar = () => {
 
     const navItems = [
         { name: 'Accueil', path: '/' },
-        { name: 'Actualités', path: '/news' },
         { name: 'Inscription', path: '/register' },
         { name: 'Club', path: '/club' },
         { name: 'Galerie', path: '/gallery' },
