@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -40,7 +41,7 @@ export default function Page() {
     };
 
     return (
-        <div className="mt-10 p-16">
+        <div className="mt-10 px-4 py-12 md:p-16">
             <h1 className="text-3xl font-semibold mb-8 relative inline-block">
                 Galerie
                 <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-primary-500 animate-underline"></span>
@@ -60,6 +61,23 @@ export default function Page() {
                             style={{ objectFit: "cover" }}
                             className="brightness-90 group-hover:brightness-110 transition-brightness duration-100"
                         />
+                        
+                        {/* Bouton télécharger au survol */}
+                        <Button
+                            variant={"icon"}
+                            size={"icon"}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                downloadImage(imageSrc);
+                            }}
+                            className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black bg-opacity-60 hover:bg-opacity-80 rounded-md w-8 h-8 flex items-center justify-center z-10"
+                            title="Télécharger l'image"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                            </svg>
+                        </Button>
+                        
                         {/* Bordure overlay */}
                         <div 
                             className="absolute inset-0 pointer-events-none rounded-lg"
