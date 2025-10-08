@@ -70,7 +70,7 @@ export default function Page() {
                                 e.stopPropagation();
                                 downloadImage(imageSrc);
                             }}
-                            className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black bg-opacity-60 hover:bg-opacity-80 rounded-md w-8 h-8 flex items-center justify-center z-10"
+                            className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-opacity-60 hover:bg-opacity-80 rounded-md w-8 h-8 flex items-center justify-center z-10"
                             title="Télécharger l'image"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
