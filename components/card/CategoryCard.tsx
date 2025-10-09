@@ -10,20 +10,25 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-export function Cat1Card() {
+interface Cat1CardProps {
+  title: string;
+  ageRange: string;
+}
+
+export function CategoryCard({ title, ageRange }: Cat1CardProps) {
   return (
     <Card 
       className="md:w-[350px]" 
       style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}
     >
       <CardHeader>
-        <CardTitle>Catégorie 1</CardTitle>
-        <CardDescription>5-8 ans</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{ageRange}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid w-full items-center gap-8">
           <div className="flex gap-2 items-baseline">
-            <span className="text-5xl font-semibold">200€</span>
+            <span className="text-5xl font-semibold">110€</span>
             <span>/ License</span>
           </div>
           <div className="space-y-2 text-md text-muted-foreground">

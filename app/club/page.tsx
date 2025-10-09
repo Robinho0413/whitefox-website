@@ -52,7 +52,7 @@ export default function InfiniteBubbleCarousel() {
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, impedit deleniti in ipsa blanditiis asperiores consequuntur dicta debitis a odio veritatis molestiae perspiciatis minus, voluptates quod commodi cum ducimus labore?
         </p>
-        <Link href={'/register'} className="w-full sm:w-fit">
+        <Link href={'/inscription'} className="w-full sm:w-fit">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
