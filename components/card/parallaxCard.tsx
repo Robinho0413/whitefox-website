@@ -11,12 +11,13 @@ interface ParallaxCardProps {
   description: string;
   src: string;
   url: string;
+  btn: string;
   progress: any;
   range: any;
   targetScale: number;
 }
 
-const ParallaxCard: React.FC<ParallaxCardProps> = ({ i, title, description, src, url, progress, range, targetScale }) => {
+const ParallaxCard: React.FC<ParallaxCardProps> = ({ i, title, description, src, url, btn, progress, range, targetScale }) => {
 
   const container = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -68,7 +69,7 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({ i, title, description, src,
                 href={url}
                 target="_blank"
               >
-                <SeeMoreButton />
+                <SeeMoreButton btn={btn} />
               </a>
             </span>
           </div>

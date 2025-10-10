@@ -10,7 +10,7 @@ export default function HeroSection() {
     const { scrollY } = useScroll();
     const y = useTransform(scrollY, [0, 700], [0, 250]);
     const scale = useTransform(scrollY, [0, 700], [1, 1.05]);
-    const buttonY = useTransform(scrollY, [0, 300], [0, 120]);
+    const buttonY = useTransform(scrollY, [0, 300], [0, 250]);
 
     return (
         <div className="relative w-full h-screen overflow-hidden">
@@ -34,7 +34,7 @@ export default function HeroSection() {
                 }}
             />
             <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
-            <div className="absolute inset-0 flex flex-col justify-end items-start space-y-24 z-20 p-4 sm:p-16">
+            <div className="absolute inset-0 flex flex-col justify-end bottom-16 items-start space-y-24 z-20 p-4 sm:p-16">
                 <h1 className="flex flex-col gap-1 font-bold text-white">
                     <RotateWords text="Whitefox" words={["Cheer", "Pom's"]} />
                 </h1>

@@ -3,14 +3,14 @@
 import { motion } from 'framer-motion';
 import ArrowRight from '../icons/ArrowRight';
 
-const SeeMoreButton: React.FC = () => {
+const SeeMoreButton: React.FC<{ btn: string }> = ({ btn }) => {
   return (
     <motion.button
       className="flex items-center gap-2 text-primary underline-offset-4 underline pr-2 decoration-primary-500 group"
       whileHover="hover"
       initial="rest"
     >
-      <span className="text-sm font-medium">En savoir plus</span>
+      <span className="text-sm font-medium">{btn}</span>
       <motion.span
         className="inline-flex"
         variants={{

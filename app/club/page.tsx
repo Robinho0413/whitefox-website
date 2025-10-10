@@ -43,7 +43,7 @@ export default function InfiniteBubbleCarousel() {
   };
 
   return (
-    <div className="relative flex flex-row justify-center items-center w-full overflow-hidden mt-10">
+    <div className="relative flex flex-col lg:flex-row justify-center items-center w-full overflow-hidden mt-10">
       <div className="relative flex flex-col justify-center w-full p-16 space-y-6">
         <div className="flex flex-col space-y-1">
           <h2 className="text-3xl font-semibold">Bienvenue chez les</h2>
@@ -65,7 +65,7 @@ export default function InfiniteBubbleCarousel() {
         </Link>
       </div>
       <div
-        className="relative flex justify-center items-center h-full w-full overflow-hidden"
+        className="relative flex justify-center items-center h-full w-full overflow-hidden hover:scale-105 transition-transform duration-300"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
