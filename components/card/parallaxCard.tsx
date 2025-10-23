@@ -35,7 +35,10 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({ i, title, description, src,
         className='flex flex-col relative top-[-25%] h-[500px] w-[1000px] rounded-lg p-4 md:p-[50px] transform-origin-top bg-card border-2 text-card-foreground shadow-sm'
       >
         <div className='flex flex-col md:flex-row-reverse h-full gap-4 md:gap-[50px]'>
-          <div className='relative w-full md:w-[60%] h-52 md:h-full rounded-lg overflow-hidden border border-primary-500'>
+          <div
+            className='relative w-full md:w-[60%] h-52 md:h-full rounded-lg overflow-hidden border border-primary-500'
+            style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}
+          >
             <motion.div
               className='w-full h-full'
               style={{ scale: imageScale }}

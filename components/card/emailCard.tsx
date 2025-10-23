@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label"
 
 export function EmailCard() {
   return (
-    <Card className="md:w-[350px]">
+    <Card className="md:w-[350px]" style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}>
       <CardHeader>
         <CardTitle>Email</CardTitle>
         <CardDescription>Notre adresse email</CardDescription>
@@ -22,7 +22,7 @@ export function EmailCard() {
         <form>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">contact@club-sportif.fr</Label>
+              <Label htmlFor="name">foxcheer1@gmail.com</Label>
             </div>
           </div>
         </form>

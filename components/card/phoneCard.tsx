@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label"
 
 export function PhoneCard() {
   return (
-    <Card className="md:w-[350px]">
+    <Card className="md:w-[350px]" style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}>
       <CardHeader>
         <CardTitle>Téléphone</CardTitle>
         <CardDescription>Notre numéro de téléphone</CardDescription>

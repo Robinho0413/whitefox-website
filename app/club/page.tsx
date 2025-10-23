@@ -50,7 +50,7 @@ export default function InfiniteBubbleCarousel() {
           <h1 className="text-7xl font-bold">Whitefox</h1>
         </div>
         <p>
-          Créée en 2024, l'association WHITEFOX réunit des passionnés de cheerleading et de danse pompom à Brive-la-Gaillarde. Notre association sportive est ouverte à tous des l'âge de 4 ans. Tout au long de l'année, nous participons à des compétitions, des démonstrations et des animations, afin de partager notre passion et notre énergie avec le public.
+          Créée en 2024, l'association WHITEFOX réunit des passionnés de cheerleading et de danse pompom à Brive-la-Gaillarde. Notre association sportive est ouverte à tous dès l'âge de 4 ans. Tout au long de l'année, nous participons à des compétitions, des démonstrations et des animations, afin de partager notre passion et notre énergie avec le public.
         </p>
         <p>
           Chez les WHITEFOX, nos valeurs sont: honnêteté, esprit d'équipe, respect et plaisir. Nous croyons qu'un bon athlète est avant tout quelqu'un qui agit avec sincérité, soutient ses coéquipiers et s'épanouit en s'amusant. Notre objectif est de créer un environnement où chacun peut progresser, se dépasser et surtout prendre du plaisir.

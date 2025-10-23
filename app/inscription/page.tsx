@@ -9,9 +9,9 @@ export default function Page() {
                 <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-primary-500 animate-underline"></span>
             </h1>
             <div className='flex gap-8 mb-16 justify-center flex-wrap'>
-                <CategoryCard title="Chouchou" ageRange="5-8 ans" />
-                <CategoryCard title="Minigaill" ageRange="9-16 ans" />
-                <CategoryCard title="Gaillard" ageRange="16 ans et +" />
+                <CategoryCard title="Chouchou" ageRange="5-8 ans" horaires="De 11h00 à 13h00" />
+                <CategoryCard title="Minigaill" ageRange="9-16 ans" horaires="De 11h00 à 13h00" />
+                <CategoryCard title="Gaillard" ageRange="16 ans et +" horaires="De 9h00 à 11h00" />
             </div>
         </div>
     );

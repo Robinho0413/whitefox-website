@@ -17,6 +17,7 @@ export default function Page() {
                         key={album.id}
                         href={`/gallery/${album.id}`}
                         className="block"
+                        style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}
                     >
                         <div className="relative aspect-[4/3] overflow-hidden rounded-lg cursor-pointer group shadow-lg hover:shadow-xl transition-shadow duration-300">
                             <Image

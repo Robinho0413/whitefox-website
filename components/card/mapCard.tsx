@@ -10,7 +10,7 @@ import {
 
 export function MapCard() {
   return (
-    <Card className="w-full mx-auto">
+    <Card className="w-full mx-auto" style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}>
       <CardHeader>
         <CardTitle>Gymnase Jules Vallès</CardTitle>
         <CardDescription>Lieu d'entrainement de notre club</CardDescription>

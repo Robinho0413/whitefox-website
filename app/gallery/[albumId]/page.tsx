@@ -67,6 +67,7 @@ export default function AlbumPage({ params }: AlbumPageProps) {
                         key={index}
                         className="relative aspect-[4/3] overflow-hidden rounded-lg cursor-pointer group"
                         onClick={() => openModal(imageSrc)}
+                        style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}
                     >
                         <Image
                             src={imageSrc}
