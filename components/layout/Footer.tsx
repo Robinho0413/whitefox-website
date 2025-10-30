@@ -67,7 +67,7 @@ const Footer: React.FC = () => {
                         </div>
 
                         {/* Liens légaux */}
-                        <div className="flex flex-col sm:flex-row gap-4 text-sm">
+                        <div className="flex flex-row gap-4 text-sm">
                             <Link href="/mentions-legales" className="hover:text-primary-500 transition-colors">
                                 Mentions légales
                             </Link>
