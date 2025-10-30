@@ -80,8 +80,8 @@ const Footer: React.FC = () => {
                     {/* Disclaimer légal simplifié */}
                     <div className="mt-6 text-xs text-muted-foreground bg-muted/30 p-4 rounded-lg">
                         <p>
-                            Ce site présente les activités de l'association Whitefox. 
-                            Aucune donnée personnelle n'est collectée via ce site. Pour tout contact, utilisez l'adresse email indiquée ci-dessus.
+                            Ce site présente les activités de l&apos;association Whitefox. 
+                            Aucune donnée personnelle n&apos;est collectée via ce site. Pour tout contact, utilisez l&apos;adresse email indiquée ci-dessus.
                         </p>
                     </div>
                 </div>

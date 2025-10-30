@@ -26,7 +26,7 @@ export default function MentionsLegales() {
                         France</p>
                         <p><strong>Email :</strong> foxcheer1@gmail.com</p>
                         <p><strong>Téléphone :</strong> +33 1 23 45 67 89</p>
-                        <p><strong>RNA :</strong> [Numéro d'enregistrement à compléter]</p>
+                        <p><strong>RNA :</strong> [Numéro d&apos;enregistrement à compléter]</p>
                         <p><strong>SIRET :</strong> [Si applicable]</p>
                     </div>
                 </section>
@@ -35,8 +35,8 @@ export default function MentionsLegales() {
                 <section>
                     <h2 className="text-2xl font-semibold mb-4 text-primary-500">Directeur de publication</h2>
                     <div className="bg-muted/30 p-6 rounded-lg">
-                        <p><strong>Nom :</strong> [Nom du Président de l'association]</p>
-                        <p><strong>Qualité :</strong> Président de l'association Whitefox</p>
+                        <p><strong>Nom :</strong> [Nom du Président de l&apos;association]</p>
+                        <p><strong>Qualité :</strong> Président de l&apos;association Whitefox</p>
                         <p><strong>Contact :</strong> foxcheer1@gmail.com</p>
                     </div>
                 </section>
