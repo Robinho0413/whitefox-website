@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from '../components/navigation/Navbar';
-import Footer from "@/components/layout/footer";
+import Footer from "@/components/layout/Footer";
 
 
 const geistSans = localFont({

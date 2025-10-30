@@ -1,6 +1,6 @@
 'use client'
 
-import { useScroll, useTransform, motion } from 'framer-motion';
+import { useScroll, useTransform, motion, MotionValue } from 'framer-motion';
 import Lenis from 'lenis';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
@@ -46,7 +46,7 @@ interface SlideProps {
     src: StaticImageData;
     direction: 'left' | 'right';
     left: string;
-    progress: any;
+    progress: MotionValue<number>;
     text: string;
 }
 

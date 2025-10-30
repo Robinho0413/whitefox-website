@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image';
-import { useTransform, motion, useScroll } from 'framer-motion';
+import { useTransform, motion, useScroll, MotionValue } from 'framer-motion';
 import { useRef } from 'react';
 import SeeMoreButton from '../ui/seeMoreButton';
 
@@ -12,8 +12,8 @@ interface ParallaxCardProps {
   src: string;
   url: string;
   btn: string;
-  progress: any;
-  range: any;
+  progress: MotionValue<number>;
+  range: [number, number];
   targetScale: number;
 }
 

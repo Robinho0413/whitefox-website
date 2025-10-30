@@ -50,19 +50,19 @@ export default function InfiniteBubbleCarousel() {
           <h1 className="text-7xl font-bold">Whitefox</h1>
         </div>
         <p>
-          Créée en 2024, l'association WHITEFOX réunit des passionnés de cheerleading et de danse pompom à Brive-la-Gaillarde. Notre association sportive est ouverte à tous dès l'âge de 4 ans. Tout au long de l'année, nous participons à des compétitions, des démonstrations et des animations, afin de partager notre passion et notre énergie avec le public.
+          Créée en 2024, l&apos;association WHITEFOX réunit des passionnés de cheerleading et de danse pompom à Brive-la-Gaillarde. Notre association sportive est ouverte à tous dès l&apos;âge de 4 ans. Tout au long de l&apos;année, nous participons à des compétitions, des démonstrations et des animations, afin de partager notre passion et notre énergie avec le public.
         </p>
         <p>
-          Chez les WHITEFOX, nos valeurs sont: honnêteté, esprit d'équipe, respect et plaisir. Nous croyons qu'un bon athlète est avant tout quelqu'un qui agit avec sincérité, soutient ses coéquipiers et s'épanouit en s'amusant. Notre objectif est de créer un environnement où chacun peut progresser, se dépasser et surtout prendre du plaisir.
+          Chez les WHITEFOX, nos valeurs sont: honnêteté, esprit d&apos;équipe, respect et plaisir. Nous croyons qu&apos;un bon athlète est avant tout quelqu&apos;un qui agit avec sincérité, soutient ses coéquipiers et s&apos;épanouit en s&apos;amusant. Notre objectif est de créer un environnement où chacun peut progresser, se dépasser et surtout prendre du plaisir.
         </p>
         <p>
-          Le cheerleading est un sport complet qui mélange acrobaties, portés, pyramides, danse et esprit d'équipe. Nous mettons un point d'honneur à allier performance et esprit collectif, dans une ambiance toujours motivante et positive.
+          Le cheerleading est un sport complet qui mélange acrobaties, portés, pyramides, danse et esprit d&apos;équipe. Nous mettons un point d&apos;honneur à allier performance et esprit collectif, dans une ambiance toujours motivante et positive.
         </p>
         <p>
-          La danse pompom, met l'accent sur la chorégraphie, la synchronisation et l'énergie. Elle se pratique sur des musiques entraînantes avec des pompoms et permet d'exprimer sa créativité tout en développant le sens du rythme et la confiance en soi.
+          La danse pompom, met l&apos;accent sur la chorégraphie, la synchronisation et l&apos;énergie. Elle se pratique sur des musiques entraînantes avec des pompoms et permet d&apos;exprimer sa créativité tout en développant le sens du rythme et la confiance en soi.
         </p>
         <p>
-          Que tu sois débutant ou confirmé, l'association WHITEFOX t'ouvre ses portes ! Rejoins-nous pour vivre une aventure humaine et sportive pleine d'énergie, de sourires et de passion.
+          Que tu sois débutant ou confirmé, l&apos;association WHITEFOX t&apos;ouvre ses portes ! Rejoins-nous pour vivre une aventure humaine et sportive pleine d&apos;énergie, de sourires et de passion.
         </p>
         <Link href={'/inscription'} className="w-full sm:w-fit">
           <motion.div
