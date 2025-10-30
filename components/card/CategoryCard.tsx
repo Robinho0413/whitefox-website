@@ -1,5 +1,6 @@
 import * as React from "react"
 
+import Image from "next/image"
 import {
   Card,
   CardContent,
@@ -63,7 +64,15 @@ export function CategoryCard({ title, ageRange, horaires }: Cat1CardProps) {
                 <span>/ Bow aux couleurs du club</span>
               </div>
             </div>
-            <img className="w-full rounded-md" src="/images/bg-image.jpg" alt="Bow aux couleurs du club" />
+            <div className="relative w-full aspect-video rounded-md overflow-hidden">
+              <Image 
+                src="/images/bg-image.jpg" 
+                alt="Bow aux couleurs du club" 
+                fill
+                style={{ objectFit: "cover" }}
+                className="rounded-md"
+              />
+            </div>
           </div>
         </div>
       </CardContent>
