@@ -4,7 +4,7 @@ import { albums } from '@/lib/albums-data';
 
 export const metadata = {
     title: 'Plan du site - Association Whitefox',
-    description: 'Plan du site de l\'association Whitefox - Navigation complète du site de cheerleading et pom-pom girls',
+    description: 'Plan du site de l&apos;association Whitefox - Navigation complète du site de cheerleading et pom-pom girls',
 };
 
 export default function PlanDuSite() {
@@ -12,8 +12,8 @@ export default function PlanDuSite() {
         {
             title: 'Pages principales',
             items: [
-                { name: 'Accueil', href: '/', description: 'Page d\'accueil de l\'association Whitefox' },
-                { name: 'Notre club', href: '/club', description: 'Présentation de l\'association et de nos activités' },
+                { name: 'Accueil', href: '/', description: 'Page d&apos;accueil de l&apos;association Whitefox' },
+                { name: 'Notre club', href: '/club', description: 'Présentation de l&apos;association et de nos activités' },
                 { name: 'Inscriptions', href: '/inscription', description: 'Informations sur les inscriptions et tarifs' },
                 { name: 'Contact', href: '/contact', description: 'Nous contacter et informations pratiques' },
             ]
@@ -21,7 +21,7 @@ export default function PlanDuSite() {
         {
             title: 'Galerie photo',
             items: [
-                { name: 'Galerie principale', href: '/gallery', description: 'Vue d\'ensemble de tous nos albums photo' },
+                { name: 'Galerie principale', href: '/gallery', description: 'Vue d&apos;ensemble de tous nos albums photo' },
                 ...albums.map(album => ({
                     name: album.title,
                     href: `/gallery/${album.id}`,
@@ -47,8 +47,8 @@ export default function PlanDuSite() {
 
             <div className="mb-8">
                 <p className="text-lg text-muted-foreground">
-                    Retrouvez ci-dessous l'ensemble des pages et sections de notre site internet. 
-                    Cette page vous aide à naviguer facilement dans tous les contenus de l'association Whitefox.
+                    Retrouvez ci-dessous l&apos;ensemble des pages et sections de notre site internet. 
+                    Cette page vous aide à naviguer facilement dans tous les contenus de l&apos;association Whitefox.
                 </p>
             </div>
 
@@ -93,7 +93,7 @@ export default function PlanDuSite() {
 
             {/* Section d'aide à la navigation */}
             <div className="mt-16 bg-muted/30 p-8 rounded-lg">
-                <h3 className="text-xl font-semibold mb-4">Besoin d'aide pour naviguer ?</h3>
+                <h3 className="text-xl font-semibold mb-4">Besoin d&apos;aide pour naviguer ?</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <h4 className="font-medium mb-2">🏠 Vous êtes nouveaux ?</h4>
@@ -120,8 +120,8 @@ export default function PlanDuSite() {
                     <div>
                         <h4 className="font-medium mb-2">📞 Vous avez des questions ?</h4>
                         <p className="text-sm text-muted-foreground">
-                            N'hésitez pas à nous écrire via notre page <Link href="/contact" className="text-primary-500 hover:underline">Contact</Link> ou 
-                            directement à l'adresse foxcheer1@gmail.com.
+                            N&apos;hésitez pas à nous écrire via notre page <Link href="/contact" className="text-primary-500 hover:underline">Contact</Link> ou 
+                            directement à l&apos;adresse foxcheer1@gmail.com.
                         </p>
                     </div>
                 </div>

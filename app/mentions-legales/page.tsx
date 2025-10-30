@@ -2,7 +2,7 @@ import React from 'react';
 
 export const metadata = {
     title: 'Mentions légales - Association Whitefox',
-    description: 'Mentions légales de l\'association Whitefox - Cheerleading et Pom-pom girls à Brive-la-Gaillarde',
+    description: 'Mentions légales de l&apos;association Whitefox - Cheerleading et Pom-pom girls à Brive-la-Gaillarde',
 };
 
 export default function MentionsLegales() {
@@ -59,16 +59,16 @@ export default function MentionsLegales() {
                     <h2 className="text-2xl font-semibold mb-4 text-primary-500">Propriété intellectuelle</h2>
                     <div className="space-y-4">
                         <p>
-                            L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur 
+                            L&apos;ensemble de ce site relève de la législation française et internationale sur le droit d&apos;auteur 
                             et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour 
                             les documents téléchargeables et les représentations iconographiques et photographiques.
                         </p>
                         <p>
-                            La reproduction de tout ou partie de ce site sur un support électronique quel qu'il soit est 
+                            La reproduction de tout ou partie de ce site sur un support électronique quel qu&apos;il soit est 
                             formellement interdite sauf autorisation expresse du directeur de publication.
                         </p>
                         <p>
-                            Les marques et logos figurant sur le site sont la propriété exclusive de l'association Whitefox.
+                            Les marques et logos figurant sur le site sont la propriété exclusive de l&apos;association Whitefox.
                         </p>
                     </div>
                 </section>
@@ -79,11 +79,11 @@ export default function MentionsLegales() {
                     <div className="space-y-4">
                         <p>
                             <strong>Site vitrine :</strong> Ce site est un site vitrine qui présente les activités de 
-                            l'association Whitefox. Aucune donnée personnelle n'est collectée automatiquement lors de 
+                            l&apos;association Whitefox. Aucune donnée personnelle n&apos;est collectée automatiquement lors de 
                             votre navigation sur ce site.
                         </p>
                         <p>
-                            Pour tout contact, veuillez utiliser l'adresse email mentionnée ci-dessus. Toute correspondance 
+                            Pour tout contact, veuillez utiliser l&apos;adresse email mentionnée ci-dessus. Toute correspondance 
                             sera traitée dans le respect de votre vie privée et ne sera pas transmise à des tiers.
                         </p>
                     </div>
@@ -109,13 +109,13 @@ export default function MentionsLegales() {
                     <h2 className="text-2xl font-semibold mb-4 text-primary-500">Limitation de responsabilité</h2>
                     <div className="space-y-4">
                         <p>
-                            L'association Whitefox s'efforce de fournir des informations exactes et à jour sur ce site. 
-                            Toutefois, elle ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations 
+                            L&apos;association Whitefox s&apos;efforce de fournir des informations exactes et à jour sur ce site. 
+                            Toutefois, elle ne peut garantir l&apos;exactitude, la précision ou l&apos;exhaustivité des informations 
                             mises à disposition.
                         </p>
                         <p>
-                            L'association Whitefox ne pourra être tenue responsable des dommages directs ou indirects 
-                            causés au matériel de l'utilisateur lors de l'accès au site.
+                            L&apos;association Whitefox ne pourra être tenue responsable des dommages directs ou indirects 
+                            causés au matériel de l&apos;utilisateur lors de l&apos;accès au site.
                         </p>
                     </div>
                 </section>
