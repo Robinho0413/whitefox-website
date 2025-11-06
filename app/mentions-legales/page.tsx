@@ -18,16 +18,14 @@ export default function MentionsLegales() {
                 <section>
                     <h2 className="text-2xl font-semibold mb-4 text-primary-500">Éditeur du site</h2>
                     <div className="bg-muted/30 p-6 rounded-lg">
-                        <p><strong>Nom :</strong> Association Whitefox</p>
+                        <p><strong>Nom :</strong> Whitefox cheer & pom&apos;s</p>
                         <p><strong>Statut :</strong> Association loi 1901</p>
                         <p><strong>Siège social :</strong><br />
-                        [Adresse à compléter]<br />
                         19100 Brive-la-Gaillarde<br />
                         France</p>
                         <p><strong>Email :</strong> foxcheer1@gmail.com</p>
-                        <p><strong>Téléphone :</strong> +33 1 23 45 67 89</p>
-                        <p><strong>RNA :</strong> [Numéro d&apos;enregistrement à compléter]</p>
-                        <p><strong>SIRET :</strong> [Si applicable]</p>
+                        <p><strong>RNA :</strong> []</p>
+                        <p><strong>SIRET :</strong> []</p>
                     </div>
                 </section>
 
@@ -35,8 +33,8 @@ export default function MentionsLegales() {
                 <section>
                     <h2 className="text-2xl font-semibold mb-4 text-primary-500">Directeur de publication</h2>
                     <div className="bg-muted/30 p-6 rounded-lg">
-                        <p><strong>Nom :</strong> [Nom du Président de l&apos;association]</p>
-                        <p><strong>Qualité :</strong> Président de l&apos;association Whitefox</p>
+                        <p><strong>Nom :</strong> Chloé Lacombe</p>
+                        <p><strong>Qualité :</strong> Présidente de l&apos;association Whitefox cheer & pom&apos;s</p>
                         <p><strong>Contact :</strong> foxcheer1@gmail.com</p>
                     </div>
                 </section>
@@ -68,7 +66,7 @@ export default function MentionsLegales() {
                             formellement interdite sauf autorisation expresse du directeur de publication.
                         </p>
                         <p>
-                            Les marques et logos figurant sur le site sont la propriété exclusive de l&apos;association Whitefox.
+                            Les marques et logos figurant sur le site sont la propriété exclusive de l&apos;association Whitefox cheer & pom&apos;s.
                         </p>
                     </div>
                 </section>
@@ -79,7 +77,7 @@ export default function MentionsLegales() {
                     <div className="space-y-4">
                         <p>
                             <strong>Site vitrine :</strong> Ce site est un site vitrine qui présente les activités de 
-                            l&apos;association Whitefox. Aucune donnée personnelle n&apos;est collectée automatiquement lors de 
+                            l&apos;association Whitefox cheer & pom&apos;s. Aucune donnée personnelle n&apos;est collectée automatiquement lors de 
                             votre navigation sur ce site.
                         </p>
                         <p>
@@ -109,12 +107,12 @@ export default function MentionsLegales() {
                     <h2 className="text-2xl font-semibold mb-4 text-primary-500">Limitation de responsabilité</h2>
                     <div className="space-y-4">
                         <p>
-                            L&apos;association Whitefox s&apos;efforce de fournir des informations exactes et à jour sur ce site. 
+                            L&apos;association Whitefox cheer & pom&apos;s s&apos;efforce de fournir des informations exactes et à jour sur ce site. 
                             Toutefois, elle ne peut garantir l&apos;exactitude, la précision ou l&apos;exhaustivité des informations 
                             mises à disposition.
                         </p>
                         <p>
-                            L&apos;association Whitefox ne pourra être tenue responsable des dommages directs ou indirects 
+                            L&apos;association Whitefox cheer & pom&apos;s ne pourra être tenue responsable des dommages directs ou indirects 
                             causés au matériel de l&apos;utilisateur lors de l&apos;accès au site.
                         </p>
                     </div>
@@ -140,8 +138,7 @@ export default function MentionsLegales() {
                             vous pouvez nous contacter :
                         </p>
                         <p className="mt-2">
-                            <strong>Email :</strong> foxcheer1@gmail.com<br />
-                            <strong>Téléphone :</strong> +33 1 23 45 67 89
+                            <strong>Email :</strong> foxcheer1@gmail.com
                         </p>
                     </div>
                 </section>

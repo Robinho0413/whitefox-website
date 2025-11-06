@@ -12,7 +12,7 @@ export default function Page() {
                 <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-primary-500 animate-underline"></span>
             </h1>
             <div className="flex flex-col md:flex-row gap-3 w-full mx-auto">
-                <div className='flex flex-col gap-3'>
+                <div className='flex flex-col gap-3 flex-1'>
                     <PhoneCard />
                     <EmailCard />
                     <DispoCard />

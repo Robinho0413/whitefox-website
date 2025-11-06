@@ -9,9 +9,9 @@ const Footer: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
                     {/* À propos */}
                     <div>
-                        <h3 className="font-semibold text-lg mb-4">Whitefox</h3>
+                        <h3 className="font-semibold text-lg mb-4">Whitefox cheer & pom&apos;s</h3>
                         <p className="text-sm text-muted-foreground mb-4">
-                            Association sportive de cheerleading et pom-pom girls basée à Brive-la-Gaillarde.
+                            Association sportive de cheerleading et danse pom-pom basée à Brive-la-Gaillarde.
                         </p>
                     </div>
 
@@ -20,7 +20,6 @@ const Footer: React.FC = () => {
                         <h3 className="font-semibold text-lg mb-4">Contact</h3>
                         <div className="text-sm text-muted-foreground space-y-2">
                             <p>📧 foxcheer1@gmail.com</p>
-                            <p>📱 +33 1 23 45 67 89</p>
                         </div>
                     </div>
 
@@ -80,7 +79,7 @@ const Footer: React.FC = () => {
                     {/* Disclaimer légal simplifié */}
                     <div className="mt-6 text-xs text-muted-foreground bg-muted/30 p-4 rounded-lg">
                         <p>
-                            Ce site présente les activités de l&apos;association Whitefox. 
+                            Ce site présente les activités de l&apos;association Whitefox cheer & pom&apos;s. 
                             Aucune donnée personnelle n&apos;est collectée via ce site. Pour tout contact, utilisez l&apos;adresse email indiquée ci-dessus.
                         </p>
                     </div>

@@ -47,14 +47,14 @@ export default function InfiniteBubbleCarousel() {
     <div className="relative flex flex-col lg:flex-row justify-center items-center w-full overflow-hidden mt-10 px-4 py-12 md:p-16 space-y-10">
       <div className="relative flex flex-col justify-center w-full space-y-6">
         <div className="flex flex-col space-y-1">
-          <h2 className="text-3xl font-semibold">Bienvenue chez les</h2>
-          <h1 className="text-7xl font-bold">Whitefox</h1>
+          <h2 className="text-3xl font-semibold">Bienvenue chez</h2>
+          <h1 className="text-7xl font-bold">Whitefox cheer & pom&apos;s</h1>
         </div>
         <p>
-          Créée en 2024, l&apos;association WHITEFOX réunit des passionnés de cheerleading et de danse pompom à Brive-la-Gaillarde. Notre association sportive est ouverte à tous dès l&apos;âge de 4 ans. Tout au long de l&apos;année, nous participons à des compétitions, des démonstrations et des animations, afin de partager notre passion et notre énergie avec le public.
+          Créée en 2024, l&apos;association Whitefox cheer & pom&apos;s réunit des passionnés de cheerleading et de danse pompom à Brive-la-Gaillarde. Notre association sportive est ouverte à tous dès l&apos;âge de 4 ans. Tout au long de l&apos;année, nous participons à des compétitions, des démonstrations et des animations, afin de partager notre passion et notre énergie avec le public.
         </p>
         <p>
-          Chez les WHITEFOX, nos valeurs sont: honnêteté, esprit d&apos;équipe, respect et plaisir. Nous croyons qu&apos;un bon athlète est avant tout quelqu&apos;un qui agit avec sincérité, soutient ses coéquipiers et s&apos;épanouit en s&apos;amusant. Notre objectif est de créer un environnement où chacun peut progresser, se dépasser et surtout prendre du plaisir.
+          Chez les Whitefox cheer & pom&apos;s, nos valeurs sont: honnêteté, esprit d&apos;équipe, respect et plaisir. Nous croyons qu&apos;un bon athlète est avant tout quelqu&apos;un qui agit avec sincérité, soutient ses coéquipiers et s&apos;épanouit en s&apos;amusant. Notre objectif est de créer un environnement où chacun peut progresser, se dépasser et surtout prendre du plaisir.
         </p>
         <p>
           Le cheerleading est un sport complet qui mélange acrobaties, portés, pyramides, danse et esprit d&apos;équipe. Nous mettons un point d&apos;honneur à allier performance et esprit collectif, dans une ambiance toujours motivante et positive.
@@ -63,7 +63,7 @@ export default function InfiniteBubbleCarousel() {
           La danse pompom, met l&apos;accent sur la chorégraphie, la synchronisation et l&apos;énergie. Elle se pratique sur des musiques entraînantes avec des pompoms et permet d&apos;exprimer sa créativité tout en développant le sens du rythme et la confiance en soi.
         </p>
         <p>
-          Que tu sois débutant ou confirmé, l&apos;association WHITEFOX t&apos;ouvre ses portes ! Rejoins-nous pour vivre une aventure humaine et sportive pleine d&apos;énergie, de sourires et de passion.
+          Que tu sois débutant ou confirmé, l&apos;association Whitefox cheer & pom&apos;s t&apos;ouvre ses portes ! Rejoins-nous pour vivre une aventure humaine et sportive pleine d&apos;énergie, de sourires et de passion.
         </p>
         <Link href={'/inscription'} className="w-full sm:w-fit">
           <motion.div

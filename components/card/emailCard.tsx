@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label"
 
 export function EmailCard() {
   return (
-    <Card className="md:w-[350px]" style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}>
+    <Card className="h-full md:w-[350px]" style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}>
       <CardHeader>
         <CardTitle>Email</CardTitle>
         <CardDescription>Notre adresse email</CardDescription>
