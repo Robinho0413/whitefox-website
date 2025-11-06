@@ -18,6 +18,9 @@ export const albums: Album[] = [
             "/images/bg-image.jpg",
             "/images/bg-image.jpg",
             "/images/bg-image.jpg",
+            "/images/bg-image.jpg",
+            "/images/bg-image.jpg",
+            "/images/bg-image.jpg",
         ]
     },
     {
