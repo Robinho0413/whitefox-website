@@ -4,7 +4,7 @@ import React from 'react';
 const Footer: React.FC = () => {
     return (
         <footer className="bg-secondary mt-16">
-            <div className="container mx-auto px-4 py-12">
+            <div className="container mx-auto px-4 py-12 md:px-16">
                 {/* Section principale */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
                     {/* À propos */}
@@ -46,6 +46,9 @@ const Footer: React.FC = () => {
                             </Link>
                             <Link href="/club" className="block hover:text-primary-500 transition-colors">
                                 Notre club
+                            </Link>
+                            <Link href="/sponsors" className="block hover:text-primary-500 transition-colors">
+                                Sponsors
                             </Link>
                             <Link href="/gallery" className="block hover:text-primary-500 transition-colors">
                                 Galerie
