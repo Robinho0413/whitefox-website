@@ -29,6 +29,12 @@ const Navbar = () => {
 
     return (
         <div className="fixed top-0 left-0 w-full z-50 bg-background shadow-md">
+            <style>{`
+                .mobile-menu-backdrop {
+                    -webkit-backdrop-filter: blur(12px);
+                    backdrop-filter: blur(12px);
+                }
+            `}</style>
             <div className="relative flex flex-row items-center justify-between h-16 px-4 md:px-8">
                 <Link href="/" className="text-2xl font-bold">
                     <Image src="/images/logo-black.png" alt="Whitefox" width={48} height={48} />
@@ -62,7 +68,7 @@ const Navbar = () => {
                 </div>
             </div>
             <div
-                className={`lg:hidden absolute h-screen left-0 w-full bg-background/60 backdrop-blur-md flex flex-col gap-4 p-4 text-2xl transition-all duration-300 ease-in-out ${
+                className={`lg:hidden absolute h-screen left-0 w-full mobile-menu-backdrop bg-background/60 flex flex-col gap-4 p-4 text-2xl transition-all duration-300 ease-in-out ${
                     isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
                 }`}
             >
