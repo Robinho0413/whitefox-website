@@ -14,6 +14,7 @@ export default function PlanDuSite() {
             items: [
                 { name: 'Accueil', href: '/', description: 'Page d&apos;accueil de l&apos;association Whitefox' },
                 { name: 'Notre club', href: '/club', description: 'Présentation de l&apos;association et de nos activités' },
+                { name: 'Nos sponsors', href: '/sponsors', description: 'Liste de nos partenaires et sponsors' },
                 { name: 'Inscriptions', href: '/inscription', description: 'Informations sur les inscriptions et tarifs' },
                 { name: 'Contact', href: '/contact', description: 'Nous contacter et informations pratiques' },
             ]

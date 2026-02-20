@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
+import { InstagramIcon } from '@/components/icons/InstagramIcon';
+import { TikTokIcon } from '@/components/icons/TikTokIcon';
 
 const Footer: React.FC = () => {
     return (
@@ -20,6 +22,24 @@ const Footer: React.FC = () => {
                         <h3 className="font-semibold text-lg mb-4">Contact</h3>
                         <div className="text-sm text-muted-foreground space-y-2">
                             <p>📧 foxcheer1@gmail.com</p>
+                            <Link
+                                href="https://www.instagram.com/whitefox_cheer"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 hover:text-primary-500 transition-colors"
+                            >
+                                <InstagramIcon size={16} />
+                                <span>@whitefox_cheer</span>
+                            </Link>
+                            <Link
+                                href="https://www.tiktok.com/@whitefox_cheer_poms"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 hover:text-primary-500 transition-colors"
+                            >
+                                <TikTokIcon size={16} />
+                                <span>@whitefox_cheer_poms</span>
+                            </Link>
                         </div>
                     </div>
 

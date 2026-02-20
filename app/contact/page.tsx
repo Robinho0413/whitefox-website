@@ -1,7 +1,7 @@
 import { DispoCard } from '@/components/card/dispoCard';
 import { EmailCard } from '@/components/card/emailCard';
 import { MapCard } from '@/components/card/mapCard';
-import { PhoneCard } from '@/components/card/phoneCard';
+import { SocialCard } from '@/components/card/socialCard';
 import React from 'react';
 
 export default function Page() {
@@ -13,7 +13,7 @@ export default function Page() {
             </h1>
             <div className="flex flex-col md:flex-row gap-3 w-full mx-auto">
                 <div className='flex flex-col gap-3 flex-1'>
-                    <PhoneCard />
+                    <SocialCard />
                     <EmailCard />
                     <DispoCard />
                 </div>
