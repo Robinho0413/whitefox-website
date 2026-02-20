@@ -88,7 +88,7 @@ const Navbar = () => {
                         ></span>
                     </div>
                 ))}
-                <div className='absolute bottom-20 right-4 gap-3 flex items-center'>
+                <div className='flex items-end self-end justify-end gap-3'>
                     <Link
                         href="https://www.instagram.com/whitefox_cheer"
                         target="_blank"
