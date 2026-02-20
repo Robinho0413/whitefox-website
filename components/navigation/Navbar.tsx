@@ -7,6 +7,8 @@ import ThemeToggle from '../ui/themeToggle';
 import MenuIcon from '../icons/MenuIcon';
 import { Button } from "@/components/ui/button"
 import Image from 'next/image';
+import { InstagramIcon } from "@/components/icons/InstagramIcon";
+import { TikTokIcon } from "@/components/icons/TikTokIcon";
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -86,6 +88,24 @@ const Navbar = () => {
                         ></span>
                     </div>
                 ))}
+                <div className='absolute bottom-20 right-4 gap-3 flex items-center'>
+                    <Link
+                        href="https://www.instagram.com/whitefox_cheer"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm hover:text-primary-500 transition-colors"
+                    >
+                        <InstagramIcon size={40} />
+                    </Link>
+                    <Link
+                        href="https://www.tiktok.com/@whitefox_cheer_poms"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm hover:text-primary-500 transition-colors"
+                    >
+                        <TikTokIcon size={40} />
+                    </Link>
+                </div>
             </div>
         </div>
     );
