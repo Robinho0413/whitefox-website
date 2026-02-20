@@ -88,22 +88,24 @@ const Navbar = () => {
                         ></span>
                     </div>
                 ))}
-                <div className='absolute bottom-36 right-4 flex gap-3'>
+                <div className='flex justify-center gap-4 mt-8 pb-24'>
                     <Link
                         href="https://www.instagram.com/whitefox_cheer"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-sm hover:text-primary-500 transition-colors"
+                        className="flex items-center justify-center w-12 h-12 rounded-full bg-primary-500 hover:bg-primary-600 text-white transition-colors shadow-lg"
+                        aria-label="Instagram"
                     >
-                        <InstagramIcon size={40} />
+                        <InstagramIcon size={24} />
                     </Link>
                     <Link
                         href="https://www.tiktok.com/@whitefox_cheer_poms"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-sm hover:text-primary-500 transition-colors"
+                        className="flex items-center justify-center w-12 h-12 rounded-full bg-primary-500 hover:bg-primary-600 text-white transition-colors shadow-lg"
+                        aria-label="TikTok"
                     >
-                        <TikTokIcon size={40} />
+                        <TikTokIcon size={24} />
                     </Link>
                 </div>
             </div>
