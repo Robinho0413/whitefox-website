@@ -48,7 +48,7 @@ export default function InfiniteBubbleCarousel() {
       <div className="relative flex flex-col justify-center w-full space-y-6">
         <div className="flex flex-col space-y-1">
           <h2 className="text-3xl font-semibold">Bienvenue chez</h2>
-          <h1 className="text-7xl font-bold">Whitefox cheer & pom&apos;s</h1>
+          <h1 className="text-4xl sm:text-7xl font-bold">Whitefox cheer & pom&apos;s</h1>
         </div>
         <p>
           Créée en 2024, l&apos;association Whitefox cheer & pom&apos;s réunit des passionnés de cheerleading et de danse pompom à Brive-la-Gaillarde. Notre association sportive est ouverte à tous dès l&apos;âge de 4 ans. Tout au long de l&apos;année, nous participons à des compétitions, des démonstrations et des animations, afin de partager notre passion et notre énergie avec le public.
