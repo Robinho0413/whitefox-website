@@ -61,7 +61,7 @@ export function CategoryCard({ title, ageRange, horaires }: Cat1CardProps) {
               </svg>
               <div className="flex gap-2 items-baseline">
                 <span className="text-4xl font-semibold">25€</span>
-                <span>/ Bow aux couleurs du club</span>
+                <span>/ Bow Whitefox</span>
               </div>
             </div>
             <div className="relative w-full aspect-video rounded-md overflow-hidden">
