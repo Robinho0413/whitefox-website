@@ -66,7 +66,7 @@ const Navbar = () => {
                         <MenuIcon />
                     </Button>
                 </div>
-                <div className='hidden fixed right-0 top-1/2 -translate-y-1/2 lg:flex flex-col gap-2 bg-card border p-2 rounded-l-lg backdrop-blur-md z-50' style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}>
+                <div className='hidden fixed right-0 top-1/2 -translate-y-1/2 lg:flex flex-col gap-2 bg-card/30 border-l border-y p-2 rounded-l-lg backdrop-blur-md z-50' style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}>
                     <Link
                         href="https://www.instagram.com/whitefox_cheer"
                         target="_blank"
