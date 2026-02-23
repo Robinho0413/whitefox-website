@@ -9,15 +9,15 @@ interface ParallaxCardProps {
   i: number;
   title: string;
   description: string;
-  src: string;
-  url: string;
-  btn: string;
+  image_url: string;
+  link_url: string;
+  button_text: string;
   progress: MotionValue<number>;
   range: [number, number];
   targetScale: number;
 }
 
-const ParallaxCard: React.FC<ParallaxCardProps> = ({ i, title, description, src, url, btn, progress, range, targetScale }) => {
+const ParallaxCard: React.FC<ParallaxCardProps> = ({ i, title, description, image_url, link_url, button_text, progress, range, targetScale }) => {
 
   const container = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -45,7 +45,7 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({ i, title, description, src,
             >
               <Image
                 fill
-                src={`/images/${src}`}
+                src={image_url || "https://yrsgwsncbskkngarpato.supabase.co/storage/v1/object/public/news-images/bg-image.jpg"}
                 alt="image"
                 objectFit='cover'
               />
@@ -56,23 +56,11 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({ i, title, description, src,
             <h2 className='m-0 text-[28px]'>{title}</h2>
             <p className='text-[16px] line-clamp-5'>{description}</p>
             <span className='flex items-center gap-[5px]'>
-            {/* <a
-                href={url}
-                target="_blank"
-                className="flex items-center gap-2 cursor-pointer group"
-              >
-                <Button className="text-sm" variant="link" size="sm">
-                  En savoir plus
-                </Button>
-                <ArrowRight
-                  className="text-current transform transition-transform duration-300 ease-in-out group-hover:translate-x-2"
-                />
-              </a> */}
               <a
-                href={url}
+                href={link_url}
                 target="_blank"
               >
-                <SeeMoreButton btn={btn} />
+                <SeeMoreButton btn={button_text || "En savoir plus"} />
               </a>
             </span>
           </div>
