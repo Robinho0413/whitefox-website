@@ -5,44 +5,6 @@ import { useScroll } from 'framer-motion';
 import { useRef } from 'react';
 import { useNews } from "@/hooks/useNews";
 
-const projects = [
-    {
-        title: "Loto du Club - 2025",
-        description: "Nous organisons notre grand loto annuel le 15 novembre 2025 ! Plus de 4000€ de lots ! Venez nombreux et soutenez notre club tout en passant un moment agréable en famille ou entre amis.",
-        src: "loto-whitefox.jpg",
-        url: "https://www.helloasso.com/associations/whitefox/boutiques/loto-15-novembre",
-        btn: "Billeterie"
-    },
-    {
-        title: "Loto du Club - 2025",
-        description: "Nous organisons notre grand loto annuel le 15 novembre 2025 ! Plus de 4000€ de lots ! Venez nombreux et soutenez notre club tout en passant un moment agréable en famille ou entre amis.",
-        src: "loto-whitefox.jpg",
-        url: "https://www.helloasso.com/associations/whitefox/boutiques/loto-15-novembre",
-        btn: "Billeterie"
-    },
-    {
-        title: "Loto du Club - 2025",
-        description: "Nous organisons notre grand loto annuel le 15 novembre 2025 ! Plus de 4000€ de lots ! Venez nombreux et soutenez notre club tout en passant un moment agréable en famille ou entre amis.",
-        src: "loto-whitefox.jpg",
-        url: "https://www.helloasso.com/associations/whitefox/boutiques/loto-15-novembre",
-        btn: "Billeterie"
-    },
-    {
-        title: "Loto du Club - 2025",
-        description: "Nous organisons notre grand loto annuel le 15 novembre 2025 ! Plus de 4000€ de lots ! Venez nombreux et soutenez notre club tout en passant un moment agréable en famille ou entre amis.",
-        src: "loto-whitefox.jpg",
-        url: "https://www.helloasso.com/associations/whitefox/boutiques/loto-15-novembre",
-        btn: "Billeterie"
-    },
-    {
-        title: "Carnaval Malemort - 2025",
-        description: "Carnaval de Malemort",
-        src: "bg-image.jpg",
-        url: "/gallery",
-        btn: "Voir les photos"
-    }
-]
-
 export default function CardsParallax() {
     const container = useRef(null);
     const { scrollYProgress } = useScroll({
