@@ -27,7 +27,6 @@ export default async function AdminPage() {
     <AdminLayout>
       <h2 className="text-2xl font-bold mb-4">Bienvenue dans le backoffice</h2>
       <p>Vous êtes connecté en tant qu’admin.</p>
-      {/* Ici tu peux ajouter tes formulaires/modifications des news */}
     </AdminLayout>
   )
 }

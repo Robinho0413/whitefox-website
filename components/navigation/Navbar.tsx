@@ -13,6 +13,7 @@ import { TikTokIcon } from "@/components/icons/TikTokIcon";
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const pathname = usePathname();
+    const isAdminRoute = pathname?.startsWith('/admin');
 
     const navItems = [
         { name: 'Accueil', path: '/' },
@@ -66,26 +67,28 @@ const Navbar = () => {
                         <MenuIcon />
                     </Button>
                 </div>
-                <div className='hidden fixed right-0 top-1/2 -translate-y-1/2 lg:flex flex-col gap-2 bg-card/30 border-l border-y p-2 rounded-l-lg backdrop-blur-md z-50' style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}>
-                    <Link
-                        href="https://www.instagram.com/whitefox_cheer"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center w-12 h-12 rounded-full bg-primary-500 hover:bg-primary-600 text-white transition-colors shadow-lg"
-                        aria-label="Instagram"
-                    >
-                        <InstagramIcon size={24} />
-                    </Link>
-                    <Link
-                        href="https://www.tiktok.com/@whitefox_cheer_poms"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center w-12 h-12 rounded-full bg-primary-500 hover:bg-primary-600 text-white transition-colors shadow-lg"
-                        aria-label="TikTok"
-                    >
-                        <TikTokIcon size={24} />
-                    </Link>
-                </div>
+                {!isAdminRoute && (
+                    <div className='hidden fixed right-0 top-1/2 -translate-y-1/2 lg:flex flex-col gap-2 bg-card/30 border-l border-y p-2 rounded-l-lg backdrop-blur-md z-50' style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}>
+                        <Link
+                            href="https://www.instagram.com/whitefox_cheer"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center w-12 h-12 rounded-full bg-primary-500 hover:bg-primary-600 text-white transition-colors shadow-lg"
+                            aria-label="Instagram"
+                        >
+                            <InstagramIcon size={24} />
+                        </Link>
+                        <Link
+                            href="https://www.tiktok.com/@whitefox_cheer_poms"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center w-12 h-12 rounded-full bg-primary-500 hover:bg-primary-600 text-white transition-colors shadow-lg"
+                            aria-label="TikTok"
+                        >
+                            <TikTokIcon size={24} />
+                        </Link>
+                    </div>
+                )}
             </div>
             <div
                 className={`lg:hidden absolute h-screen left-0 w-full mobile-menu-backdrop bg-background/60 flex flex-col gap-4 p-4 text-2xl transition-all duration-300 ease-in-out ${
@@ -114,26 +117,28 @@ const Navbar = () => {
                         ></span>
                     </div>
                 ))}
-                <div className='flex justify-center gap-4 mt-8 pb-24'>
-                    <Link
-                        href="https://www.instagram.com/whitefox_cheer"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center w-12 h-12 rounded-full bg-primary-500 hover:bg-primary-600 text-white transition-colors shadow-lg"
-                        aria-label="Instagram"
-                    >
-                        <InstagramIcon size={24} />
-                    </Link>
-                    <Link
-                        href="https://www.tiktok.com/@whitefox_cheer_poms"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center w-12 h-12 rounded-full bg-primary-500 hover:bg-primary-600 text-white transition-colors shadow-lg"
-                        aria-label="TikTok"
-                    >
-                        <TikTokIcon size={24} />
-                    </Link>
-                </div>
+                {!isAdminRoute && (
+                    <div className='flex justify-center gap-4 mt-8 pb-24'>
+                        <Link
+                            href="https://www.instagram.com/whitefox_cheer"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center w-12 h-12 rounded-full bg-primary-500 hover:bg-primary-600 text-white transition-colors shadow-lg"
+                            aria-label="Instagram"
+                        >
+                            <InstagramIcon size={24} />
+                        </Link>
+                        <Link
+                            href="https://www.tiktok.com/@whitefox_cheer_poms"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center w-12 h-12 rounded-full bg-primary-500 hover:bg-primary-600 text-white transition-colors shadow-lg"
+                            aria-label="TikTok"
+                        >
+                            <TikTokIcon size={24} />
+                        </Link>
+                    </div>
+                )}
             </div>
         </div>
     );
