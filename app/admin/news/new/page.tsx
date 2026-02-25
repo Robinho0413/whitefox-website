@@ -9,6 +9,17 @@ import { createClient } from "@/lib/supabase/server"
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field"
 import NewsImageUploadField from "@/components/forms/NewsImageUploadField"
 
+type CreateNewsError =
+    | "validation"
+    | "file"
+    | "upload"
+    | "public-url"
+    | "insert"
+
+function redirectWithError(error: CreateNewsError): never {
+    redirect(`/admin/news/new?error=${error}`)
+}
+
 async function createNews(formData: FormData) {
     "use server"
 
@@ -39,31 +50,37 @@ async function createNews(formData: FormData) {
     const button_text = String(formData.get("button_text") ?? "En savoir plus").trim()
 
     if (!title || !description || !link_url) {
-        redirect("/admin/news/new?error=1")
+        redirectWithError("validation")
     }
 
     if (!(imageFile instanceof File) || imageFile.size === 0) {
-        redirect("/admin/news/new?error=1")
+        redirectWithError("file")
     }
 
-    const safeFileName = imageFile.name.replace(/[^a-zA-Z0-9.-]/g, "-")
+    const validImageFile = imageFile as File
+
+    const safeFileName = validImageFile.name.replace(/[^a-zA-Z0-9.-]/g, "-")
     const filePath = `news/${Date.now()}-${safeFileName}`
 
     const { error: uploadError } = await supabase.storage
         .from("news-images")
-        .upload(filePath, imageFile, {
+        .upload(filePath, validImageFile, {
             cacheControl: "3600",
             upsert: false,
-            contentType: imageFile.type,
+            contentType: validImageFile.type,
         })
 
     if (uploadError) {
-        redirect("/admin/news/new?error=1")
+        redirectWithError("upload")
     }
 
     const {
         data: { publicUrl },
     } = supabase.storage.from("news-images").getPublicUrl(filePath)
+
+    if (!publicUrl) {
+        redirectWithError("public-url")
+    }
 
     const { error } = await supabase.from("news").insert({
         title,
@@ -74,7 +91,8 @@ async function createNews(formData: FormData) {
     })
 
     if (error) {
-        redirect("/admin/news/new?error=1")
+        await supabase.storage.from("news-images").remove([filePath])
+        redirectWithError("insert")
     }
 
     revalidatePath("/admin/news")
@@ -84,10 +102,18 @@ async function createNews(formData: FormData) {
 export default async function NewAdminNewsPage({
     searchParams,
 }: {
-    searchParams: Promise<{ error?: string }>
+    searchParams: Promise<{ error?: CreateNewsError }>
 }) {
     const params = await searchParams
-    const hasError = params?.error === "1"
+    const error = params?.error
+
+    const errorMessageByCode: Record<CreateNewsError, string> = {
+        validation: "Veuillez remplir tous les champs obligatoires.",
+        file: "Veuillez sélectionner un fichier image valide.",
+        upload: "Le téléchargement de l'image a échoué. Vérifiez le bucket/policies Supabase.",
+        "public-url": "Impossible de générer l'URL publique de l'image.",
+        insert: "L'image est uploadée, mais l'insertion en base a échoué.",
+    }
 
     const supabase = await createClient()
 
@@ -119,9 +145,9 @@ export default async function NewAdminNewsPage({
                     </Button>
                 </div>
 
-                {hasError && (
+                {error && errorMessageByCode[error] && (
                     <p className="text-sm text-destructive">
-                        Impossible d'ajouter l'actualité. Vérifiez les champs et réessayez.
+                        {errorMessageByCode[error]}
                     </p>
                 )}
 
