@@ -36,7 +36,7 @@ const ValuesCarousel: React.FC<CarouselProps> = ({ data }) => {
       filter: 'brightness(100%)',
       backgroundImage: `url(${data[centerId]})`,
       boxShadow: '0px 0px 30px rgba(0,0,0,0.3)',
-      transition: { type: 'spring', duration: 1 },
+      transition: { type: 'spring' as const, duration: 1 },
     },
     left: {
       x: '-6rem',
@@ -45,7 +45,7 @@ const ValuesCarousel: React.FC<CarouselProps> = ({ data }) => {
       scale: 1,
       backgroundImage: `url(${data[leftId]})`,
       zIndex: 4,
-      transition: { type: 'spring', duration: 1 },
+      transition: { type: 'spring' as const, duration: 1 },
     },
     right: {
       x: '6rem',
@@ -54,7 +54,7 @@ const ValuesCarousel: React.FC<CarouselProps> = ({ data }) => {
       scale: 1,
       backgroundImage: `url(${data[rightId]})`,
       zIndex: 3,
-      transition: { type: 'spring', duration: 1 },
+      transition: { type: 'spring' as const, duration: 1 },
     },
   };
 
