@@ -186,7 +186,7 @@ export default async function NewAdminNewsPage({
                             <FieldLabel htmlFor="button_text">Texte du bouton</FieldLabel>
                             <Input id="button_text" name="button_text" defaultValue="En savoir plus" placeholder="En savoir plus" />
                             <FieldDescription>
-                                Représente le texte du bouton qui redirigera vers le lien de l'actualité. Par défaut, il est défini sur "En savoir plus".
+                                Représente le texte du bouton qui redirigera vers le lien de l&apos;actualité. Par défaut, il est défini sur &quot;En savoir plus&quot;.
                             </FieldDescription>
                         </Field>
 
@@ -194,7 +194,7 @@ export default async function NewAdminNewsPage({
                             <Button asChild type="button" variant="outline">
                                 <Link href="/admin/news">Annuler</Link>
                             </Button>
-                            <Button type="submit">Publier l'actualité</Button>
+                            <Button type="submit">Publier l&apos;actualité</Button>
                         </Field>
                     </FieldGroup>
                 </form>
