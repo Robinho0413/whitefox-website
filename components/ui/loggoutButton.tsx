@@ -19,7 +19,7 @@ export default function LogoutButton() {
     };
 
     return (
-        <Button onClick={handleLogout} variant={"outline"} size={"default"}>
+        <Button onClick={handleLogout} variant={"outline"} size={"default"} className="w-full text-md font-semibold">
             Déconnexion
         </Button>
     );
