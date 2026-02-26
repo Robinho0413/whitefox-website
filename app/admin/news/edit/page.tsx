@@ -249,7 +249,7 @@ export default async function EditAdminNewsPage({
                             <FieldLabel htmlFor="image_file">Image</FieldLabel>
                             <NewsImageUploadField required={false} initialImageUrl={newsItem.image_url} />
                             <FieldDescription>
-                                Laissez vide pour conserver l'image actuelle.
+                                Laissez vide pour conserver l&apos;image actuelle.
                             </FieldDescription>
                         </Field>
 
