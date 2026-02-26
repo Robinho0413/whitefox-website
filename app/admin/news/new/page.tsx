@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/server"
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field"
 import NewsImageUploadField from "@/components/forms/NewsImageUploadField"
 import NewsCreateSubmitButton from "@/components/forms/NewsCreateSubmitButton"
+import { AlertTriangleIcon } from "lucide-react"
 
 type CreateNewsError =
     | "validation"
@@ -16,6 +17,27 @@ type CreateNewsError =
     | "upload"
     | "public-url"
     | "insert"
+
+type NewsRow = {
+    id: string
+    image_url: string | null
+}
+
+type NewsCountRow = {
+    id: string
+}
+
+function getStoragePathFromPublicUrl(publicUrl: string): string | null {
+    const bucketMarker = "/news-images/"
+    const markerIndex = publicUrl.indexOf(bucketMarker)
+
+    if (markerIndex === -1) {
+        return null
+    }
+
+    const path = publicUrl.slice(markerIndex + bucketMarker.length)
+    return path || null
+}
 
 function redirectWithError(error: CreateNewsError): never {
     redirect(`/admin/news/new?error=${error}`)
@@ -96,6 +118,34 @@ async function createNews(formData: FormData) {
         redirectWithError("insert")
     }
 
+    const { data: allNewsRows } = await supabase
+        .from("news")
+        .select("id, image_url")
+        .order("created_at", { ascending: false })
+
+    const rows = (allNewsRows ?? []) as NewsRow[]
+    const rowsToDelete = rows.slice(5)
+
+    if (rowsToDelete.length > 0) {
+        const idsToDelete = rowsToDelete.map((item) => item.id)
+
+        await supabase
+            .from("news")
+            .delete()
+            .in("id", idsToDelete)
+
+        const imagePathsToDelete = rowsToDelete
+            .map((item) => item.image_url)
+            .filter((url): url is string => Boolean(url))
+            .map((url) => getStoragePathFromPublicUrl(url))
+            .filter((path): path is string => Boolean(path))
+
+        if (imagePathsToDelete.length > 0) {
+            await supabase.storage.from("news-images").remove(imagePathsToDelete)
+        }
+    }
+
+    revalidatePath("/")
     revalidatePath("/admin/news")
     redirect("/admin/news")
 }
@@ -136,6 +186,12 @@ export default async function NewAdminNewsPage({
         redirect("/")
     }
 
+    const { data: currentNewsRows } = await supabase
+        .from("news")
+        .select("id")
+
+    const newsCount = ((currentNewsRows ?? []) as NewsCountRow[]).length
+
     return (
         <AdminLayout>
             <div className="max-w-3xl space-y-6">
@@ -145,6 +201,10 @@ export default async function NewAdminNewsPage({
                         <Link href="/admin/news">Retour</Link>
                     </Button>
                 </div>
+
+                <p className="text-sm text-muted-foreground">
+                    Limite active : {newsCount} / 5 actualités. Si une 6e actualité est publiée, la plus ancienne sera supprimée automatiquement.
+                </p>
 
                 {error && errorMessageByCode[error] && (
                     <p className="text-sm text-destructive">
@@ -196,6 +256,14 @@ export default async function NewAdminNewsPage({
                                 <Link href="/admin/news">Annuler</Link>
                             </Button>
                             <NewsCreateSubmitButton />
+                            {newsCount >= 5 && (
+                                <div className="flex items-start gap-2 rounded-md ml-8 border border-secondary/60 bg-secondary/40 px-3 py-2 text-sm text-muted-foreground">
+                                    <AlertTriangleIcon className="mt-0.5 size-4 shrink-0" />
+                                    <p>
+                                        Limite d&apos;actualités atteinte. En publiant cette actualité, la plus ancienne sera automatiquement supprimée.
+                                    </p>
+                                </div>
+                            )}
                         </Field>
                     </FieldGroup>
                 </form>

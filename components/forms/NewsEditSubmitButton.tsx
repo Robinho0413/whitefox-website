@@ -8,7 +8,7 @@ export default function NewsEditSubmitButton() {
 
   return (
     <Button type="submit" disabled={pending}>
-      {pending ? "Enregistrement..." : "Modifier l&apos;actualité"}
+      {pending ? "Enregistrement..." : "Modifier l'actualité"}
     </Button>
   )
 }
