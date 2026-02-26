@@ -2,22 +2,33 @@
 
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { BadgeCheck, ChevronLeft, ChevronRight, Handshake, Smile, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import Image from "next/image";
 
 const bubbles = [
-  { id: 1, image: "/images/solidarite.png", title: "Honnêteté" },
-  { id: 2, image: "/images/solidarite.png", title: "Esprit d'équipe" },
-  { id: 3, image: "/images/solidarite.png", title: "Respect" },
-  { id: 4, image: "/images/solidarite.png", title: "Plaisir" },
+  { id: 1, title: "Honnêteté", icon: BadgeCheck },
+  { id: 2, title: "Esprit d'équipe", icon: Users },
+  { id: 3, title: "Respect", icon: Handshake },
+  { id: 4, title: "Plaisir", icon: Smile },
 ];
 
 export default function InfiniteBubbleCarousel() {
   const [index, setIndex] = useState(0);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+
+  const getRelativePosition = (itemIndex: number) => {
+    const total = bubbles.length;
+    const rawDiff = (itemIndex - index + total) % total;
+
+    if (rawDiff === 0) return "active";
+    if (rawDiff === 1) return "right";
+    if (rawDiff === total - 1) return "left";
+    if (total % 2 === 0 && rawDiff === total / 2) return "back";
+
+    return "hidden";
+  };
 
   const nextBubble = () => {
     setIndex((prev) => (prev + 1) % bubbles.length);
@@ -86,30 +97,41 @@ export default function InfiniteBubbleCarousel() {
         <button onClick={prevBubble} className="absolute left-0 sm:left-20 p-2 rounded-full z-20">
           <ChevronLeft size={32} />
         </button>
-        <div className="relative flex justify-center items-center w-64 h-64">
+        <div className="relative flex justify-center items-center w-64 h-96">
           {bubbles.map((bubble, i) => {
-            const isActive = i === index;
-            const isLeft = i === (index - 1 + bubbles.length) % bubbles.length;
-            const isRight = i === (index + 1) % bubbles.length;
+            const position = getRelativePosition(i);
+            const isActive = position === "active";
+            const isLeft = position === "left";
+            const isRight = position === "right";
+            const isBack = position === "back";
+            const ValueIcon = bubble.icon;
 
             return (
               <motion.div
                 key={bubble.id}
-                className="absolute w-40 h-40 rounded-full bg-neutral-800 overflow-hidden flex flex-col items-center justify-center"
+                className="absolute w-40 h-40 rounded-full overflow-hidden flex flex-col items-center justify-center"
                 style={{
-                  zIndex: isActive ? 10 : isLeft || isRight ? 5 : 0,
+                  zIndex: isActive ? 10 : isLeft || isRight ? 7 : isBack ? 4 : 0,
+                  background: "radial-gradient(circle at center, rgba(47,132,124,0.98) 42%, rgba(47,132,124,0.9) 62%, rgba(47,132,124,0.72) 78%, rgba(47,132,124,0.48) 90%, rgba(47,132,124,0.26) 98%, rgba(47,132,124,0.14) 100%)",
                 }}
                 initial={{ opacity: 0.5, scale: 0.8 }}
                 animate={{
-                  opacity: isActive ? 1 : 0.3,
-                  scale: isActive ? 1.2 : 1,
-                  x: isActive ? 0 : isLeft ? -50 : isRight ? 50 : 0,
+                  opacity: isActive ? 1 : isBack ? 0.28 : 0.55,
+                  scale: isActive ? 1.24 : isBack ? 0.72 : 0.92,
+                  x: isActive ? 0 : isLeft ? -105 : isRight ? 105 : 0,
+                  y: isActive ? 12 : isBack ? -78 : -20,
+                  filter: isActive ? "brightness(1)" : isBack ? "brightness(0.6)" : "brightness(0.8)",
+                  boxShadow: isActive
+                    ? "0 0 24px rgba(59, 165, 155, 0.62), 0 0 72px rgba(59, 165, 155, 0.34)"
+                    : isBack
+                      ? "0 0 12px rgba(59, 165, 155, 0.28), 0 0 36px rgba(59, 165, 155, 0.14)"
+                      : "0 0 18px rgba(59, 165, 155, 0.44), 0 0 54px rgba(59, 165, 155, 0.24)",
                 }}
                 transition={{ duration: 0.5 }}
               >
                 <div className="flex flex-col items-center justify-center">
-                  <Image src={bubble.image} alt="Bubble" className="w-20 h-20 object-cover rounded-full" width={80} height={80} />
-                  <h2 className="text-white text-center mt-2">{bubble.title}</h2>
+                  <ValueIcon className="w-14 h-14 text-white" strokeWidth={2.3} />
+                  <h2 className="text-white text-center mt-2 text-sm font-semibold">{bubble.title}</h2>
                 </div>
               </motion.div>
             );
