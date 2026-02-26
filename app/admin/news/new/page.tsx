@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { createClient } from "@/lib/supabase/server"
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field"
 import NewsImageUploadField from "@/components/forms/NewsImageUploadField"
+import NewsCreateSubmitButton from "@/components/forms/NewsCreateSubmitButton"
 
 type CreateNewsError =
     | "validation"
@@ -194,7 +195,7 @@ export default async function NewAdminNewsPage({
                             <Button asChild type="button" variant="outline">
                                 <Link href="/admin/news">Annuler</Link>
                             </Button>
-                            <Button type="submit">Publier l&apos;actualité</Button>
+                            <NewsCreateSubmitButton />
                         </Field>
                     </FieldGroup>
                 </form>

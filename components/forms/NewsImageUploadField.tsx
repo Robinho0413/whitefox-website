@@ -2,25 +2,35 @@
 
 import { useEffect, useRef, useState } from "react"
 
-export default function NewsImageUploadField() {
+type NewsImageUploadFieldProps = {
+  required?: boolean
+  initialImageUrl?: string | null
+}
+
+function revokePreviewUrl(url: string | null) {
+  if (url && url.startsWith("blob:")) {
+    URL.revokeObjectURL(url)
+  }
+}
+
+export default function NewsImageUploadField({
+  required = true,
+  initialImageUrl = null,
+}: NewsImageUploadFieldProps) {
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(initialImageUrl)
   const [fileName, setFileName] = useState("")
   const [isDragging, setIsDragging] = useState(false)
 
   useEffect(() => {
     return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl)
-      }
+      revokePreviewUrl(previewUrl)
     }
   }, [previewUrl])
 
   const setSelectedFile = (file?: File) => {
     if (!file) {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl)
-      }
+      revokePreviewUrl(previewUrl)
       setPreviewUrl(null)
       setFileName("")
       return
@@ -30,9 +40,7 @@ export default function NewsImageUploadField() {
       return
     }
 
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl)
-    }
+    revokePreviewUrl(previewUrl)
 
     setFileName(file.name)
     setPreviewUrl(URL.createObjectURL(file))
@@ -40,6 +48,10 @@ export default function NewsImageUploadField() {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
+
+    if (!file) {
+      return
+    }
 
     setSelectedFile(file)
   }
@@ -99,7 +111,7 @@ export default function NewsImageUploadField() {
         name="image_file"
         type="file"
         accept="image/*"
-        required
+        required={required}
         className="sr-only"
         onChange={handleChange}
       />

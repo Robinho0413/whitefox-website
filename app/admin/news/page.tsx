@@ -2,14 +2,8 @@ import AdminLayout from "@/components/layout/adminLayout"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
+import { revalidatePath } from "next/cache"
 import Link from "next/link"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import {
     Table,
     TableBody,
@@ -18,8 +12,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { MoreHorizontalIcon } from "lucide-react"
 import Image from "next/image"
+import NewsActionsMenu from "@/components/ui/NewsActionsMenu"
 
 // filepath: c:\Users\robin\Documents\WhiteFox Website\whitefox-website\app\admin\news\page.tsx
 
@@ -29,6 +23,65 @@ type NewsItem = {
     title: string | null
     description: string | null
     created_at: string | null
+}
+
+async function deleteNews(newsId: string) {
+    "use server"
+
+    const supabase = await createClient()
+
+    const {
+        data: { user },
+    } = await supabase.auth.getUser()
+
+    if (!user) {
+        redirect("/login")
+    }
+
+    const { data: profile } = await supabase
+        .from("profiles")
+        .select("is_admin")
+        .eq("id", user.id)
+        .single()
+
+    if (!profile?.is_admin) {
+        redirect("/")
+    }
+
+    // Récupérer l'URL de l'image pour la supprimer du storage
+    const { data: news } = await supabase
+        .from("news")
+        .select("image_url")
+        .eq("id", newsId)
+        .single()
+
+    // Supprimer l'image du storage si elle existe
+    if (news?.image_url) {
+        try {
+            // Extraire le chemin du fichier de l'URL publique
+            const url = new URL(news.image_url)
+            const pathParts = url.pathname.split("/")
+            const filePath = pathParts.slice(-2).join("/") // Récupère "news/filename"
+
+            await supabase.storage
+                .from("news-images")
+                .remove([filePath])
+        } catch (error) {
+            console.error("Erreur lors de la suppression de l'image:", error)
+        }
+    }
+
+    // Supprimer la news de la base de données
+    const { error } = await supabase
+        .from("news")
+        .delete()
+        .eq("id", newsId)
+
+    if (error) {
+        throw new Error(`Erreur lors de la suppression: ${error.message}`)
+    }
+
+    revalidatePath("/admin/news")
 }
 
 export default async function AdminNewsPage() {
@@ -117,21 +170,7 @@ export default async function AdminNewsPage() {
                                             : "-"}
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" size="icon" className="size-8">
-                                                    <MoreHorizontalIcon />
-                                                    <span className="sr-only">Ouvrir le menu</span>
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end">
-                                                <DropdownMenuItem>Modifier</DropdownMenuItem>
-                                                <DropdownMenuSeparator />
-                                                <DropdownMenuItem className="text-red-600 focus:text-red-600 data-[highlighted]:text-red-600 focus:bg-destructive/20 data-[highlighted]:bg-destructive/20">
-                                                    Supprimer
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
+                                        <NewsActionsMenu newsId={item.id} editHref={`/admin/news/edit?id=${item.id}`} onDelete={deleteNews} />
                                     </TableCell>
                                 </TableRow>
                             ))
