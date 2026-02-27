@@ -66,7 +66,7 @@ export function CategoryCard({ title, ageRange, horaires }: Cat1CardProps) {
             </div>
             <div className="relative w-full aspect-video rounded-md overflow-hidden">
               <Image 
-                src="/images/bg-image.jpg" 
+                src="/images/bg-image.png" 
                 alt="Bow aux couleurs du club" 
                 fill
                 style={{ objectFit: "cover" }}

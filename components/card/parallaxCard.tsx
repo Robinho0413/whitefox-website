@@ -45,7 +45,7 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({ i, title, description, imag
             >
               <Image
                 fill
-                src={image_url || "https://yrsgwsncbskkngarpato.supabase.co/storage/v1/object/public/news-images/bg-image.jpg"}
+                src={image_url || "https://yrsgwsncbskkngarpato.supabase.co/storage/v1/object/public/news-images/bg-image.png"}
                 alt="image"
                 objectFit='cover'
               />

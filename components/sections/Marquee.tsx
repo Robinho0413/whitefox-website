@@ -6,8 +6,8 @@ import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { StaticImageData } from 'next/image';
 
-import Picture1 from '@/public/images/bg-image.jpg';
-import Picture2 from '@/public/images/bg-image.jpg';
+import Picture1 from '@/public/images/bg-image.png';
+import Picture2 from '@/public/images/bg-image.png';
 
 export default function Home() {
     const container = useRef<HTMLDivElement>(null);

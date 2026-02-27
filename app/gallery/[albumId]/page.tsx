@@ -54,7 +54,11 @@ export default function AlbumPage({ params }: AlbumPageProps) {
 
     return (
         <div className="mt-10 px-4 py-12 md:p-16">
-            <div className="flex items-center gap-4 mb-8">
+            <div className="flex items-center justify-between gap-4 mb-8">
+                <h1 className="text-3xl font-semibold relative inline-block">
+                    {album.title}
+                    <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-primary-500 animate-underline"></span>
+                </h1>
                 <Link href="/gallery">
                     <Button
                         variant="icon"
@@ -66,10 +70,6 @@ export default function AlbumPage({ params }: AlbumPageProps) {
                         <span className="hidden md:inline">Retour à la galerie</span>
                     </Button>
                 </Link>
-                <h1 className="text-3xl font-semibold relative inline-block">
-                    {album.title}
-                    <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-primary-500 animate-underline"></span>
-                </h1>
             </div>
 
             <p className="text-muted-foreground mb-8">{album.description}</p>

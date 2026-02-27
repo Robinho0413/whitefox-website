@@ -16,7 +16,7 @@ export default function HeroSection() {
         <div className="relative w-full h-screen overflow-hidden">
             <motion.div style={{ y, scale }} className="absolute w-full h-full z-0">
                 <Image
-                    src="/images/bg-image.jpg"
+                    src="/images/bg-image.png"
                     alt="Background Image"
                     fill
                     style={{ objectFit: "cover", objectPosition: "top" }}

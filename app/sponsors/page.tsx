@@ -15,7 +15,7 @@ export default function Page() {
                 </div>
                 <div className='flex flex-col md:flex-row gap-6 flex-1'>
                     <SponsorsCard title="SARL TCM19" adresse="41 Rue de la Reine, 19270 Ussac" image="/images/sponsors-tcm.jpg" date="2025" url="https://www.tcm19.fr/" btn="Site web" />
-                    <SponsorsCard title="???" adresse="Adresse inconnue" image="/images/bg-image.jpg" date="?" url="#" btn="Site web" />
+                    <SponsorsCard title="???" adresse="Adresse inconnue" image="/images/bg-image.png" date="?" url="#" btn="Site web" />
                 </div>
             </div>
         </div>
