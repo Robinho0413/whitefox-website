@@ -67,7 +67,7 @@ export default function AlbumPage({ params }: AlbumPageProps) {
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                         </svg>
-                        <span className="hidden md:inline">Retour à la galerie</span>
+                        <span className="hidden md:inline">Retour</span>
                     </Button>
                 </Link>
             </div>
