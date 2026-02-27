@@ -121,6 +121,12 @@ export default async function AdminAlbumsPage() {
                     </Button>
                 </div>
 
+                <div className="flex items-start gap-2 rounded-md border border-secondary/60 bg-secondary/40 px-3 py-2 text-sm text-muted-foreground">
+                    <p>
+                        Nombres d'albums : {albumsCount}.
+                    </p>
+                </div>
+
                 <Table>
                     <TableHeader>
                         <TableRow>
