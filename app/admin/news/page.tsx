@@ -120,7 +120,7 @@ export default async function AdminNewsPage() {
                 <div className="flex justify-between items-center">
                     <h2 className="text-2xl font-bold">Gestion des actualités</h2>
                     <Button asChild variant="default" size="default" className="text-base p-5 font-semibold">
-                        <Link href="/admin/news/new">Ajouter une actualité +</Link>
+                        <Link href="/admin/news/new">Ajouter une actualité</Link>
                     </Button>
                 </div>
 

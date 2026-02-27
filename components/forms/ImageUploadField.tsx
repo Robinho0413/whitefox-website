@@ -1,8 +1,8 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
-type NewsImageUploadFieldProps = {
+type ImageUploadFieldProps = {
   required?: boolean
   initialImageUrl?: string | null
 }
@@ -13,14 +13,49 @@ function revokePreviewUrl(url: string | null) {
   }
 }
 
-export default function NewsImageUploadField({
+function resolveImageUrl(imageUrl: string | null) {
+  if (!imageUrl) {
+    return null
+  }
+
+  if (
+    imageUrl.startsWith("http://") ||
+    imageUrl.startsWith("https://") ||
+    imageUrl.startsWith("blob:") ||
+    imageUrl.startsWith("/")
+  ) {
+    return imageUrl
+  }
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (!supabaseUrl) {
+    return imageUrl
+  }
+
+  const normalizedPath = imageUrl.replace(/^gallery\//, "")
+  return `${supabaseUrl}/storage/v1/object/public/gallery/${normalizedPath}`
+}
+
+export default function ImageUploadField({
   required = true,
   initialImageUrl = null,
-}: NewsImageUploadFieldProps) {
+}: ImageUploadFieldProps) {
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const [previewUrl, setPreviewUrl] = useState<string | null>(initialImageUrl)
+  const normalizedInitialImageUrl = useMemo(
+    () => resolveImageUrl(initialImageUrl),
+    [initialImageUrl]
+  )
+  const [previewUrl, setPreviewUrl] = useState<string | null>(normalizedInitialImageUrl)
   const [fileName, setFileName] = useState("")
   const [isDragging, setIsDragging] = useState(false)
+
+  useEffect(() => {
+    setPreviewUrl((currentUrl) =>
+      currentUrl && currentUrl.startsWith("blob:")
+        ? currentUrl
+        : normalizedInitialImageUrl
+    )
+  }, [normalizedInitialImageUrl])
 
   useEffect(() => {
     return () => {

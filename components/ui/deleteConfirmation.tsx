@@ -30,7 +30,7 @@ export function AlertDialogDeleteConfirm({
         <AlertDialogHeader>
           <AlertDialogTitle>Êtes-vous absolument sûr ?</AlertDialogTitle>
           <AlertDialogDescription>
-            Cette action est irréversible. Cela supprimera définitivement cette actualité et toutes les données associées.
+            Cette action est irréversible. Cela supprimera définitivement cet élément et toutes les données associées.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

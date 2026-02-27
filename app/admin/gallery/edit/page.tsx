@@ -10,7 +10,7 @@ import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui
 import ImageUploadField from "@/components/forms/ImageUploadField"
 import EditSubmitButton from "@/components/forms/EditSubmitButton"
 
-type EditNewsError =
+type EditAlbumError =
     | "id"
     | "validation"
     | "upload"
@@ -18,17 +18,16 @@ type EditNewsError =
     | "update"
     | "not-found"
 
-type NewsItem = {
+type AlbumsItem = {
     id: string
-    title: string | null
-    description: string | null
-    image_url: string | null
-    link_url: string | null
-    button_text: string | null
+    title: string
+    description: string
+    cover_image: string
+    created_at: string | null
 }
 
 function getStoragePathFromPublicUrl(publicUrl: string): string | null {
-    const bucketMarker = "/news-images/"
+    const bucketMarker = "/gallery/"
     const markerIndex = publicUrl.indexOf(bucketMarker)
 
     if (markerIndex === -1) {
@@ -39,12 +38,12 @@ function getStoragePathFromPublicUrl(publicUrl: string): string | null {
     return path || null
 }
 
-function redirectWithError(error: EditNewsError, newsId?: string): never {
-    const idPart = newsId ? `id=${encodeURIComponent(newsId)}&` : ""
-    redirect(`/admin/news/edit?${idPart}error=${error}`)
+function redirectWithError(error: EditAlbumError, albumId?: string): never {
+    const idPart = albumId ? `id=${encodeURIComponent(albumId)}&` : ""
+    redirect(`/admin/gallery/edit?${idPart}error=${error}`)
 }
 
-async function editNews(formData: FormData) {
+async function editAlbum(formData: FormData) {
     "use server"
 
     const supabase = await createClient()
@@ -67,41 +66,39 @@ async function editNews(formData: FormData) {
         redirect("/")
     }
 
-    const newsId = String(formData.get("news_id") ?? "").trim()
+    const albumId = String(formData.get("album_id") ?? "").trim()
     const title = String(formData.get("title") ?? "").trim()
     const description = String(formData.get("description") ?? "").trim()
     const imageFile = formData.get("image_file")
-    const link_url = String(formData.get("link_url") ?? "").trim()
-    const button_text = String(formData.get("button_text") ?? "En savoir plus").trim()
 
-    if (!newsId) {
+    if (!albumId) {
         redirectWithError("id")
     }
 
-    if (!title || !description || !link_url) {
-        redirectWithError("validation", newsId)
+    if (!title || !description) {
+        redirectWithError("validation", albumId)
     }
 
-    const { data: existingNews } = await supabase
-        .from("news")
-        .select("image_url")
-        .eq("id", newsId)
-        .single<{ image_url: string | null }>()
+    const { data: existingAlbum } = await supabase
+        .from("albums")
+        .select("cover_image")
+        .eq("id", albumId)
+        .single<{ cover_image: string | null }>()
 
-    if (!existingNews) {
-        redirectWithError("not-found", newsId)
+    if (!existingAlbum) {
+        redirectWithError("not-found", albumId)
     }
 
-    let nextImageUrl = existingNews.image_url
+    let nextImageUrl = existingAlbum.cover_image
     let uploadedImagePath: string | null = null
     let shouldDeleteOldImage = false
 
     if (imageFile instanceof File && imageFile.size > 0) {
         const safeFileName = imageFile.name.replace(/[^a-zA-Z0-9.-]/g, "-")
-        const filePath = `news/${Date.now()}-${safeFileName}`
+        const filePath = `gallery/${Date.now()}-${safeFileName}`
 
         const { error: uploadError } = await supabase.storage
-            .from("news-images")
+            .from("gallery")
             .upload(filePath, imageFile, {
                 cacheControl: "3600",
                 upsert: false,
@@ -109,15 +106,15 @@ async function editNews(formData: FormData) {
             })
 
         if (uploadError) {
-            redirectWithError("upload", newsId)
+            redirectWithError("upload", albumId)
         }
 
         const {
             data: { publicUrl },
-        } = supabase.storage.from("news-images").getPublicUrl(filePath)
+        } = supabase.storage.from("gallery").getPublicUrl(filePath)
 
         if (!publicUrl) {
-            redirectWithError("public-url", newsId)
+            redirectWithError("public-url", albumId)
         }
 
         uploadedImagePath = filePath
@@ -126,55 +123,53 @@ async function editNews(formData: FormData) {
     }
 
     const { error } = await supabase
-        .from("news")
+        .from("albums")
         .update({
             title,
             description,
-            image_url: nextImageUrl,
-            link_url,
-            button_text: button_text || "En savoir plus",
+            cover_image: nextImageUrl,
         })
-        .eq("id", newsId)
+        .eq("id", albumId)
 
     if (error) {
         if (uploadedImagePath) {
-            await supabase.storage.from("news-images").remove([uploadedImagePath])
+            await supabase.storage.from("gallery").remove([uploadedImagePath])
         }
-        redirectWithError("update", newsId)
+        redirectWithError("update", albumId)
     }
 
-    if (shouldDeleteOldImage && existingNews.image_url) {
-        const oldImagePath = getStoragePathFromPublicUrl(existingNews.image_url)
+    if (shouldDeleteOldImage && existingAlbum.cover_image) {
+        const oldImagePath = getStoragePathFromPublicUrl(existingAlbum.cover_image)
         if (oldImagePath) {
-            await supabase.storage.from("news-images").remove([oldImagePath])
+            await supabase.storage.from("gallery").remove([oldImagePath])
         }
     }
 
     revalidatePath("/")
-    revalidatePath("/admin/news")
-    redirect("/admin/news")
+    revalidatePath("/admin/gallery")
+    redirect("/admin/gallery")
 }
 
-export default async function EditAdminNewsPage({
+export default async function EditAdminGalleryPage({
     searchParams,
 }: {
-    searchParams: Promise<{ error?: EditNewsError, id?: string }>
+    searchParams: Promise<{ error?: EditAlbumError, id?: string }>
 }) {
     const params = await searchParams
     const error = params?.error
-    const newsId = String(params?.id ?? "").trim()
+    const albumId = String(params?.id ?? "").trim()
 
-    if (!newsId) {
-        redirect("/admin/news")
+    if (!albumId) {
+        redirect("/admin/gallery")
     }
 
-    const errorMessageByCode: Record<EditNewsError, string> = {
-        id: "Identifiant de l'actualité manquant.",
+    const errorMessageByCode: Record<EditAlbumError, string> = {
+        id: "Identifiant de l'album manquant.",
         validation: "Veuillez remplir tous les champs obligatoires.",
         upload: "Le téléchargement de l'image a échoué. Vérifiez le bucket/policies Supabase.",
         "public-url": "Impossible de générer l'URL publique de l'image.",
-        update: "La mise à jour de l'actualité a échoué.",
-        "not-found": "Actualité introuvable.",
+        update: "La mise à jour de l'album a échoué.",
+        "not-found": "Album introuvable.",
     }
 
     const supabase = await createClient()
@@ -197,25 +192,25 @@ export default async function EditAdminNewsPage({
         redirect("/")
     }
 
-    const { data: news } = await supabase
-        .from("news")
-        .select("id, title, description, image_url, link_url, button_text")
-        .eq("id", newsId)
+    const { data: album } = await supabase
+        .from("albums")
+        .select("id, title, description, cover_image")
+        .eq("id", albumId)
         .single()
 
-    const newsItem = news as NewsItem | null
+    const albumItem = album as AlbumsItem | null
 
-    if (!newsItem) {
-        redirectWithError("not-found", newsId)
+    if (!albumItem) {
+        redirectWithError("not-found", albumId)
     }
 
     return (
         <AdminLayout>
             <div className="max-w-3xl space-y-6">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold">Modifier une actualité</h2>
+                    <h2 className="text-2xl font-bold">Modifier un album</h2>
                     <Button asChild variant="link" className="font-semibold">
-                        <Link href="/admin/news">Retour</Link>
+                        <Link href="/admin/gallery">Retour</Link>
                     </Button>
                 </div>
 
@@ -225,12 +220,12 @@ export default async function EditAdminNewsPage({
                     </p>
                 )}
 
-                <form action={editNews}>
-                    <input type="hidden" name="news_id" value={newsItem.id} />
+                <form action={editAlbum}>
+                    <input type="hidden" name="album_id" value={albumItem.id} />
                     <FieldGroup>
                         <Field>
                             <FieldLabel htmlFor="title">Titre</FieldLabel>
-                            <Input id="title" name="title" required placeholder="Titre de l'actualité" defaultValue={newsItem.title ?? ""} />
+                            <Input id="title" name="title" required placeholder="Titre de l'album" defaultValue={albumItem.title ?? ""} />
                         </Field>
 
                         <Field>
@@ -239,41 +234,25 @@ export default async function EditAdminNewsPage({
                                 id="description"
                                 name="description"
                                 required
-                                placeholder="Description de l'actualité"
+                                placeholder="Description de l'album"
                                 className="min-h-[120px]"
-                                defaultValue={newsItem.description ?? ""}
+                                defaultValue={albumItem.description ?? ""}
                             />
                         </Field>
 
                         <Field>
                             <FieldLabel htmlFor="image_file">Image</FieldLabel>
-                            <ImageUploadField required={false} initialImageUrl={newsItem.image_url} />
+                            <ImageUploadField required={false} initialImageUrl={albumItem.cover_image} />
                             <FieldDescription>
                                 Laissez vide pour conserver l&apos;image actuelle.
                             </FieldDescription>
                         </Field>
 
-                        <Field>
-                            <FieldLabel htmlFor="link_url">URL du lien</FieldLabel>
-                            <Input id="link_url" name="link_url" type="url" required placeholder="https://..." defaultValue={newsItem.link_url ?? ""} />
-                            <FieldDescription>
-                                Représente le lien vers lequel l’utilisateur sera redirigé en cliquant sur le bouton de l’actualité.
-                            </FieldDescription>
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="button_text">Texte du bouton</FieldLabel>
-                            <Input id="button_text" name="button_text" defaultValue={newsItem.button_text ?? "En savoir plus"} placeholder="En savoir plus" />
-                            <FieldDescription>
-                                Représente le texte du bouton qui redirigera vers le lien de l&apos;actualité. Par défaut, il est défini sur &quot;En savoir plus&quot;.
-                            </FieldDescription>
-                        </Field>
-
                         <Field orientation="horizontal">
                             <Button asChild type="button" variant="outline">
-                                <Link href="/admin/news">Annuler</Link>
+                                <Link href="/admin/gallery">Annuler</Link>
                             </Button>
-                            <EditSubmitButton idleText="Modifier l'actualité" />
+                            <EditSubmitButton idleText="Modifier l'album" />
                         </Field>
                     </FieldGroup>
                 </form>

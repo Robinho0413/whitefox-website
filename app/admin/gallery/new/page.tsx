@@ -9,26 +9,21 @@ import { createClient } from "@/lib/supabase/server"
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field"
 import ImageUploadField from "@/components/forms/ImageUploadField"
 import CreateSubmitButton from "@/components/forms/CreateSubmitButton"
-import { AlertTriangleIcon } from "lucide-react"
 
-type CreateNewsError =
+type CreateAlbumError =
     | "validation"
     | "file"
     | "upload"
     | "public-url"
     | "insert"
 
-type NewsRow = {
+type AlbumRow = {
     id: string
-    image_url: string | null
-}
-
-type NewsCountRow = {
-    id: string
+    cover_image: string | null
 }
 
 function getStoragePathFromPublicUrl(publicUrl: string): string | null {
-    const bucketMarker = "/news-images/"
+    const bucketMarker = "/gallery/"
     const markerIndex = publicUrl.indexOf(bucketMarker)
 
     if (markerIndex === -1) {
@@ -39,11 +34,11 @@ function getStoragePathFromPublicUrl(publicUrl: string): string | null {
     return path || null
 }
 
-function redirectWithError(error: CreateNewsError): never {
-    redirect(`/admin/news/new?error=${error}`)
+function redirectWithError(error: CreateAlbumError): never {
+    redirect(`/admin/gallery/new?error=${error}`)
 }
 
-async function createNews(formData: FormData) {
+async function createAlbum(formData: FormData) {
     "use server"
 
     const supabase = await createClient()
@@ -69,10 +64,8 @@ async function createNews(formData: FormData) {
     const title = String(formData.get("title") ?? "").trim()
     const description = String(formData.get("description") ?? "").trim()
     const imageFile = formData.get("image_file")
-    const link_url = String(formData.get("link_url") ?? "").trim()
-    const button_text = String(formData.get("button_text") ?? "En savoir plus").trim()
 
-    if (!title || !description || !link_url) {
+    if (!title || !description) {
         redirectWithError("validation")
     }
 
@@ -83,10 +76,10 @@ async function createNews(formData: FormData) {
     const validImageFile = imageFile as File
 
     const safeFileName = validImageFile.name.replace(/[^a-zA-Z0-9.-]/g, "-")
-    const filePath = `news/${Date.now()}-${safeFileName}`
+    const filePath = `gallery/${Date.now()}-${safeFileName}`
 
     const { error: uploadError } = await supabase.storage
-        .from("news-images")
+        .from("gallery")
         .upload(filePath, validImageFile, {
             cacheControl: "3600",
             upsert: false,
@@ -99,66 +92,64 @@ async function createNews(formData: FormData) {
 
     const {
         data: { publicUrl },
-    } = supabase.storage.from("news-images").getPublicUrl(filePath)
+    } = supabase.storage.from("gallery").getPublicUrl(filePath)
 
     if (!publicUrl) {
         redirectWithError("public-url")
     }
 
-    const { error } = await supabase.from("news").insert({
+    const { error } = await supabase.from("albums").insert({
         title,
         description,
-        image_url: publicUrl,
-        link_url,
-        button_text: button_text || "En savoir plus",
+        cover_image: publicUrl,
     })
 
     if (error) {
-        await supabase.storage.from("news-images").remove([filePath])
+        await supabase.storage.from("gallery").remove([filePath])
         redirectWithError("insert")
     }
 
-    const { data: allNewsRows } = await supabase
-        .from("news")
-        .select("id, image_url")
+    const { data: allAlbumsRows } = await supabase
+        .from("albums")
+        .select("id, cover_image")
         .order("created_at", { ascending: false })
 
-    const rows = (allNewsRows ?? []) as NewsRow[]
+    const rows = (allAlbumsRows ?? []) as AlbumRow[]
     const rowsToDelete = rows.slice(5)
 
     if (rowsToDelete.length > 0) {
         const idsToDelete = rowsToDelete.map((item) => item.id)
 
         await supabase
-            .from("news")
+            .from("albums")
             .delete()
             .in("id", idsToDelete)
 
         const imagePathsToDelete = rowsToDelete
-            .map((item) => item.image_url)
+            .map((item) => item.cover_image)
             .filter((url): url is string => Boolean(url))
             .map((url) => getStoragePathFromPublicUrl(url))
             .filter((path): path is string => Boolean(path))
 
         if (imagePathsToDelete.length > 0) {
-            await supabase.storage.from("news-images").remove(imagePathsToDelete)
+            await supabase.storage.from("gallery").remove(imagePathsToDelete)
         }
     }
 
     revalidatePath("/")
-    revalidatePath("/admin/news")
-    redirect("/admin/news")
+    revalidatePath("/admin/gallery")
+    redirect("/admin/gallery")
 }
 
-export default async function NewAdminNewsPage({
+export default async function NewAdminGalleryPage({
     searchParams,
 }: {
-    searchParams: Promise<{ error?: CreateNewsError }>
+    searchParams: Promise<{ error?: CreateAlbumError }>
 }) {
     const params = await searchParams
     const error = params?.error
 
-    const errorMessageByCode: Record<CreateNewsError, string> = {
+    const errorMessageByCode: Record<CreateAlbumError, string> = {
         validation: "Veuillez remplir tous les champs obligatoires.",
         file: "Veuillez sélectionner un fichier image valide.",
         upload: "Le téléchargement de l'image a échoué. Vérifiez le bucket/policies Supabase.",
@@ -186,25 +177,15 @@ export default async function NewAdminNewsPage({
         redirect("/")
     }
 
-    const { data: currentNewsRows } = await supabase
-        .from("news")
-        .select("id")
-
-    const newsCount = ((currentNewsRows ?? []) as NewsCountRow[]).length
-
     return (
         <AdminLayout>
             <div className="max-w-3xl space-y-6">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold">Ajouter une actualité</h2>
+                    <h2 className="text-2xl font-bold">Ajouter un album</h2>
                     <Button asChild variant="link" className="font-semibold">
-                        <Link href="/admin/news">Retour</Link>
+                        <Link href="/admin/gallery">Retour</Link>
                     </Button>
                 </div>
-
-                <p className="text-sm text-muted-foreground">
-                    Limite active : {newsCount} / 5 actualités. Si une 6e actualité est publiée, la plus ancienne sera supprimée automatiquement.
-                </p>
 
                 {error && errorMessageByCode[error] && (
                     <p className="text-sm text-destructive">
@@ -212,11 +193,11 @@ export default async function NewAdminNewsPage({
                     </p>
                 )}
 
-                <form action={createNews}>
+                <form action={createAlbum}>
                     <FieldGroup>
                         <Field>
                             <FieldLabel htmlFor="title">Titre</FieldLabel>
-                            <Input id="title" name="title" required placeholder="Titre de l'actualité" />
+                            <Input id="title" name="title" required placeholder="Titre de l'album" />
                         </Field>
 
                         <Field>
@@ -225,7 +206,7 @@ export default async function NewAdminNewsPage({
                                 id="description"
                                 name="description"
                                 required
-                                placeholder="Description de l'actualité"
+                                placeholder="Description de l'album"
                                 className="min-h-[120px]"
                             />
                         </Field>
@@ -235,35 +216,11 @@ export default async function NewAdminNewsPage({
                             <ImageUploadField />
                         </Field>
 
-                        <Field>
-                            <FieldLabel htmlFor="link_url">URL du lien</FieldLabel>
-                            <Input id="link_url" name="link_url" type="url" required placeholder="https://..." />
-                            <FieldDescription>
-                                Représente le lien vers lequel l’utilisateur sera redirigé en cliquant sur le bouton de l’actualité.
-                            </FieldDescription>
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="button_text">Texte du bouton</FieldLabel>
-                            <Input id="button_text" name="button_text" defaultValue="En savoir plus" placeholder="En savoir plus" />
-                            <FieldDescription>
-                                Représente le texte du bouton qui redirigera vers le lien de l&apos;actualité. Par défaut, il est défini sur &quot;En savoir plus&quot;.
-                            </FieldDescription>
-                        </Field>
-
                         <Field orientation="horizontal">
                             <Button asChild type="button" variant="outline">
-                                <Link href="/admin/news">Annuler</Link>
+                                <Link href="/admin/gallery">Annuler</Link>
                             </Button>
-                            <CreateSubmitButton idleText="Publier l'actualité" />
-                            {newsCount >= 5 && (
-                                <div className="flex items-start gap-2 rounded-md ml-8 border border-secondary/60 bg-secondary/40 px-3 py-2 text-sm text-muted-foreground">
-                                    <AlertTriangleIcon className="mt-0.5 size-4 shrink-0" />
-                                    <p>
-                                        Limite d&apos;actualités atteinte. En publiant cette actualité, la plus ancienne sera automatiquement supprimée.
-                                    </p>
-                                </div>
-                            )}
+                            <CreateSubmitButton idleText="Ajouter l'album" />
                         </Field>
                     </FieldGroup>
                 </form>
