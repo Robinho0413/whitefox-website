@@ -123,7 +123,7 @@ export default async function AdminAlbumsPage() {
 
                 <div className="flex items-start gap-2 rounded-md border border-secondary/60 bg-secondary/40 px-3 py-2 text-sm text-muted-foreground">
                     <p>
-                        Nombres d'albums : {albumsCount}.
+                        Nombres d&apos;albums : {albumsCount}.
                     </p>
                 </div>
 
