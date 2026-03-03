@@ -46,7 +46,7 @@ export default function SortablePhotosTable({
 }: SortablePhotosTableProps) {
     const [orderedPhotos, setOrderedPhotos] = useState(photos)
     const [draggedPhotoId, setDraggedPhotoId] = useState<string | null>(null)
-    const [isReordering, startReordering] = useTransition()
+    const [, startReordering] = useTransition()
     const emptyDragImageRef = useRef<HTMLImageElement | null>(null)
     const orderedPhotosRef = useRef(orderedPhotos)
     const dragStartOrderRef = useRef<string | null>(null)
@@ -185,7 +185,7 @@ export default function SortablePhotosTable({
         <div className="space-y-3">
             <div className="flex items-start gap-2 rounded-md border border-secondary/60 bg-secondary/40 px-3 py-2 text-sm text-muted-foreground">
                 <p>
-                    Maintenez l'icône et glissez une ligne pour réorganiser les photos.
+                    Maintenez l&apos;icône et glissez une ligne pour réorganiser les photos.
                 </p>
             </div>
 
