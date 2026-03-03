@@ -1,22 +1,12 @@
 import AdminLayout from "@/components/layout/adminLayout"
 import CreateSubmitButton from "@/components/forms/CreateSubmitButton"
-import DeleteSubmitButton from "@/components/forms/DeleteSubmitButton"
 import MultiMediaUploadField from "@/components/forms/MultiMediaUploadField"
+import SortablePhotosTable from "../../../../components/forms/SortablePhotosTable"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/server"
-import { getGalleryPublicUrl } from "@/lib/supabase/storage"
 import { revalidatePath } from "next/cache"
-import Image from "next/image"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 
 type ManagePhotosError =
   | "id"
@@ -25,6 +15,7 @@ type ManagePhotosError =
   | "upload"
   | "insert"
   | "delete"
+  | "reorder"
 
 type AlbumRow = {
   id: string
@@ -192,6 +183,76 @@ async function deletePhoto(formData: FormData) {
   redirect(`/admin/gallery/photos?id=${encodeURIComponent(albumId)}`)
 }
 
+async function reorderPhotos(formData: FormData): Promise<{ ok: boolean }> {
+  "use server"
+
+  const supabase = await requireAdmin()
+
+  const albumId = String(formData.get("album_id") ?? "").trim()
+  const orderedPhotoIdsRaw = String(formData.get("ordered_photo_ids") ?? "").trim()
+
+  if (!albumId || !orderedPhotoIdsRaw) {
+    return { ok: false }
+  }
+
+  let orderedPhotoIds: string[] = []
+
+  try {
+    const parsed = JSON.parse(orderedPhotoIdsRaw)
+    if (!Array.isArray(parsed)) {
+      return { ok: false }
+    }
+
+    orderedPhotoIds = parsed
+      .map((value) => String(value).trim())
+      .filter((value) => value.length > 0)
+  } catch {
+    return { ok: false }
+  }
+
+  if (orderedPhotoIds.length === 0) {
+    return { ok: false }
+  }
+
+  const { data: currentPhotos } = await supabase
+    .from("album_photos")
+    .select("id")
+    .eq("album_id", albumId)
+
+  const currentPhotoIds = (currentPhotos ?? []).map((photo) => photo.id)
+
+  if (currentPhotoIds.length !== orderedPhotoIds.length) {
+    return { ok: false }
+  }
+
+  const currentPhotoIdsSet = new Set(currentPhotoIds)
+  const orderedPhotoIdsSet = new Set(orderedPhotoIds)
+
+  if (
+    orderedPhotoIdsSet.size !== orderedPhotoIds.length ||
+    orderedPhotoIds.some((photoId) => !currentPhotoIdsSet.has(photoId))
+  ) {
+    return { ok: false }
+  }
+
+  for (let index = 0; index < orderedPhotoIds.length; index += 1) {
+    const photoId = orderedPhotoIds[index]
+    const { error: updateError } = await supabase
+      .from("album_photos")
+      .update({ sort_order: index })
+      .eq("id", photoId)
+      .eq("album_id", albumId)
+
+    if (updateError) {
+      return { ok: false }
+    }
+  }
+
+  revalidatePath("/admin/gallery")
+  revalidatePath("/admin/gallery/photos")
+  return { ok: true }
+}
+
 export default async function AdminGalleryPhotosPage({
   searchParams,
 }: {
@@ -233,6 +294,7 @@ export default async function AdminGalleryPhotosPage({
     upload: "Le téléchargement d'au moins une image a échoué.",
     insert: "L'enregistrement des photos en base a échoué.",
     delete: "La suppression de la photo a échoué.",
+    reorder: "La réorganisation des photos a échoué.",
   }
 
   return (
@@ -268,52 +330,12 @@ export default async function AdminGalleryPhotosPage({
           </div>
         </form>
 
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Image</TableHead>
-              <TableHead>Ordre</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {photosRows.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={4} className="py-8 text-center text-muted-foreground">
-                  Aucune photo dans cet album pour le moment.
-                </TableCell>
-              </TableRow>
-            ) : (
-              photosRows.map((photo) => (
-                <TableRow key={photo.id}>
-                  <TableCell>
-                    <Image
-                      width={120}
-                      height={80}
-                      src={getGalleryPublicUrl(photo.storage_path)}
-                      alt="Photo de l'album"
-                      className="h-20 w-[120px] rounded-md border object-cover"
-                    />
-                  </TableCell>
-                  <TableCell className="font-medium">{photo.sort_order}</TableCell>
-                  <TableCell>
-                    {photo.created_at
-                      ? new Date(photo.created_at).toLocaleDateString("fr-FR")
-                      : "-"}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <form action={deletePhoto}>
-                      <input type="hidden" name="album_id" value={album.id} />
-                      <input type="hidden" name="photo_id" value={photo.id} />
-                      <DeleteSubmitButton />
-                    </form>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+        <SortablePhotosTable
+          albumId={album.id}
+          photos={photosRows}
+          deletePhotoAction={deletePhoto}
+          reorderPhotosAction={reorderPhotos}
+        />
       </div>
     </AdminLayout>
   )
