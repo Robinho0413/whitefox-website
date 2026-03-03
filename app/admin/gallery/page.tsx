@@ -175,7 +175,12 @@ export default async function AdminAlbumsPage() {
                                             : "-"}
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <NewsActionsMenu newsId={item.id} editHref={`/admin/gallery/edit?id=${item.id}`} onDelete={deleteAlbum} />
+                                        <div className="flex items-center justify-end gap-2">
+                                            <Button asChild size="sm" variant="icon" className="p-2">
+                                                <Link href={`/admin/gallery/photos?id=${item.id}`}>Photos</Link>
+                                            </Button>
+                                            <NewsActionsMenu newsId={item.id} editHref={`/admin/gallery/edit?id=${item.id}`} onDelete={deleteAlbum} />
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             ))
