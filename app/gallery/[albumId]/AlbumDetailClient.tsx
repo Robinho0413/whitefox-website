@@ -3,8 +3,10 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 type AlbumDetailClientProps = {
     albumTitle: string;
@@ -17,28 +19,127 @@ export default function AlbumDetailClient({
     albumDescription,
     albumImages,
 }: AlbumDetailClientProps) {
-    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
     const [columnsPerRow, setColumnsPerRow] = useState<2 | 4 | 6>(4);
+    const [touchStartX, setTouchStartX] = useState<number | null>(null);
+    const [slideDirection, setSlideDirection] = useState<1 | -1>(1);
 
-    const openModal = (imageSrc: string) => {
-        setSelectedImage(imageSrc);
+    const selectedImage = selectedImageIndex !== null ? albumImages[selectedImageIndex] : null;
+
+    const openModal = (imageIndex: number) => {
+        setSlideDirection(1);
+        setSelectedImageIndex(imageIndex);
     };
 
     const closeModal = () => {
-        setSelectedImage(null);
+        setSelectedImageIndex(null);
+    };
+
+    const showPreviousImage = () => {
+        setSlideDirection(-1);
+        setSelectedImageIndex((currentIndex) => {
+            if (currentIndex === null || albumImages.length === 0) {
+                return currentIndex;
+            }
+
+            return currentIndex === 0 ? albumImages.length - 1 : currentIndex - 1;
+        });
+    };
+
+    const showNextImage = () => {
+        setSlideDirection(1);
+        setSelectedImageIndex((currentIndex) => {
+            if (currentIndex === null || albumImages.length === 0) {
+                return currentIndex;
+            }
+
+            return currentIndex === albumImages.length - 1 ? 0 : currentIndex + 1;
+        });
     };
 
     const handleCardClick = (
         event: React.MouseEvent<HTMLDivElement>,
-        imageSrc: string
+        imageIndex: number
     ) => {
         const targetElement = event.target as HTMLElement;
         if (targetElement.closest('[data-download-button="true"]')) {
             return;
         }
 
-        openModal(imageSrc);
+        openModal(imageIndex);
     };
+
+    const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+        setTouchStartX(event.touches[0]?.clientX ?? null);
+    };
+
+    const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+        if (touchStartX === null) {
+            return;
+        }
+
+        const touchEndX = event.changedTouches[0]?.clientX;
+        if (typeof touchEndX !== "number") {
+            setTouchStartX(null);
+            return;
+        }
+
+        const swipeDistance = touchEndX - touchStartX;
+        const swipeThreshold = 50;
+
+        if (swipeDistance > swipeThreshold) {
+            showPreviousImage();
+        } else if (swipeDistance < -swipeThreshold) {
+            showNextImage();
+        }
+
+        setTouchStartX(null);
+    };
+
+    useEffect(() => {
+        if (selectedImageIndex === null) {
+            return;
+        }
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "ArrowLeft") {
+                event.preventDefault();
+                showPreviousImage();
+            }
+
+            if (event.key === "ArrowRight") {
+                event.preventDefault();
+                showNextImage();
+            }
+
+            if (event.key === "Escape") {
+                event.preventDefault();
+                closeModal();
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [selectedImageIndex, albumImages.length]);
+
+    useEffect(() => {
+        if (selectedImageIndex === null) {
+            return;
+        }
+
+        const previousBodyOverflow = document.body.style.overflow;
+        const previousHtmlOverflow = document.documentElement.style.overflow;
+
+        document.body.style.overflow = "hidden";
+        document.documentElement.style.overflow = "hidden";
+
+        return () => {
+            document.body.style.overflow = previousBodyOverflow;
+            document.documentElement.style.overflow = previousHtmlOverflow;
+        };
+    }, [selectedImageIndex]);
 
     const downloadImage = async (imageSrc: string) => {
         const loadingToastId = toast.loading("Téléchargement en cours...", {
@@ -171,7 +272,7 @@ export default function AlbumDetailClient({
                     <div
                         key={index}
                         className="relative aspect-[4/3] overflow-hidden rounded-lg cursor-pointer group"
-                        onClick={(event) => handleCardClick(event, imageSrc)}
+                        onClick={(event) => handleCardClick(event, index)}
                         style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}
                     >
                         <Image
@@ -222,36 +323,100 @@ export default function AlbumDetailClient({
                     className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4"
                     onClick={closeModal}
                 >
-                    <div className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center">
-                        <button
+                    <div
+                        className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center"
+                        onClick={(event) => event.stopPropagation()}
+                        onTouchStart={handleTouchStart}
+                        onTouchEnd={handleTouchEnd}
+                    >
+                        <Button
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                showPreviousImage();
+                            }}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 text-white text-2xl hover:text-gray-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center"
+                            title="Photo précédente"
+                            variant={"icon"}
+                        >
+                            <ChevronLeft className="h-6 w-6" />
+                        </Button>
+
+                        <Button
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                showNextImage();
+                            }}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-white text-2xl hover:text-gray-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center"
+                            title="Photo suivante"
+                            variant={"icon"}
+                        >
+                            <ChevronRight className="h-6 w-6" />
+                        </Button>
+
+                        <Button
                             onClick={closeModal}
                             className="absolute top-4 right-4 text-white text-3xl hover:text-gray-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center"
+                            title="Fermer"
+                            variant={"icon"}
                         >
-                            ×
-                        </button>
+                            <X className="h-6 w-6" />
+                        </Button>
 
-                        <button
+                        <Button
                             onClick={(event) => {
                                 event.stopPropagation();
                                 downloadImage(selectedImage);
                             }}
                             className="absolute top-4 right-20 text-white hover:text-gray-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center"
                             title="Télécharger l'image"
+                            variant={"icon"}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                             </svg>
-                        </button>
+                        </Button>
 
-                        <div className="relative w-full h-full max-w-5xl max-h-5xl">
-                            <Image
-                                src={selectedImage}
-                                alt="Image agrandie"
-                                fill
-                                style={{ objectFit: "contain" }}
-                                className="rounded-lg"
-                            />
+                        <div className="relative w-full h-full max-w-5xl max-h-5xl overflow-hidden">
+                            <AnimatePresence initial={false} custom={slideDirection} mode="wait">
+                                <motion.div
+                                    key={selectedImageIndex}
+                                    custom={slideDirection}
+                                    variants={{
+                                        enter: (direction: number) => ({
+                                            x: direction > 0 ? 80 : -80,
+                                            opacity: 0,
+                                        }),
+                                        center: {
+                                            x: 0,
+                                            opacity: 1,
+                                        },
+                                        exit: (direction: number) => ({
+                                            x: direction > 0 ? -80 : 80,
+                                            opacity: 0,
+                                        }),
+                                    }}
+                                    initial="enter"
+                                    animate="center"
+                                    exit="exit"
+                                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                                    className="absolute inset-0"
+                                >
+                                    <Image
+                                        src={selectedImage}
+                                        alt="Image agrandie"
+                                        fill
+                                        style={{ objectFit: "contain" }}
+                                        className="rounded-lg"
+                                    />
+                                </motion.div>
+                            </AnimatePresence>
                         </div>
+
+                        {selectedImageIndex !== null && (
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm bg-black/50 px-3 py-1 rounded-full">
+                                {selectedImageIndex + 1} / {albumImages.length}
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
