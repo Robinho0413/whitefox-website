@@ -98,13 +98,17 @@ async function createAlbum(formData: FormData) {
         redirectWithError("public-url")
     }
 
-    const { error } = await supabase.from("albums").insert({
-        title,
-        description,
-        cover_image: publicUrl,
-    })
+    const { data: createdAlbum, error } = await supabase
+        .from("albums")
+        .insert({
+            title,
+            description,
+            cover_image: publicUrl,
+        })
+        .select("id")
+        .single<{ id: string }>()
 
-    if (error) {
+    if (error || !createdAlbum?.id) {
         await supabase.storage.from("gallery").remove([filePath])
         redirectWithError("insert")
     }
@@ -138,7 +142,8 @@ async function createAlbum(formData: FormData) {
 
     revalidatePath("/")
     revalidatePath("/admin/gallery")
-    redirect("/admin/gallery")
+    revalidatePath("/admin/gallery/photos")
+    redirect(`/admin/gallery/photos?id=${encodeURIComponent(createdAlbum.id)}`)
 }
 
 export default async function NewAdminGalleryPage({
