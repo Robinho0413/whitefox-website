@@ -15,7 +15,7 @@ export default async function AdminPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("is_admin")
+    .select("is_admin, first_name, last_name")
     .eq("id", user.id)
     .single()
 
@@ -25,8 +25,8 @@ export default async function AdminPage() {
 
   return (
     <AdminLayout>
-      <h2 className="text-2xl font-bold mb-4">Bienvenue dans le backoffice</h2>
-      <p>Vous êtes connecté en tant qu’admin.</p>
+      <h2 className="text-2xl font-bold mb-4">Bonjour {profile.first_name} !</h2>
+      <p>Vous êtes connecté en tant qu’administrateur. Veuillez ne pas divulguer vos identifiants.</p>
     </AdminLayout>
   )
 }
