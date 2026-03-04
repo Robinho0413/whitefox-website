@@ -334,7 +334,7 @@ export default function AlbumDetailClient({
                                 event.stopPropagation();
                                 showPreviousImage();
                             }}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 text-white text-2xl hover:text-gray-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center"
+                            className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl text-white md:hover:text-gray-300 transition-colors z-10 rounded-full w-12 h-12 flex items-center justify-center"
                             title="Photo précédente"
                             variant={"icon"}
                         >
@@ -346,7 +346,7 @@ export default function AlbumDetailClient({
                                 event.stopPropagation();
                                 showNextImage();
                             }}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 text-white text-2xl hover:text-gray-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center"
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-2xl text-white md:hover:text-gray-300 transition-colors z-10 rounded-full w-12 h-12 flex items-center justify-center"
                             title="Photo suivante"
                             variant={"icon"}
                         >
@@ -355,7 +355,7 @@ export default function AlbumDetailClient({
 
                         <Button
                             onClick={closeModal}
-                            className="absolute top-4 right-4 text-white text-3xl hover:text-gray-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center"
+                            className="absolute top-4 right-4 text-white text-3xl md:hover:text-gray-300 transition-colors z-10 rounded-full w-12 h-12 flex items-center justify-center"
                             title="Fermer"
                             variant={"icon"}
                         >
@@ -367,7 +367,7 @@ export default function AlbumDetailClient({
                                 event.stopPropagation();
                                 downloadImage(selectedImage);
                             }}
-                            className="absolute top-4 right-20 text-white hover:text-gray-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center"
+                            className="absolute top-4 right-20 text-white md:hover:text-gray-300 transition-colors z-10 rounded-full w-12 h-12 flex items-center justify-center"
                             title="Télécharger l'image"
                             variant={"icon"}
                         >
