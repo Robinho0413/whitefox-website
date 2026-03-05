@@ -1,4 +1,5 @@
 import AdminLayout from "@/components/layout/adminLayout"
+import UmamiStatsCard from "@/components/admin/UmamiStatsCard"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
@@ -83,60 +84,72 @@ export default async function AdminPage() {
           <p>Vous êtes connecté en tant qu’administrateur. Veuillez ne pas divulguer vos identifiants de connexion.</p>
         </div>
 
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Espace de stockage</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {storageError ? (
-              <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">
-                  Impossible de lire l&apos;utilisation du storage pour le moment.
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  Verifie que la fonction SQL <code>admin_storage_usage_bytes</code> est bien creee dans Supabase.
-                </p>
-              </div>
-            ) : (
-              <>
-                <p className="text-sm text-muted-foreground">
-                  Buckets suivis: {trackedBuckets.join(", ")}
-                </p>
-                <p className="text-sm">
-                  Utilise: <span className="font-semibold">{formatBytes(usedStorageBytes)}</span>
-                </p>
-                {remainingStorageBytes !== null ? (
-                  <>
-                    <p className="text-sm">
-                      Restant: <span className="font-semibold">{formatBytes(remainingStorageBytes)}</span>
-                    </p>
-                    <div className="space-y-1.5 pt-1">
-                      <div className="h-2 w-full rounded-full bg-secondary/70 overflow-hidden">
-                        <div
-                          className={`h-full rounded-full transition-all ${
-                            (usagePercent ?? 0) >= 90
+        <div className="w-full flex space-x-6">
+          <Card className="w-full">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Espace de stockage</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {storageError ? (
+                <div className="space-y-1">
+                  <p className="text-sm text-muted-foreground">
+                    Impossible de lire l&apos;utilisation du storage pour le moment.
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Verifie que la fonction SQL <code>admin_storage_usage_bytes</code> est bien creee dans Supabase.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <p className="text-sm text-muted-foreground">
+                    Buckets suivis: {trackedBuckets.join(", ")}
+                  </p>
+                  <p className="text-sm">
+                    Utilise: <span className="font-semibold">{formatBytes(usedStorageBytes)}</span>
+                  </p>
+                  {remainingStorageBytes !== null ? (
+                    <>
+                      <p className="text-sm">
+                        Restant: <span className="font-semibold">{formatBytes(remainingStorageBytes)}</span>
+                      </p>
+                      <div className="space-y-1.5 pt-1">
+                        <div className="h-2 w-full rounded-full bg-secondary/70 overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all ${(usagePercent ?? 0) >= 90
                               ? "bg-destructive"
                               : (usagePercent ?? 0) >= 75
                                 ? "bg-amber-500"
                                 : "bg-primary-500"
-                          }`}
-                          style={{ width: `${usagePercent ?? 0}%` }}
-                        />
+                              }`}
+                            style={{ width: `${usagePercent ?? 0}%` }}
+                          />
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          {formatBytes(usedStorageBytes)} / {formatBytes(storageQuotaBytes ?? 0)} ({usagePercent?.toFixed(1)}% utilise)
+                        </p>
                       </div>
-                      <p className="text-xs text-muted-foreground">
-                        {formatBytes(usedStorageBytes)} / {formatBytes(storageQuotaBytes ?? 0)} ({usagePercent?.toFixed(1)}% utilise)
-                      </p>
-                    </div>
-                  </>
-                ) : (
-                  <p className="text-xs text-muted-foreground">
-                    Ajoute la variable d&apos;environnement <code>SUPABASE_STORAGE_QUOTA_GB</code> pour afficher le stockage restant.
-                  </p>
-                )}
-              </>
-            )}
-          </CardContent>
-        </Card>
+                    </>
+                  ) : (
+                    <p className="text-xs text-muted-foreground">
+                      Ajoute la variable d&apos;environnement <code>SUPABASE_STORAGE_QUOTA_GB</code> pour afficher le stockage restant.
+                    </p>
+                  )}
+                </>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card className="w-full">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Données analytiques</CardTitle>
+            </CardHeader>
+
+            <CardContent>
+              <UmamiStatsCard />
+            </CardContent>
+          </Card>
+
+        </div>
       </div>
     </AdminLayout>
   )
