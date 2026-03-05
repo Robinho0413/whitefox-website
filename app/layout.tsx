@@ -44,6 +44,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <script defer src="https://cloud.umami.is/script.js" data-website-id="29f4f02f-3760-443c-b42f-27b7329581f1"></script>
         <script
           dangerouslySetInnerHTML={{
             __html: `
