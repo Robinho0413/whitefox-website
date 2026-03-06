@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/server"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import ImageUploadField from "@/components/forms/ImageUploadField"
 import CreateSubmitButton from "@/components/forms/CreateSubmitButton"
+import { logAdminActivity } from "@/lib/admin-activity-log"
 
 type CreateAlbumError =
     | "validation"
@@ -104,6 +105,7 @@ async function createAlbum(formData: FormData) {
             title,
             description,
             cover_image: publicUrl,
+            created_by: user.id,
         })
         .select("id")
         .single<{ id: string }>()
@@ -112,6 +114,14 @@ async function createAlbum(formData: FormData) {
         await supabase.storage.from("gallery").remove([filePath])
         redirectWithError("insert")
     }
+
+    await logAdminActivity(supabase, {
+        actionType: "create",
+        entityType: "album",
+        entityId: createdAlbum.id,
+        actorId: user.id,
+        titleSnapshot: title,
+    })
 
     const { data: allAlbumsRows } = await supabase
         .from("albums")

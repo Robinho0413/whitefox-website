@@ -15,6 +15,7 @@ import {
 import Image from "next/image"
 import NewsActionsMenu from "@/components/ui/NewsActionsMenu"
 import { AlertTriangleIcon } from "lucide-react"
+import { logAdminActivity } from "@/lib/admin-activity-log"
 
 // filepath: c:\Users\robin\Documents\WhiteFox Website\whitefox-website\app\admin\news\page.tsx
 
@@ -52,7 +53,7 @@ async function deleteNews(newsId: string) {
     // Récupérer l'URL de l'image pour la supprimer du storage
     const { data: news } = await supabase
         .from("news")
-        .select("image_url")
+        .select("title, image_url")
         .eq("id", newsId)
         .single()
 
@@ -81,6 +82,14 @@ async function deleteNews(newsId: string) {
     if (error) {
         throw new Error(`Erreur lors de la suppression: ${error.message}`)
     }
+
+    await logAdminActivity(supabase, {
+        actionType: "delete",
+        entityType: "news",
+        entityId: newsId,
+        actorId: user.id,
+        titleSnapshot: news?.title ?? null,
+    })
 
     revalidatePath("/admin/news")
 }

@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/table"
 import Image from "next/image"
 import NewsActionsMenu from "@/components/ui/NewsActionsMenu"
+import { logAdminActivity } from "@/lib/admin-activity-log"
 
 type AlbumsItem = {
     id: string
@@ -49,7 +50,7 @@ async function deleteAlbum(albumId: string) {
     // Récupérer l'URL de l'image pour la supprimer du storage
     const { data: albums } = await supabase
         .from("albums")
-        .select("cover_image")
+        .select("title, cover_image")
         .eq("id", albumId)
         .single()
 
@@ -78,6 +79,14 @@ async function deleteAlbum(albumId: string) {
     if (error) {
         throw new Error(`Erreur lors de la suppression: ${error.message}`)
     }
+
+    await logAdminActivity(supabase, {
+        actionType: "delete",
+        entityType: "album",
+        entityId: albumId,
+        actorId: user.id,
+        titleSnapshot: albums?.title ?? null,
+    })
 
     revalidatePath("/admin/gallery")
 }

@@ -10,6 +10,7 @@ import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui
 import ImageUploadField from "@/components/forms/ImageUploadField"
 import CreateSubmitButton from "@/components/forms/CreateSubmitButton"
 import { AlertTriangleIcon } from "lucide-react"
+import { logAdminActivity } from "@/lib/admin-activity-log"
 
 type CreateNewsError =
     | "validation"
@@ -105,18 +106,31 @@ async function createNews(formData: FormData) {
         redirectWithError("public-url")
     }
 
-    const { error } = await supabase.from("news").insert({
-        title,
-        description,
-        image_url: publicUrl,
-        link_url,
-        button_text: button_text || "En savoir plus",
-    })
+    const { data: createdNews, error } = await supabase
+        .from("news")
+        .insert({
+            title,
+            description,
+            image_url: publicUrl,
+            link_url,
+            button_text: button_text || "En savoir plus",
+            created_by: user.id,
+        })
+        .select("id")
+        .single<{ id: string }>()
 
-    if (error) {
+    if (error || !createdNews?.id) {
         await supabase.storage.from("news-images").remove([filePath])
         redirectWithError("insert")
     }
+
+    await logAdminActivity(supabase, {
+        actionType: "create",
+        entityType: "news",
+        entityId: createdNews.id,
+        actorId: user.id,
+        titleSnapshot: title,
+    })
 
     const { data: allNewsRows } = await supabase
         .from("news")

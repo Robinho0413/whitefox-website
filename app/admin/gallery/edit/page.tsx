@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/server"
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field"
 import ImageUploadField from "@/components/forms/ImageUploadField"
 import EditSubmitButton from "@/components/forms/EditSubmitButton"
+import { logAdminActivity } from "@/lib/admin-activity-log"
 
 type EditAlbumError =
     | "id"
@@ -137,6 +138,14 @@ async function editAlbum(formData: FormData) {
         }
         redirectWithError("update", albumId)
     }
+
+    await logAdminActivity(supabase, {
+        actionType: "update",
+        entityType: "album",
+        entityId: albumId,
+        actorId: user.id,
+        titleSnapshot: title,
+    })
 
     if (shouldDeleteOldImage && existingAlbum.cover_image) {
         const oldImagePath = getStoragePathFromPublicUrl(existingAlbum.cover_image)

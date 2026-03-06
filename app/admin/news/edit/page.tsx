@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/server"
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field"
 import ImageUploadField from "@/components/forms/ImageUploadField"
 import EditSubmitButton from "@/components/forms/EditSubmitButton"
+import { logAdminActivity } from "@/lib/admin-activity-log"
 
 type EditNewsError =
     | "id"
@@ -142,6 +143,14 @@ async function editNews(formData: FormData) {
         }
         redirectWithError("update", newsId)
     }
+
+    await logAdminActivity(supabase, {
+        actionType: "update",
+        entityType: "news",
+        entityId: newsId,
+        actorId: user.id,
+        titleSnapshot: title,
+    })
 
     if (shouldDeleteOldImage && existingNews.image_url) {
         const oldImagePath = getStoragePathFromPublicUrl(existingNews.image_url)

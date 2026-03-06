@@ -37,7 +37,7 @@ function DeltaLine({ current, previous }: { current: number; previous: number })
 
   return (
     <p className={`text-xs ${isPositive ? "text-primary-500" : isNegative ? "text-amber-500" : "text-muted-foreground"}`}>
-      vs periode precedente: {delta}
+      {delta} / période précédente
     </p>
   )
 }
