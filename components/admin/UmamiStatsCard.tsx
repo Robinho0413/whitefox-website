@@ -36,7 +36,7 @@ function DeltaLine({ current, previous }: { current: number; previous: number })
   const isNegative = delta.startsWith("-")
 
   return (
-    <p className={`text-xs ${isPositive ? "text-primary-500" : isNegative ? "text-amber-500" : "text-muted-foreground"}`}>
+    <p className={`min-h-4 text-xs ${isPositive ? "text-primary-500" : isNegative ? "text-amber-500" : "text-muted-foreground"}`}>
       {delta} / période précédente
     </p>
   )
@@ -123,10 +123,10 @@ export default function UmamiStatsCard() {
       {loading && !currentStats ? (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           {[1, 2, 3].map((index) => (
-            <div key={index} className="rounded-md border bg-secondary/20 p-3 animate-pulse">
+            <div key={index} className="min-h-[112px] rounded-md border bg-secondary/20 p-3 animate-pulse flex flex-col justify-between">
               <div className="h-3 w-20 rounded bg-secondary/70" />
-              <div className="mt-2 h-8 w-16 rounded bg-secondary/70" />
-              <div className="mt-2 h-3 w-32 rounded bg-secondary/70" />
+              <div className="h-8 w-16 rounded bg-secondary/70" />
+              <div className="h-3 w-36 rounded bg-secondary/70" />
             </div>
           ))}
         </div>
@@ -135,7 +135,7 @@ export default function UmamiStatsCard() {
       ) : (
         <>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <div className="rounded-md border bg-secondary/20 p-3">
+            <div className="min-h-[112px] rounded-md border bg-secondary/20 p-3 flex flex-col justify-between">
               <p className="text-xs text-muted-foreground">Visiteurs</p>
               <p className="text-2xl font-semibold">{currentStats?.visitors.toLocaleString("fr-FR") ?? 0}</p>
               <DeltaLine
@@ -144,7 +144,7 @@ export default function UmamiStatsCard() {
               />
             </div>
 
-            <div className="rounded-md border bg-secondary/20 p-3">
+            <div className="min-h-[112px] rounded-md border bg-secondary/20 p-3 flex flex-col justify-between">
               <p className="text-xs text-muted-foreground">Pages vues</p>
               <p className="text-2xl font-semibold">{currentStats?.pageviews.toLocaleString("fr-FR") ?? 0}</p>
               <DeltaLine
@@ -153,7 +153,7 @@ export default function UmamiStatsCard() {
               />
             </div>
 
-            <div className="rounded-md border bg-secondary/20 p-3">
+            <div className="min-h-[112px] rounded-md border bg-secondary/20 p-3 flex flex-col justify-between">
               <p className="text-xs text-muted-foreground">Visites</p>
               <p className="text-2xl font-semibold">{currentStats?.visits.toLocaleString("fr-FR") ?? 0}</p>
               <DeltaLine

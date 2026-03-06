@@ -201,27 +201,30 @@ export default async function AdminPage() {
                     return (
                       <div
                         key={activity.id}
-                        className="flex items-center justify-between rounded-md border bg-secondary/20 px-3 py-2"
+                        className="grid grid-cols-1 gap-2 rounded-md border bg-secondary/20 px-3 py-2 sm:grid-cols-[minmax(0,1fr)_7rem_5rem_5rem_3rem] sm:items-center sm:gap-3"
                       >
                         <div className="min-w-0">
                           <div className="flex items-center gap-2 text-xs text-muted-foreground">
                             {isNews ? <NewspaperIcon className="size-3.5" /> : <ImagesIcon className="size-3.5" />}
                             <span>{isNews ? "Actualité" : "Album"}</span>
-                            <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5">
-                              {actionIcon}
-                              {actionLabel}
-                            </span>
                           </div>
                           <p className="truncate text-sm font-medium">{activity.title_snapshot || "Sans titre"}</p>
                         </div>
 
-                        <div>
-                          <p className="text-xs text-muted-foreground">
+                        <div className="sm:text-right">
+                          <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs text-muted-foreground">
+                            {actionIcon}
+                            {actionLabel}
+                          </span>
+                        </div>
+
+                        <div className="sm:text-right">
+                          <p className="text-xs text-muted-foreground truncate">
                             Par <span className="font-semibold text-primary-500">{activity.actor_id ? (authorNameById.get(activity.actor_id) ?? "Admin inconnu") : "Admin inconnu"}</span>
                           </p>
                         </div>
 
-                        <div className="ml-3 flex shrink-0 items-center gap-3">
+                        <div className="sm:text-right">
                           <span className="text-xs text-muted-foreground">
                             {activity.created_at
                               ? new Date(activity.created_at).toLocaleDateString("fr-FR", {
@@ -231,6 +234,9 @@ export default async function AdminPage() {
                               })
                               : "-"}
                           </span>
+                        </div>
+
+                        <div className="sm:text-right">
                           <Link
                             href={isNews ? "/admin/news" : "/admin/gallery"}
                             className="text-xs font-medium text-primary-500 hover:underline"
@@ -313,33 +319,33 @@ export default async function AdminPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <div className="rounded-md border bg-secondary/20 p-3">
+                <div className="rounded-md border bg-secondary/20 p-2">
                   <p className="text-xs text-muted-foreground">Actualites</p>
-                  <p className="text-2xl font-semibold">{(newsCount ?? 0).toLocaleString("fr-FR")}</p>
+                  <p className="text-2xl font-semibold leading-tight">{(newsCount ?? 0).toLocaleString("fr-FR")}</p>
                 </div>
-                <div className="rounded-md border bg-secondary/20 p-3">
+                <div className="rounded-md border bg-secondary/20 p-2">
                   <p className="text-xs text-muted-foreground">Albums</p>
-                  <p className="text-2xl font-semibold">{(albumsCount ?? 0).toLocaleString("fr-FR")}</p>
+                  <p className="text-2xl font-semibold leading-tight">{(albumsCount ?? 0).toLocaleString("fr-FR")}</p>
                 </div>
-                <div className="rounded-md border bg-secondary/20 p-3">
+                <div className="rounded-md border bg-secondary/20 p-2">
                   <p className="text-xs text-muted-foreground">Photos</p>
-                  <p className="text-2xl font-semibold">{(photosCount ?? 0).toLocaleString("fr-FR")}</p>
+                  <p className="text-2xl font-semibold leading-tight">{(photosCount ?? 0).toLocaleString("fr-FR")}</p>
                 </div>
-                <div className="rounded-md border bg-secondary/20 p-3">
+                <div className="rounded-md border bg-secondary/20 p-2">
                   <p className="text-xs text-muted-foreground">Admins</p>
-                  <p className="text-2xl font-semibold">{(adminsCount ?? 0).toLocaleString("fr-FR")}</p>
+                  <p className="text-2xl font-semibold leading-tight">{(adminsCount ?? 0).toLocaleString("fr-FR")}</p>
                 </div>
               </div>
 
               <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                 <span className="rounded-full border px-2 py-1">
-                  Journal activites: {activityLogsError ? "indisponible" : "actif"}
+                  Journal activités : {activityLogsError ? "indisponible" : "actif"}
                 </span>
                 <span className="rounded-full border px-2 py-1">
-                  Quota storage: {storageQuotaBytes ? "configure" : "non configure"}
+                  Quota storage : {storageQuotaBytes ? "configuré" : "non configuré"}
                 </span>
                 <span className="rounded-full border px-2 py-1">
-                  Derniere activite: {latestActivity?.created_at
+                  Dernière activité : {latestActivity?.created_at
                     ? new Date(latestActivity.created_at).toLocaleString("fr-FR")
                     : "-"}
                 </span>
@@ -364,15 +370,15 @@ export default async function AdminPage() {
               ) : (
                 <>
                   <p className="text-sm text-muted-foreground">
-                    Buckets suivis: {trackedBuckets.join(", ")}
+                    Buckets suivis : {trackedBuckets.join(", ")}
                   </p>
                   <p className="text-sm">
-                    Utilise: <span className="font-semibold">{formatBytes(usedStorageBytes)}</span>
+                    Utilisé : <span className="font-semibold">{formatBytes(usedStorageBytes)}</span>
                   </p>
                   {remainingStorageBytes !== null ? (
                     <>
                       <p className="text-sm">
-                        Restant: <span className="font-semibold">{formatBytes(remainingStorageBytes)}</span>
+                        Restant : <span className="font-semibold">{formatBytes(remainingStorageBytes)}</span>
                       </p>
                       <div className="space-y-1.5 pt-1">
                         <div className="h-2 w-full rounded-full bg-secondary/70 overflow-hidden">
