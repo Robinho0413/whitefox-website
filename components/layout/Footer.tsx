@@ -102,8 +102,11 @@ const Footer: React.FC = () => {
                     {/* Disclaimer légal simplifié */}
                     <div className="mt-6 text-xs text-muted-foreground bg-muted/30 p-4 rounded-lg">
                         <p>
-                            Ce site présente les activités de l&apos;association Whitefox cheer & pom&apos;s. 
-                            Aucune donnée personnelle n&apos;est collectée via ce site. Pour tout contact, utilisez l&apos;adresse email indiquée ci-dessus.
+                            Ce site présente les activités de l&apos;association Whitefox cheer & pom&apos;s.
+                            Ce site utilise un outil de mesure d&apos;audience respectueux de la vie privée (Umami).
+                            Aucun cookie n&apos;est utilisé et aucune donnée personnelle n&apos;est stockée.
+                            Les statistiques sont collectées de manière anonyme afin d&apos;améliorer l&apos;expérience utilisateur.
+                            Pour tout contact, utilisez l&apos;adresse email indiquée ci-dessus.
                         </p>
                     </div>
                 </div>

@@ -76,13 +76,25 @@ export default function MentionsLegales() {
                     <h2 className="text-2xl font-semibold mb-4 text-primary-500">Données personnelles</h2>
                     <div className="space-y-4">
                         <p>
-                            <strong>Site vitrine :</strong> Ce site est un site vitrine qui présente les activités de 
-                            l&apos;association Whitefox cheer & pom&apos;s. Aucune donnée personnelle n&apos;est collectée automatiquement lors de 
-                            votre navigation sur ce site.
+                            <strong>Site vitrine :</strong> Ce site présente les activités de 
+                            l&apos;association Whitefox cheer & pom&apos;s.
                         </p>
                         <p>
-                            Pour tout contact, veuillez utiliser l&apos;adresse email mentionnée ci-dessus. Toute correspondance 
-                            sera traitée dans le respect de votre vie privée et ne sera pas transmise à des tiers.
+                            <strong>Mesure d&apos;audience :</strong> ce site utilise Umami pour produire des statistiques
+                            agrégées de fréquentation (ex. nombre de visites, pages consultées, provenance technique).
+                            Ces informations sont utilisées uniquement pour améliorer le site et son contenu.
+                        </p>
+                        <p>
+                            <strong>Base légale :</strong> intérêt légitime de l&apos;association à mesurer et améliorer
+                            la performance du site internet.
+                        </p>
+                        <p>
+                            <strong>Durée de conservation :</strong> les données de mesure d&apos;audience sont conservées
+                            selon les paramètres configurés dans Umami.
+                        </p>
+                        <p>
+                            Pour toute demande relative à vos données (accès, rectification, opposition,
+                            limitation, suppression), vous pouvez nous contacter à l&apos;adresse indiquée ci-dessous.
                         </p>
                     </div>
                 </section>
@@ -92,12 +104,16 @@ export default function MentionsLegales() {
                     <h2 className="text-2xl font-semibold mb-4 text-primary-500">Cookies</h2>
                     <div className="space-y-4">
                         <p>
-                            Ce site peut utiliser des cookies techniques nécessaires à son bon fonctionnement. 
-                            Ces cookies ne collectent aucune donnée personnelle et ne sont pas transmis à des tiers.
+                            Ce site peut utiliser des cookies techniques nécessaires à son bon fonctionnement.
                         </p>
                         <p>
-                            Vous pouvez configurer votre navigateur pour refuser les cookies, mais cela peut affecter 
-                            certaines fonctionnalités du site.
+                            Le service de mesure d&apos;audience Umami est configuré pour une analyse respectueuse de la vie privée.
+                            Si des traceurs non essentiels venaient à etre utilises a l&apos;avenir, un mecanisme de consentement
+                            sera mis en place avant leur depot.
+                        </p>
+                        <p>
+                            Vous pouvez configurer votre navigateur pour limiter les cookies, ce qui peut affecter certaines
+                            fonctionnalités du site.
                         </p>
                     </div>
                 </section>
