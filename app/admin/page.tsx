@@ -4,14 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import { AlertTriangleIcon, ArrowUpRightIcon, ImagesIcon, NewspaperIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react"
+import { AlertTriangleIcon, ArrowUpRightIcon, HandshakeIcon, ImagesIcon, NewspaperIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react"
 
 type RecentActivity = {
   id: string
   title_snapshot: string | null
   created_at: string | null
   actor_id: string | null
-  entity_type: "news" | "album"
+  entity_type: "news" | "album" | "sponsor" | "sponsors"
   action_type: "create" | "update" | "delete"
 }
 
@@ -43,7 +43,7 @@ export default async function AdminPage() {
     redirect("/")
   }
 
-  const trackedBuckets = ["gallery", "news-images"]
+  const trackedBuckets = ["gallery", "news-images", "sponsors-images"]
   const storageQuotaGb = Number(process.env.SUPABASE_STORAGE_QUOTA_GB ?? 0)
   const storageQuotaBytes = Number.isFinite(storageQuotaGb) && storageQuotaGb > 0
     ? storageQuotaGb * 1024 * 1024 * 1024
@@ -85,7 +85,7 @@ export default async function AdminPage() {
       ? Math.min((usedStorageBytes / storageQuotaBytes) * 100, 100)
       : null
 
-  const [{ data: activityLogs, error: activityLogsError }, { data: latestNews }, { data: latestAlbums }] = await Promise.all([
+  const [{ data: activityLogs, error: activityLogsError }, { data: latestNews }, { data: latestAlbums }, { data: latestSponsors }] = await Promise.all([
     supabase
       .from("admin_activity_logs")
       .select("id, title_snapshot, created_at, actor_id, entity_type, action_type")
@@ -98,6 +98,11 @@ export default async function AdminPage() {
       .limit(5),
     supabase
       .from("albums")
+      .select("id, title, created_at, created_by")
+      .order("created_at", { ascending: false })
+      .limit(5),
+    supabase
+      .from("sponsors")
       .select("id, title, created_at, created_by")
       .order("created_at", { ascending: false })
       .limit(5),
@@ -130,6 +135,14 @@ export default async function AdminPage() {
       created_at: item.created_at,
       actor_id: item.created_by,
       entity_type: "album" as const,
+      action_type: "create" as const,
+    })),
+    ...((latestSponsors ?? []) as Array<{ id: string; title: string | null; created_at: string | null; created_by: string | null }>).map((item) => ({
+      id: item.id,
+      title_snapshot: item.title,
+      created_at: item.created_at,
+      actor_id: item.created_by,
+      entity_type: "sponsors" as const,
       action_type: "create" as const,
     })),
   ]
@@ -184,7 +197,25 @@ export default async function AdminPage() {
               ) : (
                 <div className="space-y-2">
                   {limitedActivities.map((activity) => {
-                    const isNews = activity.entity_type === "news"
+                    const entityType = activity.entity_type
+                    const entityLabel =
+                      entityType === "news"
+                        ? "Actualite"
+                        : entityType === "album"
+                          ? "Album"
+                          : "Sponsor"
+                    const entityIcon =
+                      entityType === "news"
+                        ? <NewspaperIcon className="size-3.5" />
+                        : entityType === "album"
+                          ? <ImagesIcon className="size-3.5" />
+                          : <HandshakeIcon className="size-3.5" />
+                    const entityHref =
+                      entityType === "news"
+                        ? "/admin/news"
+                        : entityType === "album"
+                          ? "/admin/gallery"
+                          : "/admin/sponsors"
                     const actionLabel =
                       activity.action_type === "create"
                         ? "Création"
@@ -205,8 +236,8 @@ export default async function AdminPage() {
                       >
                         <div className="min-w-0">
                           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                            {isNews ? <NewspaperIcon className="size-3.5" /> : <ImagesIcon className="size-3.5" />}
-                            <span>{isNews ? "Actualité" : "Album"}</span>
+                            {entityIcon}
+                            <span>{entityLabel}</span>
                           </div>
                           <p className="truncate text-sm font-medium">{activity.title_snapshot || "Sans titre"}</p>
                         </div>
@@ -238,7 +269,7 @@ export default async function AdminPage() {
 
                         <div className="sm:text-right">
                           <Link
-                            href={isNews ? "/admin/news" : "/admin/gallery"}
+                            href={entityHref}
                             className="text-xs font-medium text-primary-500 hover:underline"
                           >
                             Ouvrir
@@ -287,9 +318,9 @@ export default async function AdminPage() {
                     description: "Creer un nouvel album photo",
                   },
                   {
-                    href: "/admin/news",
-                    label: "Gerer les actualites",
-                    description: "Modifier ou supprimer une actualite",
+                    href: "/admin/sponsors/new",
+                    label: "Ajouter un sponsor",
+                    description: "Ajouter un nouveau sponsor",
                   },
                   {
                     href: "/",

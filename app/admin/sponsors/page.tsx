@@ -14,18 +14,20 @@ import {
 } from "@/components/ui/table"
 import Image from "next/image"
 import NewsActionsMenu from "@/components/ui/NewsActionsMenu"
-import { AlertTriangleIcon } from "lucide-react"
 import { logAdminActivity } from "@/lib/admin-activity-log"
 
-type NewsItem = {
+type SponsorsItem = {
     id: string
-    image_url: string | null
     title: string | null
+    adress: string | null
     description: string | null
+    image_url: string | null
+    btn_url: string | null
+    btn_text: string | null
     created_at: string | null
 }
 
-async function deleteNews(newsId: string) {
+async function deleteSponsor(sponsorId: string) {
     "use server"
 
     const supabase = await createClient()
@@ -49,33 +51,33 @@ async function deleteNews(newsId: string) {
     }
 
     // Récupérer l'URL de l'image pour la supprimer du storage
-    const { data: news } = await supabase
-        .from("news")
+    const { data: sponsors } = await supabase
+        .from("sponsors")
         .select("title, image_url")
-        .eq("id", newsId)
+        .eq("id", sponsorId)
         .single()
 
     // Supprimer l'image du storage si elle existe
-    if (news?.image_url) {
+    if (sponsors?.image_url) {
         try {
             // Extraire le chemin du fichier de l'URL publique
-            const url = new URL(news.image_url)
+            const url = new URL(sponsors.image_url)
             const pathParts = url.pathname.split("/")
-            const filePath = pathParts.slice(-2).join("/") // Récupère "news/filename"
+            const filePath = pathParts.slice(-2).join("/") // Récupère "sponsors/filename"
 
             await supabase.storage
-                .from("news-images")
+                .from("sponsors-images")
                 .remove([filePath])
         } catch (error) {
             console.error("Erreur lors de la suppression de l'image:", error)
         }
     }
 
-    // Supprimer la news de la base de données
+    // Supprimer le sponsor de la base de données
     const { error } = await supabase
-        .from("news")
+        .from("sponsors")
         .delete()
-        .eq("id", newsId)
+        .eq("id", sponsorId)
 
     if (error) {
         throw new Error(`Erreur lors de la suppression: ${error.message}`)
@@ -83,16 +85,16 @@ async function deleteNews(newsId: string) {
 
     await logAdminActivity(supabase, {
         actionType: "delete",
-        entityType: "news",
-        entityId: newsId,
+        entityType: "sponsors",
+        entityId: sponsorId,
         actorId: user.id,
-        titleSnapshot: news?.title ?? null,
+        titleSnapshot: sponsors?.title ?? null,
     })
 
-    revalidatePath("/admin/news")
+    revalidatePath("/admin/sponsors")
 }
 
-export default async function AdminNewsPage() {
+export default async function AdminSponsorsPage() {
     const supabase = await createClient()
 
     const {
@@ -113,32 +115,29 @@ export default async function AdminNewsPage() {
         redirect("/")
     }
 
-    const { data: news } = await supabase
-        .from("news")
+    const { data: sponsors } = await supabase
+        .from("sponsors")
         .select("*")
         .order("created_at", { ascending: false })
 
-    const newsRows: NewsItem[] = (news ?? []) as NewsItem[]
-    const newsCount = newsRows.length
+    const sponsorsRows: SponsorsItem[] = (sponsors ?? []) as SponsorsItem[]
+    const sponsorsCount = sponsorsRows.length
 
     return (
         <AdminLayout>
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-bold">Gestion des actualités</h2>
+                    <h2 className="text-2xl font-bold">Gestion des sponsors</h2>
                     <Button asChild variant="default" size="default" className="text-base p-5 font-semibold">
-                        <Link href="/admin/news/new">Ajouter une actualité</Link>
+                        <Link href="/admin/sponsors/new">Ajouter un sponsor</Link>
                     </Button>
                 </div>
 
-                {newsCount >= 5 && (
-                    <div className="flex items-start gap-2 rounded-md border border-secondary/60 bg-secondary/40 px-3 py-2 text-sm text-muted-foreground">
-                        <AlertTriangleIcon className="mt-0.5 size-4 shrink-0" />
-                        <p>
-                            Limite d&apos;actualités atteinte. En publiant une nouvelle actualité, la plus ancienne sera automatiquement supprimée.
-                        </p>
-                    </div>
-                )}
+                <div className="flex items-start gap-2 rounded-md border border-secondary/60 bg-secondary/40 px-3 py-2 text-sm text-muted-foreground">
+                    <p>
+                        Nombres de sponsors : {sponsorsCount}
+                    </p>
+                </div>
 
                 <Table>
                     <TableHeader>
@@ -151,14 +150,14 @@ export default async function AdminNewsPage() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {newsRows.length === 0 ? (
+                        {sponsorsRows.length === 0 ? (
                             <TableRow>
                                 <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
-                                    Aucune actualité disponible.
+                                    Aucun sponsor disponible.
                                 </TableCell>
                             </TableRow>
                         ) : (
-                            newsRows.map((item) => (
+                            sponsorsRows.map((item) => (
                                 <TableRow key={item.id}>
                                     <TableCell>
                                         {item.image_url ? (
@@ -188,7 +187,7 @@ export default async function AdminNewsPage() {
                                             : "-"}
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <NewsActionsMenu newsId={item.id} editHref={`/admin/news/edit?id=${item.id}`} onDelete={deleteNews} />
+                                        <NewsActionsMenu newsId={item.id} editHref={`/admin/sponsors/edit?id=${item.id}`} onDelete={deleteSponsor} />
                                     </TableCell>
                                 </TableRow>
                             ))

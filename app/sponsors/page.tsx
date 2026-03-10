@@ -1,23 +1,54 @@
 import { SponsorsCard } from '@/components/card/sponsorsCard';
+import { createClient } from '@/lib/supabase/client';
 import React from 'react';
 
-export default function Page() {
+type Sponsor = {
+    id: string;
+    title: string;
+    description: string;
+    adress: string;
+    image_url: string;
+    btn_url: string;
+    btn_text: string;
+    created_at: string | null;
+};
+
+export default async function Page() {
+    const supabase = await createClient();
+
+    const { data: sponsorsData } = await supabase
+        .from("sponsors")
+        .select("id, title, description, adress, image_url, btn_url, btn_text")
+        .order("created_at", { ascending: true });
+
+    const sponsors = (sponsorsData ?? []) as Sponsor[];
+
+
     return (
         <div className="mt-10 px-4 py-12 md:p-16">
             <h1 className="text-3xl font-semibold mb-8 relative inline-block">
                 Sponsors
                 <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-primary-500 animate-underline"></span>
             </h1>
-            <div className="flex flex-col justify-center gap-6 w-full mx-auto lg:px-16">
-                <div className='flex flex-col md:flex-row gap-6 flex-1'>
-                    <SponsorsCard title="La noix Gaillarde" adresse="77 Route de Confolens, Gare d’Aubazine, 19560 Saint-Hilaire-Peyroux" image="/images/sponsors-noix-gaillarde.png" date="2025" url="https://www.lanoixgaillarde.com/" btn="Site web" />
-                    <SponsorsCard title="Brown Europe" adresse="6 Rue Jean Allary, 19100 Brive-la-Gaillarde" image="/images/sponsors-brown-europe.png" date="2025" url="https://brown-europe.com/" btn="Site web" />
+            {sponsors.length === 0 ? (
+                <div className="rounded-lg border border-secondary/60 bg-secondary/40 px-4 py-6 text-muted-foreground">
+                    Aucun sponsor disponible.
                 </div>
-                <div className='flex flex-col md:flex-row gap-6 flex-1'>
-                    <SponsorsCard title="SARL TCM19" adresse="41 Rue de la Reine, 19270 Ussac" image="/images/sponsors-tcm.jpg" date="2025" url="https://www.tcm19.fr/" btn="Site web" />
-                    <SponsorsCard title="???" adresse="Adresse inconnue" image="/images/bg-image.png" date="?" url="#" btn="Site web" />
+            ) : (
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
+                    {sponsors.map((sponsor) => (
+                        <SponsorsCard
+                            key={sponsor.id}
+                            title={sponsor.title}
+                            description={sponsor.description}
+                            adresse={sponsor.adress}
+                            image={sponsor.image_url}
+                            url={sponsor.btn_url}
+                            btn={sponsor.btn_text}
+                        />
+                    ))}
                 </div>
-            </div>
+            )}
         </div>
     );
 }

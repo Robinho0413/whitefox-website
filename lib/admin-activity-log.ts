@@ -1,7 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 
 type ActivityAction = "create" | "update" | "delete"
-type ActivityEntity = "news" | "album"
+type ActivityEntity = "news" | "album" | "sponsors"
 
 type LogAdminActivityParams = {
   actionType: ActivityAction

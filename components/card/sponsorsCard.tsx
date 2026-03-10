@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card"
 import SeeMoreButton from "@/components/ui/seeMoreButton";
 
-export function SponsorsCard({ title, adresse, image, date, url, btn }: { title: string, adresse: string, image: string, date: string, url: string, btn: string }) {
+export function SponsorsCard({ title, adresse, description, image, url, btn }: { title: string, adresse: string, description: string, image: string, url: string, btn: string }) {
   const [isHovered, setIsHovered] = React.useState(false)
 
   return (
@@ -41,7 +41,7 @@ export function SponsorsCard({ title, adresse, image, date, url, btn }: { title:
             backfaceVisibility: "hidden",
           }}
         >
-          <CardHeader className="flex flex-row">
+          <CardHeader className="flex flex-row gap-2">
             <div className="flex flex-col w-full justify-center gap-2">
               <CardTitle>{title}</CardTitle>
               <CardDescription>{adresse}</CardDescription>
@@ -72,8 +72,8 @@ export function SponsorsCard({ title, adresse, image, date, url, btn }: { title:
           </CardHeader>
           <CardContent className="flex-1 flex flex-col justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Partenaire depuis {date}</p>
-              <p className="text-sm">Merci pour votre soutien 🤍</p>
+              <p className="text-sm text-muted-foreground">Merci pour votre soutien 🤍</p>
+              <p className="text-sm">{description}</p>
             </div>
             <div className="flex justify-end">
               <a

@@ -7,6 +7,7 @@ const navItems = [
     { href: "/admin", label: "Dashboard", exact: true },
     { href: "/admin/news", label: "Actualités" },
     { href: "/admin/gallery", label: "Galerie" },
+    { href: "/admin/sponsors", label: "Sponsors" },
 ];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -20,7 +21,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     if (user) {
         const { data: userProfile } = await supabase
             .from("profiles")
-            .select("first_name,last_name")
+            .select("first_name, last_name")
             .eq("id", user.id)
             .maybeSingle();
 
