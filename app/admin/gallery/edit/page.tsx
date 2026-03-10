@@ -3,13 +3,9 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import AdminLayout from "@/components/layout/adminLayout"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { createClient } from "@/lib/supabase/server"
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field"
-import ImageUploadField from "@/components/forms/ImageUploadField"
-import EditSubmitButton from "@/components/forms/EditSubmitButton"
 import { logAdminActivity } from "@/lib/admin-activity-log"
+import EditAlbumForm from "./EditAlbumForm"
 
 type EditAlbumError =
     | "id"
@@ -39,12 +35,11 @@ function getStoragePathFromPublicUrl(publicUrl: string): string | null {
     return path || null
 }
 
-function redirectWithError(error: EditAlbumError, albumId?: string): never {
-    const idPart = albumId ? `id=${encodeURIComponent(albumId)}&` : ""
-    redirect(`/admin/gallery/edit?${idPart}error=${error}`)
-}
+type EditAlbumResult =
+    | { ok: true }
+    | { ok: false; error: EditAlbumError }
 
-async function editAlbum(formData: FormData) {
+async function editAlbum(formData: FormData): Promise<EditAlbumResult> {
     "use server"
 
     const supabase = await createClient()
@@ -73,11 +68,11 @@ async function editAlbum(formData: FormData) {
     const imageFile = formData.get("image_file")
 
     if (!albumId) {
-        redirectWithError("id")
+        return { ok: false, error: "id" }
     }
 
     if (!title || !description) {
-        redirectWithError("validation", albumId)
+        return { ok: false, error: "validation" }
     }
 
     const { data: existingAlbum } = await supabase
@@ -87,7 +82,7 @@ async function editAlbum(formData: FormData) {
         .single<{ cover_image: string | null }>()
 
     if (!existingAlbum) {
-        redirectWithError("not-found", albumId)
+        return { ok: false, error: "not-found" }
     }
 
     let nextImageUrl = existingAlbum.cover_image
@@ -107,7 +102,7 @@ async function editAlbum(formData: FormData) {
             })
 
         if (uploadError) {
-            redirectWithError("upload", albumId)
+            return { ok: false, error: "upload" }
         }
 
         const {
@@ -115,7 +110,7 @@ async function editAlbum(formData: FormData) {
         } = supabase.storage.from("gallery").getPublicUrl(filePath)
 
         if (!publicUrl) {
-            redirectWithError("public-url", albumId)
+            return { ok: false, error: "public-url" }
         }
 
         uploadedImagePath = filePath
@@ -136,7 +131,7 @@ async function editAlbum(formData: FormData) {
         if (uploadedImagePath) {
             await supabase.storage.from("gallery").remove([uploadedImagePath])
         }
-        redirectWithError("update", albumId)
+        return { ok: false, error: "update" }
     }
 
     await logAdminActivity(supabase, {
@@ -156,7 +151,7 @@ async function editAlbum(formData: FormData) {
 
     revalidatePath("/")
     revalidatePath("/admin/gallery")
-    redirect("/admin/gallery")
+    return { ok: true }
 }
 
 export default async function EditAdminGalleryPage({
@@ -210,7 +205,7 @@ export default async function EditAdminGalleryPage({
     const albumItem = album as AlbumsItem | null
 
     if (!albumItem) {
-        redirectWithError("not-found", albumId)
+        redirect("/admin/gallery")
     }
 
     return (
@@ -229,42 +224,13 @@ export default async function EditAdminGalleryPage({
                     </p>
                 )}
 
-                <form action={editAlbum}>
-                    <input type="hidden" name="album_id" value={albumItem.id} />
-                    <FieldGroup>
-                        <Field>
-                            <FieldLabel htmlFor="title">Titre</FieldLabel>
-                            <Input id="title" name="title" required placeholder="Titre de l'album" defaultValue={albumItem.title ?? ""} />
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="description">Description</FieldLabel>
-                            <Textarea
-                                id="description"
-                                name="description"
-                                required
-                                placeholder="Description de l'album"
-                                className="min-h-[120px]"
-                                defaultValue={albumItem.description ?? ""}
-                            />
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="image_file">Image</FieldLabel>
-                            <ImageUploadField required={false} initialImageUrl={albumItem.cover_image} />
-                            <FieldDescription>
-                                Laissez vide pour conserver l&apos;image actuelle.
-                            </FieldDescription>
-                        </Field>
-
-                        <Field orientation="horizontal">
-                            <Button asChild type="button" variant="outline">
-                                <Link href="/admin/gallery">Annuler</Link>
-                            </Button>
-                            <EditSubmitButton idleText="Modifier l'album" />
-                        </Field>
-                    </FieldGroup>
-                </form>
+                <EditAlbumForm
+                    albumId={albumItem.id}
+                    initialTitle={albumItem.title ?? ""}
+                    initialDescription={albumItem.description ?? ""}
+                    initialImageUrl={albumItem.cover_image}
+                    editAlbumAction={editAlbum}
+                />
             </div>
         </AdminLayout>
     )

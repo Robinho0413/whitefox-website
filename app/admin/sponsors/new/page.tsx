@@ -3,13 +3,9 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import AdminLayout from "@/components/layout/adminLayout"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { createClient } from "@/lib/supabase/server"
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field"
-import ImageUploadField from "@/components/forms/ImageUploadField"
-import CreateSubmitButton from "@/components/forms/CreateSubmitButton"
 import { logAdminActivity } from "@/lib/admin-activity-log"
+import CreateSponsorsForm from "./CreateSponsorsForm"
 
 type CreateSponsorsError =
     | "validation"
@@ -35,11 +31,11 @@ function getStoragePathFromPublicUrl(publicUrl: string): string | null {
     return path || null
 }
 
-function redirectWithError(error: CreateSponsorsError): never {
-    redirect(`/admin/sponsors/new?error=${error}`)
-}
+type CreateSponsorsResult =
+    | { ok: true }
+    | { ok: false; error: CreateSponsorsError }
 
-async function createSponsors(formData: FormData) {
+async function createSponsors(formData: FormData): Promise<CreateSponsorsResult> {
     "use server"
 
     const supabase = await createClient()
@@ -70,11 +66,11 @@ async function createSponsors(formData: FormData) {
     const btn_text = String(formData.get("btn_text") ?? "En savoir plus").trim()
 
     if (!title || !description || !adress || !btn_url) {
-        redirectWithError("validation")
+        return { ok: false, error: "validation" }
     }
 
     if (!(imageFile instanceof File) || imageFile.size === 0) {
-        redirectWithError("file")
+        return { ok: false, error: "file" }
     }
 
     const validImageFile = imageFile as File
@@ -91,7 +87,7 @@ async function createSponsors(formData: FormData) {
         })
 
     if (uploadError) {
-        redirectWithError("upload")
+        return { ok: false, error: "upload" }
     }
 
     const {
@@ -99,7 +95,7 @@ async function createSponsors(formData: FormData) {
     } = supabase.storage.from("sponsors-images").getPublicUrl(filePath)
 
     if (!publicUrl) {
-        redirectWithError("public-url")
+        return { ok: false, error: "public-url" }
     }
 
     const { data: createdSponsors, error } = await supabase
@@ -118,7 +114,7 @@ async function createSponsors(formData: FormData) {
 
     if (error || !createdSponsors?.id) {
         await supabase.storage.from("sponsors-images").remove([filePath])
-        redirectWithError("insert")
+        return { ok: false, error: "insert" }
     }
 
     await logAdminActivity(supabase, {
@@ -158,7 +154,7 @@ async function createSponsors(formData: FormData) {
 
     revalidatePath("/")
     revalidatePath("/admin/sponsors")
-    redirect("/admin/sponsors")
+    return { ok: true }
 }
 
 export default async function NewAdminSponsorsPage({
@@ -168,14 +164,6 @@ export default async function NewAdminSponsorsPage({
 }) {
     const params = await searchParams
     const error = params?.error
-
-    const errorMessageByCode: Record<CreateSponsorsError, string> = {
-        validation: "Veuillez remplir tous les champs obligatoires.",
-        file: "Veuillez sélectionner un fichier image valide.",
-        upload: "Le téléchargement de l'image a échoué. Vérifiez le bucket/policies Supabase.",
-        "public-url": "Impossible de générer l'URL publique de l'image.",
-        insert: "L'image est uploadée, mais l'insertion en base a échoué.",
-    }
 
     const supabase = await createClient()
 
@@ -207,64 +195,13 @@ export default async function NewAdminSponsorsPage({
                     </Button>
                 </div>
 
-                {error && errorMessageByCode[error] && (
+                {error && (
                     <p className="text-sm text-destructive">
-                        {errorMessageByCode[error]}
+                        Une erreur est survenue lors d'une tentative précédente. Réessayez la publication.
                     </p>
                 )}
 
-                <form action={createSponsors}>
-                    <FieldGroup>
-                        <Field>
-                            <FieldLabel htmlFor="title">Titre</FieldLabel>
-                            <Input id="title" name="title" required placeholder="Nom du sponsor" />
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="description">Description</FieldLabel>
-                            <Textarea
-                                id="description"
-                                name="description"
-                                required
-                                placeholder="Description du sponsor"
-                                className="min-h-[120px]"
-                            />
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="adress">Adresse</FieldLabel>
-                            <Input id="adress" name="adress" required placeholder="Adresse du sponsor" />
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="image_file">Image</FieldLabel>
-                            <ImageUploadField />
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="btn_url">URL du lien</FieldLabel>
-                            <Input id="btn_url" name="btn_url" type="url" required placeholder="https://..." />
-                            <FieldDescription>
-                                Représente le lien vers lequel l’utilisateur sera redirigé en cliquant sur le bouton du sponsor.
-                            </FieldDescription>
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="btn_text">Texte du bouton</FieldLabel>
-                            <Input id="btn_text" name="btn_text" defaultValue="En savoir plus" placeholder="En savoir plus" />
-                            <FieldDescription>
-                                Représente le texte du bouton qui redirigera vers le lien du sponsor. Par défaut, il est défini sur &quot;En savoir plus&quot;.
-                            </FieldDescription>
-                        </Field>
-
-                        <Field orientation="horizontal">
-                            <Button asChild type="button" variant="outline">
-                                <Link href="/admin/sponsors">Annuler</Link>
-                            </Button>
-                            <CreateSubmitButton idleText="Publier le sponsor" />
-                        </Field>
-                    </FieldGroup>
-                </form>
+                <CreateSponsorsForm createSponsorsAction={createSponsors} />
             </div>
         </AdminLayout>
     )

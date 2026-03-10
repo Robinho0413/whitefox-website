@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontalIcon } from "lucide-react"
 import { AlertDialogDeleteConfirm } from "@/components/ui/deleteConfirmation"
+import { toast } from "sonner"
 
 interface NewsActionsMenuProps {
   newsId: string
@@ -25,12 +26,23 @@ export default function NewsActionsMenu({ newsId, editHref, onDelete }: NewsActi
 
   const handleDelete = async () => {
     setIsLoading(true)
+    const loadingToastId = toast.loading("Suppression en cours...", {
+      position: "bottom-right",
+    })
+
     try {
       await onDelete(newsId)
       setIsDeleteDialogOpen(false)
+      toast.success("Element supprime avec succes.", {
+        id: loadingToastId,
+        position: "bottom-right",
+      })
     } catch (error) {
       console.error("Erreur lors de la suppression:", error)
-      alert("Une erreur s'est produite lors de la suppression.")
+      toast.error("La suppression a echoue.", {
+        id: loadingToastId,
+        position: "bottom-right",
+      })
     } finally {
       setIsLoading(false)
     }

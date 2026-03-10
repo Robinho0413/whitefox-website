@@ -3,13 +3,9 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import AdminLayout from "@/components/layout/adminLayout"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { createClient } from "@/lib/supabase/server"
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
-import ImageUploadField from "@/components/forms/ImageUploadField"
-import CreateSubmitButton from "@/components/forms/CreateSubmitButton"
 import { logAdminActivity } from "@/lib/admin-activity-log"
+import CreateAlbumForm from "./CreateAlbumForm"
 
 type CreateAlbumError =
     | "validation"
@@ -35,11 +31,11 @@ function getStoragePathFromPublicUrl(publicUrl: string): string | null {
     return path || null
 }
 
-function redirectWithError(error: CreateAlbumError): never {
-    redirect(`/admin/gallery/new?error=${error}`)
-}
+type CreateAlbumResult =
+    | { ok: true; albumId: string }
+    | { ok: false; error: CreateAlbumError }
 
-async function createAlbum(formData: FormData) {
+async function createAlbum(formData: FormData): Promise<CreateAlbumResult> {
     "use server"
 
     const supabase = await createClient()
@@ -67,11 +63,11 @@ async function createAlbum(formData: FormData) {
     const imageFile = formData.get("image_file")
 
     if (!title || !description) {
-        redirectWithError("validation")
+        return { ok: false, error: "validation" }
     }
 
     if (!(imageFile instanceof File) || imageFile.size === 0) {
-        redirectWithError("file")
+        return { ok: false, error: "file" }
     }
 
     const validImageFile = imageFile as File
@@ -88,7 +84,7 @@ async function createAlbum(formData: FormData) {
         })
 
     if (uploadError) {
-        redirectWithError("upload")
+        return { ok: false, error: "upload" }
     }
 
     const {
@@ -96,7 +92,7 @@ async function createAlbum(formData: FormData) {
     } = supabase.storage.from("gallery").getPublicUrl(filePath)
 
     if (!publicUrl) {
-        redirectWithError("public-url")
+        return { ok: false, error: "public-url" }
     }
 
     const { data: createdAlbum, error } = await supabase
@@ -112,7 +108,7 @@ async function createAlbum(formData: FormData) {
 
     if (error || !createdAlbum?.id) {
         await supabase.storage.from("gallery").remove([filePath])
-        redirectWithError("insert")
+        return { ok: false, error: "insert" }
     }
 
     await logAdminActivity(supabase, {
@@ -153,7 +149,7 @@ async function createAlbum(formData: FormData) {
     revalidatePath("/")
     revalidatePath("/admin/gallery")
     revalidatePath("/admin/gallery/photos")
-    redirect(`/admin/gallery/photos?id=${encodeURIComponent(createdAlbum.id)}`)
+    return { ok: true, albumId: createdAlbum.id }
 }
 
 export default async function NewAdminGalleryPage({
@@ -163,14 +159,6 @@ export default async function NewAdminGalleryPage({
 }) {
     const params = await searchParams
     const error = params?.error
-
-    const errorMessageByCode: Record<CreateAlbumError, string> = {
-        validation: "Veuillez remplir tous les champs obligatoires.",
-        file: "Veuillez sélectionner un fichier image valide.",
-        upload: "Le téléchargement de l'image a échoué. Vérifiez le bucket/policies Supabase.",
-        "public-url": "Impossible de générer l'URL publique de l'image.",
-        insert: "L'image est uploadée, mais l'insertion en base a échoué.",
-    }
 
     const supabase = await createClient()
 
@@ -202,43 +190,13 @@ export default async function NewAdminGalleryPage({
                     </Button>
                 </div>
 
-                {error && errorMessageByCode[error] && (
+                {error && (
                     <p className="text-sm text-destructive">
-                        {errorMessageByCode[error]}
+                        Une erreur est survenue lors d'une tentative précédente. Réessayez la création.
                     </p>
                 )}
 
-                <form action={createAlbum}>
-                    <FieldGroup>
-                        <Field>
-                            <FieldLabel htmlFor="title">Titre</FieldLabel>
-                            <Input id="title" name="title" required placeholder="Titre de l'album" />
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="description">Description</FieldLabel>
-                            <Textarea
-                                id="description"
-                                name="description"
-                                required
-                                placeholder="Description de l'album"
-                                className="min-h-[120px]"
-                            />
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="image_file">Image</FieldLabel>
-                            <ImageUploadField />
-                        </Field>
-
-                        <Field orientation="horizontal">
-                            <Button asChild type="button" variant="outline">
-                                <Link href="/admin/gallery">Annuler</Link>
-                            </Button>
-                            <CreateSubmitButton idleText="Ajouter l'album" />
-                        </Field>
-                    </FieldGroup>
-                </form>
+                <CreateAlbumForm createAlbumAction={createAlbum} />
             </div>
         </AdminLayout>
     )

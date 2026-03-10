@@ -3,13 +3,9 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import AdminLayout from "@/components/layout/adminLayout"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { createClient } from "@/lib/supabase/server"
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field"
-import ImageUploadField from "@/components/forms/ImageUploadField"
-import EditSubmitButton from "@/components/forms/EditSubmitButton"
 import { logAdminActivity } from "@/lib/admin-activity-log"
+import EditSponsorsForm from "./EditSponsorsForm"
 
 type EditSponsorsError =
     | "id"
@@ -40,12 +36,11 @@ function getStoragePathFromPublicUrl(publicUrl: string): string | null {
     return path || null
 }
 
-function redirectWithError(error: EditSponsorsError, sponsorsId?: string): never {
-    const idPart = sponsorsId ? `id=${encodeURIComponent(sponsorsId)}&` : ""
-    redirect(`/admin/sponsors/edit?${idPart}error=${error}`)
-}
+type EditSponsorsResult =
+    | { ok: true }
+    | { ok: false; error: EditSponsorsError }
 
-async function editSponsors(formData: FormData) {
+async function editSponsors(formData: FormData): Promise<EditSponsorsResult> {
     "use server"
 
     const supabase = await createClient()
@@ -76,11 +71,11 @@ async function editSponsors(formData: FormData) {
     const btn_text = String(formData.get("btn_text") ?? "En savoir plus").trim()
 
     if (!sponsorsId) {
-        redirectWithError("id")
+        return { ok: false, error: "id" }
     }
 
     if (!title || !description || !btn_url) {
-        redirectWithError("validation", sponsorsId)
+        return { ok: false, error: "validation" }
     }
 
     const { data: existingSponsors } = await supabase
@@ -90,7 +85,7 @@ async function editSponsors(formData: FormData) {
         .single<{ image_url: string | null }>()
 
     if (!existingSponsors) {
-        redirectWithError("not-found", sponsorsId)
+        return { ok: false, error: "not-found" }
     }
 
     let nextImageUrl = existingSponsors.image_url
@@ -110,7 +105,7 @@ async function editSponsors(formData: FormData) {
             })
 
         if (uploadError) {
-            redirectWithError("upload", sponsorsId)
+            return { ok: false, error: "upload" }
         }
 
         const {
@@ -118,7 +113,7 @@ async function editSponsors(formData: FormData) {
         } = supabase.storage.from("sponsors-images").getPublicUrl(filePath)
 
         if (!publicUrl) {
-            redirectWithError("public-url", sponsorsId)
+            return { ok: false, error: "public-url" }
         }
 
         uploadedImagePath = filePath
@@ -141,7 +136,7 @@ async function editSponsors(formData: FormData) {
         if (uploadedImagePath) {
             await supabase.storage.from("sponsors-images").remove([uploadedImagePath])
         }
-        redirectWithError("update", sponsorsId)
+        return { ok: false, error: "update" }
     }
 
     await logAdminActivity(supabase, {
@@ -161,7 +156,7 @@ async function editSponsors(formData: FormData) {
 
     revalidatePath("/")
     revalidatePath("/admin/sponsors")
-    redirect("/admin/sponsors")
+    return { ok: true }
 }
 
 export default async function EditAdminSponsorsPage({
@@ -215,7 +210,7 @@ export default async function EditAdminSponsorsPage({
     const sponsorsItem = sponsors as SponsorsItem | null
 
     if (!sponsorsItem) {
-        redirectWithError("not-found", sponsorsId)
+        redirect("/admin/sponsors")
     }
 
     return (
@@ -234,58 +229,15 @@ export default async function EditAdminSponsorsPage({
                     </p>
                 )}
 
-                <form action={editSponsors}>
-                    <input type="hidden" name="sponsors_id" value={sponsorsItem.id} />
-                    <FieldGroup>
-                        <Field>
-                            <FieldLabel htmlFor="title">Titre</FieldLabel>
-                            <Input id="title" name="title" required placeholder="Nom du sponsor" defaultValue={sponsorsItem.title ?? ""} />
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="description">Description</FieldLabel>
-                            <Textarea
-                                id="description"
-                                name="description"
-                                required
-                                placeholder="Description du sponsor"
-                                className="min-h-[120px]"
-                                defaultValue={sponsorsItem.description ?? ""}
-                            />
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="image_file">Image</FieldLabel>
-                            <ImageUploadField required={false} initialImageUrl={sponsorsItem.image_url} />
-                            <FieldDescription>
-                                Laissez vide pour conserver l&apos;image actuelle.
-                            </FieldDescription>
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="btn_url">URL du bouton</FieldLabel>
-                            <Input id="btn_url" name="btn_url" type="url" required placeholder="https://..." defaultValue={sponsorsItem.btn_url ?? ""} />
-                            <FieldDescription>
-                                Représente le lien vers lequel l’utilisateur sera redirigé en cliquant sur le bouton du sponsor.
-                            </FieldDescription>
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="btn_text">Texte du bouton</FieldLabel>
-                            <Input id="btn_text" name="btn_text" defaultValue={sponsorsItem.btn_text ?? "En savoir plus"} placeholder="En savoir plus" />
-                            <FieldDescription>
-                                Représente le texte du bouton qui redirigera vers le lien du sponsor. Par défaut, il est défini sur &quot;En savoir plus&quot;.
-                            </FieldDescription>
-                        </Field>
-
-                        <Field orientation="horizontal">
-                            <Button asChild type="button" variant="outline">
-                                <Link href="/admin/sponsors">Annuler</Link>
-                            </Button>
-                            <EditSubmitButton idleText="Modifier le sponsor" />
-                        </Field>
-                    </FieldGroup>
-                </form>
+                <EditSponsorsForm
+                    sponsorsId={sponsorsItem.id}
+                    initialTitle={sponsorsItem.title ?? ""}
+                    initialDescription={sponsorsItem.description ?? ""}
+                    initialImageUrl={sponsorsItem.image_url}
+                    initialBtnUrl={sponsorsItem.btn_url ?? ""}
+                    initialBtnText={sponsorsItem.btn_text ?? "En savoir plus"}
+                    editSponsorsAction={editSponsors}
+                />
             </div>
         </AdminLayout>
     )

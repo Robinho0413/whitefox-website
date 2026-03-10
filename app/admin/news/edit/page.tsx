@@ -3,13 +3,9 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import AdminLayout from "@/components/layout/adminLayout"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { createClient } from "@/lib/supabase/server"
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field"
-import ImageUploadField from "@/components/forms/ImageUploadField"
-import EditSubmitButton from "@/components/forms/EditSubmitButton"
 import { logAdminActivity } from "@/lib/admin-activity-log"
+import EditNewsForm from "./EditNewsForm"
 
 type EditNewsError =
     | "id"
@@ -40,12 +36,11 @@ function getStoragePathFromPublicUrl(publicUrl: string): string | null {
     return path || null
 }
 
-function redirectWithError(error: EditNewsError, newsId?: string): never {
-    const idPart = newsId ? `id=${encodeURIComponent(newsId)}&` : ""
-    redirect(`/admin/news/edit?${idPart}error=${error}`)
-}
+type EditNewsResult =
+    | { ok: true }
+    | { ok: false; error: EditNewsError }
 
-async function editNews(formData: FormData) {
+async function editNews(formData: FormData): Promise<EditNewsResult> {
     "use server"
 
     const supabase = await createClient()
@@ -76,11 +71,11 @@ async function editNews(formData: FormData) {
     const button_text = String(formData.get("button_text") ?? "En savoir plus").trim()
 
     if (!newsId) {
-        redirectWithError("id")
+        return { ok: false, error: "id" }
     }
 
     if (!title || !description || !link_url) {
-        redirectWithError("validation", newsId)
+        return { ok: false, error: "validation" }
     }
 
     const { data: existingNews } = await supabase
@@ -90,7 +85,7 @@ async function editNews(formData: FormData) {
         .single<{ image_url: string | null }>()
 
     if (!existingNews) {
-        redirectWithError("not-found", newsId)
+        return { ok: false, error: "not-found" }
     }
 
     let nextImageUrl = existingNews.image_url
@@ -110,7 +105,7 @@ async function editNews(formData: FormData) {
             })
 
         if (uploadError) {
-            redirectWithError("upload", newsId)
+            return { ok: false, error: "upload" }
         }
 
         const {
@@ -118,7 +113,7 @@ async function editNews(formData: FormData) {
         } = supabase.storage.from("news-images").getPublicUrl(filePath)
 
         if (!publicUrl) {
-            redirectWithError("public-url", newsId)
+            return { ok: false, error: "public-url" }
         }
 
         uploadedImagePath = filePath
@@ -141,7 +136,7 @@ async function editNews(formData: FormData) {
         if (uploadedImagePath) {
             await supabase.storage.from("news-images").remove([uploadedImagePath])
         }
-        redirectWithError("update", newsId)
+        return { ok: false, error: "update" }
     }
 
     await logAdminActivity(supabase, {
@@ -161,7 +156,7 @@ async function editNews(formData: FormData) {
 
     revalidatePath("/")
     revalidatePath("/admin/news")
-    redirect("/admin/news")
+    return { ok: true }
 }
 
 export default async function EditAdminNewsPage({
@@ -215,7 +210,7 @@ export default async function EditAdminNewsPage({
     const newsItem = news as NewsItem | null
 
     if (!newsItem) {
-        redirectWithError("not-found", newsId)
+        redirect("/admin/news")
     }
 
     return (
@@ -234,58 +229,15 @@ export default async function EditAdminNewsPage({
                     </p>
                 )}
 
-                <form action={editNews}>
-                    <input type="hidden" name="news_id" value={newsItem.id} />
-                    <FieldGroup>
-                        <Field>
-                            <FieldLabel htmlFor="title">Titre</FieldLabel>
-                            <Input id="title" name="title" required placeholder="Titre de l'actualité" defaultValue={newsItem.title ?? ""} />
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="description">Description</FieldLabel>
-                            <Textarea
-                                id="description"
-                                name="description"
-                                required
-                                placeholder="Description de l'actualité"
-                                className="min-h-[120px]"
-                                defaultValue={newsItem.description ?? ""}
-                            />
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="image_file">Image</FieldLabel>
-                            <ImageUploadField required={false} initialImageUrl={newsItem.image_url} />
-                            <FieldDescription>
-                                Laissez vide pour conserver l&apos;image actuelle.
-                            </FieldDescription>
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="link_url">URL du lien</FieldLabel>
-                            <Input id="link_url" name="link_url" type="url" required placeholder="https://..." defaultValue={newsItem.link_url ?? ""} />
-                            <FieldDescription>
-                                Représente le lien vers lequel l’utilisateur sera redirigé en cliquant sur le bouton de l’actualité.
-                            </FieldDescription>
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="button_text">Texte du bouton</FieldLabel>
-                            <Input id="button_text" name="button_text" defaultValue={newsItem.button_text ?? "En savoir plus"} placeholder="En savoir plus" />
-                            <FieldDescription>
-                                Représente le texte du bouton qui redirigera vers le lien de l&apos;actualité. Par défaut, il est défini sur &quot;En savoir plus&quot;.
-                            </FieldDescription>
-                        </Field>
-
-                        <Field orientation="horizontal">
-                            <Button asChild type="button" variant="outline">
-                                <Link href="/admin/news">Annuler</Link>
-                            </Button>
-                            <EditSubmitButton idleText="Modifier l'actualité" />
-                        </Field>
-                    </FieldGroup>
-                </form>
+                <EditNewsForm
+                    newsId={newsItem.id}
+                    initialTitle={newsItem.title ?? ""}
+                    initialDescription={newsItem.description ?? ""}
+                    initialImageUrl={newsItem.image_url}
+                    initialLinkUrl={newsItem.link_url ?? ""}
+                    initialButtonText={newsItem.button_text ?? "En savoir plus"}
+                    editNewsAction={editNews}
+                />
             </div>
         </AdminLayout>
     )

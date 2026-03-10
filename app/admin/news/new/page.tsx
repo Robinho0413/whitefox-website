@@ -3,14 +3,10 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import AdminLayout from "@/components/layout/adminLayout"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { createClient } from "@/lib/supabase/server"
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field"
-import ImageUploadField from "@/components/forms/ImageUploadField"
-import CreateSubmitButton from "@/components/forms/CreateSubmitButton"
 import { AlertTriangleIcon } from "lucide-react"
 import { logAdminActivity } from "@/lib/admin-activity-log"
+import CreateNewsForm from "./CreateNewsForm"
 
 type CreateNewsError =
     | "validation"
@@ -40,11 +36,11 @@ function getStoragePathFromPublicUrl(publicUrl: string): string | null {
     return path || null
 }
 
-function redirectWithError(error: CreateNewsError): never {
-    redirect(`/admin/news/new?error=${error}`)
-}
+type CreateNewsResult =
+    | { ok: true }
+    | { ok: false; error: CreateNewsError }
 
-async function createNews(formData: FormData) {
+async function createNews(formData: FormData): Promise<CreateNewsResult> {
     "use server"
 
     const supabase = await createClient()
@@ -74,11 +70,11 @@ async function createNews(formData: FormData) {
     const button_text = String(formData.get("button_text") ?? "En savoir plus").trim()
 
     if (!title || !description || !link_url) {
-        redirectWithError("validation")
+        return { ok: false, error: "validation" }
     }
 
     if (!(imageFile instanceof File) || imageFile.size === 0) {
-        redirectWithError("file")
+        return { ok: false, error: "file" }
     }
 
     const validImageFile = imageFile as File
@@ -95,7 +91,7 @@ async function createNews(formData: FormData) {
         })
 
     if (uploadError) {
-        redirectWithError("upload")
+        return { ok: false, error: "upload" }
     }
 
     const {
@@ -103,7 +99,7 @@ async function createNews(formData: FormData) {
     } = supabase.storage.from("news-images").getPublicUrl(filePath)
 
     if (!publicUrl) {
-        redirectWithError("public-url")
+        return { ok: false, error: "public-url" }
     }
 
     const { data: createdNews, error } = await supabase
@@ -121,7 +117,7 @@ async function createNews(formData: FormData) {
 
     if (error || !createdNews?.id) {
         await supabase.storage.from("news-images").remove([filePath])
-        redirectWithError("insert")
+        return { ok: false, error: "insert" }
     }
 
     await logAdminActivity(supabase, {
@@ -161,7 +157,7 @@ async function createNews(formData: FormData) {
 
     revalidatePath("/")
     revalidatePath("/admin/news")
-    redirect("/admin/news")
+    return { ok: true }
 }
 
 export default async function NewAdminNewsPage({
@@ -171,14 +167,6 @@ export default async function NewAdminNewsPage({
 }) {
     const params = await searchParams
     const error = params?.error
-
-    const errorMessageByCode: Record<CreateNewsError, string> = {
-        validation: "Veuillez remplir tous les champs obligatoires.",
-        file: "Veuillez sélectionner un fichier image valide.",
-        upload: "Le téléchargement de l'image a échoué. Vérifiez le bucket/policies Supabase.",
-        "public-url": "Impossible de générer l'URL publique de l'image.",
-        insert: "L'image est uploadée, mais l'insertion en base a échoué.",
-    }
 
     const supabase = await createClient()
 
@@ -223,67 +211,13 @@ export default async function NewAdminNewsPage({
                     </p>
                 </div>
 
-                {error && errorMessageByCode[error] && (
+                {error && (
                     <p className="text-sm text-destructive">
-                        {errorMessageByCode[error]}
+                        Une erreur est survenue lors d'une tentative précédente. Réessayez la publication.
                     </p>
                 )}
 
-                <form action={createNews}>
-                    <FieldGroup>
-                        <Field>
-                            <FieldLabel htmlFor="title">Titre</FieldLabel>
-                            <Input id="title" name="title" required placeholder="Titre de l'actualité" />
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="description">Description</FieldLabel>
-                            <Textarea
-                                id="description"
-                                name="description"
-                                required
-                                placeholder="Description de l'actualité"
-                                className="min-h-[120px]"
-                            />
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="image_file">Image</FieldLabel>
-                            <ImageUploadField />
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="link_url">URL du lien</FieldLabel>
-                            <Input id="link_url" name="link_url" type="url" required placeholder="https://..." />
-                            <FieldDescription>
-                                Représente le lien vers lequel l’utilisateur sera redirigé en cliquant sur le bouton de l’actualité.
-                            </FieldDescription>
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="button_text">Texte du bouton</FieldLabel>
-                            <Input id="button_text" name="button_text" defaultValue="En savoir plus" placeholder="En savoir plus" />
-                            <FieldDescription>
-                                Représente le texte du bouton qui redirigera vers le lien de l&apos;actualité. Par défaut, il est défini sur &quot;En savoir plus&quot;.
-                            </FieldDescription>
-                        </Field>
-
-                        <Field orientation="horizontal">
-                            <Button asChild type="button" variant="outline">
-                                <Link href="/admin/news">Annuler</Link>
-                            </Button>
-                            <CreateSubmitButton idleText="Publier l'actualité" />
-                            {newsCount >= 5 && (
-                                <div className="flex items-start gap-2 rounded-md ml-8 border border-secondary/60 bg-secondary/40 px-3 py-2 text-sm text-muted-foreground">
-                                    <AlertTriangleIcon className="mt-0.5 size-4 shrink-0" />
-                                    <p>
-                                        Limite d&apos;actualités atteinte. En publiant cette actualité, la plus ancienne sera automatiquement supprimée.
-                                    </p>
-                                </div>
-                            )}
-                        </Field>
-                    </FieldGroup>
-                </form>
+                <CreateNewsForm newsCount={newsCount} createNewsAction={createNews} />
             </div>
         </AdminLayout>
     )

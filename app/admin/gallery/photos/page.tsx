@@ -144,7 +144,7 @@ async function uploadPhotos(formData: FormData) {
   redirect(`/admin/gallery/photos?id=${encodeURIComponent(albumId)}`)
 }
 
-async function deletePhoto(formData: FormData) {
+async function deletePhoto(formData: FormData): Promise<{ ok: boolean }> {
   "use server"
 
   const supabase = await requireAdmin()
@@ -153,7 +153,7 @@ async function deletePhoto(formData: FormData) {
   const photoId = String(formData.get("photo_id") ?? "").trim()
 
   if (!albumId || !photoId) {
-    redirect("/admin/gallery")
+    return { ok: false }
   }
 
   const { data: photo } = await supabase
@@ -164,10 +164,16 @@ async function deletePhoto(formData: FormData) {
     .single<{ id: string; storage_path: string }>()
 
   if (!photo) {
-    redirectWithError(albumId, "delete")
+    return { ok: false }
   }
 
-  await supabase.storage.from("gallery").remove([photo.storage_path])
+  const { error: storageDeleteError } = await supabase.storage
+    .from("gallery")
+    .remove([photo.storage_path])
+
+  if (storageDeleteError) {
+    return { ok: false }
+  }
 
   const { error: deleteError } = await supabase
     .from("album_photos")
@@ -175,12 +181,12 @@ async function deletePhoto(formData: FormData) {
     .eq("id", photo.id)
 
   if (deleteError) {
-    redirectWithError(albumId, "delete")
+    return { ok: false }
   }
 
   revalidatePath("/admin/gallery")
   revalidatePath("/admin/gallery/photos")
-  redirect(`/admin/gallery/photos?id=${encodeURIComponent(albumId)}`)
+  return { ok: true }
 }
 
 async function reorderPhotos(formData: FormData): Promise<{ ok: boolean }> {

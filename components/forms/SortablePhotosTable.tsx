@@ -27,7 +27,7 @@ type SortablePhotoItem = {
 type SortablePhotosTableProps = {
     albumId: string
     photos: SortablePhotoItem[]
-    deletePhotoAction: (formData: FormData) => void | Promise<void>
+    deletePhotoAction: (formData: FormData) => Promise<{ ok: boolean }>
     reorderPhotosAction: (formData: FormData) => Promise<{ ok: boolean }>
 }
 
@@ -46,7 +46,9 @@ export default function SortablePhotosTable({
 }: SortablePhotosTableProps) {
     const [orderedPhotos, setOrderedPhotos] = useState(photos)
     const [draggedPhotoId, setDraggedPhotoId] = useState<string | null>(null)
+    const [deletingPhotoId, setDeletingPhotoId] = useState<string | null>(null)
     const [, startReordering] = useTransition()
+    const [, startDeleting] = useTransition()
     const emptyDragImageRef = useRef<HTMLImageElement | null>(null)
     const orderedPhotosRef = useRef(orderedPhotos)
     const dragStartOrderRef = useRef<string | null>(null)
@@ -181,6 +183,37 @@ export default function SortablePhotosTable({
         dragStartOrderRef.current = null
     }
 
+    const handleDeleteSubmit = (event: React.FormEvent<HTMLFormElement>, photoId: string) => {
+        event.preventDefault()
+
+        const formData = new FormData(event.currentTarget)
+
+        startDeleting(async () => {
+            setDeletingPhotoId(photoId)
+
+            const loadingToastId = toast.loading("Suppression de la photo...", {
+                position: "bottom-right",
+            })
+
+            const result = await deletePhotoAction(formData)
+
+            if (result.ok) {
+                setOrderedPhotos((currentPhotos) => currentPhotos.filter((photo) => photo.id !== photoId))
+                toast.success("Photo supprimee.", {
+                    id: loadingToastId,
+                    position: "bottom-right",
+                })
+            } else {
+                toast.error("La suppression de la photo a echoue.", {
+                    id: loadingToastId,
+                    position: "bottom-right",
+                })
+            }
+
+            setDeletingPhotoId(null)
+        })
+    }
+
     return (
         <div className="space-y-3">
             <div className="flex items-start gap-2 rounded-md border border-secondary/60 bg-secondary/40 px-3 py-2 text-sm text-muted-foreground">
@@ -255,10 +288,14 @@ export default function SortablePhotosTable({
                                             : "-"}
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <form action={deletePhotoAction}>
+                                        <form onSubmit={(event) => handleDeleteSubmit(event, photo.id)}>
                                             <input type="hidden" name="album_id" value={albumId} />
                                             <input type="hidden" name="photo_id" value={photo.id} />
-                                            <DeleteSubmitButton />
+                                            <DeleteSubmitButton
+                                                idleText="Supprimer"
+                                                pendingText="Suppression..."
+                                                disabled={deletingPhotoId === photo.id}
+                                            />
                                         </form>
                                     </TableCell>
                                 </TableRow>
