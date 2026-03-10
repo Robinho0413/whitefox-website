@@ -73,19 +73,19 @@ const Navbar = () => {
                             href="https://www.instagram.com/whitefox_cheer"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center justify-center w-12 h-12 rounded-full bg-primary-500 hover:bg-primary-600 text-white transition-colors shadow-lg"
+                            className="flex items-center justify-center w-10 h-10 rounded-full bg-primary-500 hover:bg-primary-600 text-white transition-colors shadow-lg"
                             aria-label="Instagram"
                         >
-                            <InstagramIcon size={24} />
+                            <InstagramIcon size={20} />
                         </Link>
                         <Link
                             href="https://www.tiktok.com/@whitefox_cheer_poms"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center justify-center w-12 h-12 rounded-full bg-primary-500 hover:bg-primary-600 text-white transition-colors shadow-lg"
+                            className="flex items-center justify-center w-10 h-10 rounded-full bg-primary-500 hover:bg-primary-600 text-white transition-colors shadow-lg"
                             aria-label="TikTok"
                         >
-                            <TikTokIcon size={24} />
+                            <TikTokIcon size={20} />
                         </Link>
                     </div>
                 )}
