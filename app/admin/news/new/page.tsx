@@ -213,7 +213,7 @@ export default async function NewAdminNewsPage({
 
                 {error && (
                     <p className="text-sm text-destructive">
-                        Une erreur est survenue lors d'une tentative précédente. Réessayez la publication.
+                        Une erreur est survenue lors d&apos;une tentative précédente. Réessayez la publication.
                     </p>
                 )}
 

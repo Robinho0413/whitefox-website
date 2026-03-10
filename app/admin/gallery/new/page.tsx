@@ -192,7 +192,7 @@ export default async function NewAdminGalleryPage({
 
                 {error && (
                     <p className="text-sm text-destructive">
-                        Une erreur est survenue lors d'une tentative précédente. Réessayez la création.
+                        Une erreur est survenue lors d&apos;une tentative précédente. Réessayez la création.
                     </p>
                 )}
 
