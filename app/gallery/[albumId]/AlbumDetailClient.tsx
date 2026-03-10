@@ -203,12 +203,8 @@ export default function AlbumDetailClient({
 
     return (
         <div className="mt-10 px-4 py-12 md:p-16">
-            <div className="flex items-center justify-between gap-4 mb-8">
-                <h1 className="text-3xl font-semibold relative inline-block">
-                    {albumTitle}
-                    <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-primary-500 animate-underline"></span>
-                </h1>
-                <Link href="/gallery">
+            <div className="flex flex-col gap-4 mb-8">
+                <Link href="/gallery" className="mb-4">
                     <Button variant="icon" className="flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -216,9 +212,12 @@ export default function AlbumDetailClient({
                         <span className="hidden md:inline">Retour</span>
                     </Button>
                 </Link>
+                <h1 className="text-3xl font-semibold relative inline-block w-fit">
+                    {albumTitle}
+                    <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-primary-500 animate-underline"></span>
+                </h1>
+                <p className="text-muted-foreground">{albumDescription}</p>
             </div>
-
-            <p className="text-muted-foreground mb-8">{albumDescription}</p>
 
             <div className="flex items-center justify-end gap-2 sm:gap-4 mb-6">
                 <div className="flex gap-1 sm:gap-2">

@@ -216,9 +216,12 @@ export default async function NewAdminNewsPage({
                     </Button>
                 </div>
 
-                <p className="text-sm text-muted-foreground">
-                    Limite active : {newsCount} / 5 actualités. Si une 6e actualité est publiée, la plus ancienne sera supprimée automatiquement.
-                </p>
+                <div className="flex items-start gap-2 rounded-md border border-secondary/60 bg-secondary/40 px-3 py-2 text-sm text-muted-foreground">
+                    <AlertTriangleIcon className="mt-0.5 size-4 shrink-0" />
+                    <p>
+                        Limite active : {newsCount} / 5 actualités. Si une 6e actualité est publiée, la plus ancienne sera supprimée automatiquement.
+                    </p>
+                </div>
 
                 {error && errorMessageByCode[error] && (
                     <p className="text-sm text-destructive">
