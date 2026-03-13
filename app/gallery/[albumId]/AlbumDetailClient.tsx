@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 type AlbumDetailClientProps = {
@@ -23,6 +23,7 @@ export default function AlbumDetailClient({
     const [columnsPerRow, setColumnsPerRow] = useState<2 | 4 | 6>(4);
     const [touchStartX, setTouchStartX] = useState<number | null>(null);
     const [slideDirection, setSlideDirection] = useState<1 | -1>(1);
+    const shouldReduceMotion = useReducedMotion();
 
     const selectedImage = selectedImageIndex !== null ? albumImages[selectedImageIndex] : null;
 
@@ -266,10 +267,23 @@ export default function AlbumDetailClient({
                 </div>
             </div>
 
-            <div className={getGridClasses()}>
+            <motion.div
+                layout
+                className={getGridClasses()}
+                transition={{ layout: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } }}
+            >
                 {albumImages.map((imageSrc, index) => (
-                    <div
+                    <motion.div
+                        layout
                         key={index}
+                        initial={shouldReduceMotion ? false : { opacity: 0, y: 20, scale: 0.98 }}
+                        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                        viewport={{ once: true, amount: 0.15 }}
+                        transition={{
+                            duration: 0.4,
+                            ease: [0.22, 1, 0.36, 1],
+                            delay: shouldReduceMotion ? 0 : Math.min(index * 0.04, 0.36),
+                        }}
                         className="relative aspect-[4/3] overflow-hidden rounded-lg cursor-pointer group"
                         onClick={(event) => handleCardClick(event, index)}
                         style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}
@@ -309,9 +323,9 @@ export default function AlbumDetailClient({
                             className="absolute inset-0 pointer-events-none rounded-lg"
                             style={{ boxShadow: "inset 0 0 0 1px rgba(255, 255, 255, 0.1)" }}
                         ></div>
-                    </div>
+                    </motion.div>
                 ))}
-            </div>
+            </motion.div>
 
             {albumImages.length === 0 && (
                 <p className="text-muted-foreground">Aucune photo dans cet album pour le moment.</p>

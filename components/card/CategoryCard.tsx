@@ -1,4 +1,7 @@
+"use client"
+
 import * as React from "react"
+import { motion, useReducedMotion } from "framer-motion"
 
 import Image from "next/image"
 import {
@@ -16,6 +19,8 @@ interface Cat1CardProps {
 }
 
 export function CategoryCard({ title, ageRange, horaires }: Cat1CardProps) {
+  const shouldReduceMotion = useReducedMotion()
+
   return (
     <Card 
       className="md:w-[350px]" 
@@ -27,30 +32,38 @@ export function CategoryCard({ title, ageRange, horaires }: Cat1CardProps) {
       </CardHeader>
       <CardContent>
         <div className="grid w-full items-center gap-8">
-          <div className="flex gap-2 items-baseline">
-            <span className="text-5xl font-semibold">110€</span>
-            <span>/ Licence</span>
-          </div>
-          <div className="space-y-2 text-md text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-              </svg>
-              <p>Entraînements 1/semaine (samedi)</p>
+          <motion.div
+            className="space-y-8"
+            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
+          >
+            <div className="flex gap-2 items-baseline">
+              <span className="text-5xl font-semibold">110€</span>
+              <span>/ Licence</span>
             </div>
-            <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-              </svg>
-              <p>En compétition + animation</p>
+            <div className="space-y-2 text-md text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                </svg>
+                <p>Entraînements 1/semaine (samedi)</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                </svg>
+                <p>En compétition + animation</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                </svg>
+                <p>{horaires}</p>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-              </svg>
-              <p>{horaires}</p>
-            </div>
-          </div>
+          </motion.div>
 
           <span className="w-0 h-0.5 bg-primary-500 animate-underline opacity-80"></span>
           <div className="space-y-3">

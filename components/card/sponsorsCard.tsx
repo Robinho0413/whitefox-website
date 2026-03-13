@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 
 import {
   Card,
@@ -13,8 +13,13 @@ import {
 } from "@/components/ui/card"
 import SeeMoreButton from "@/components/ui/seeMoreButton";
 
-export function SponsorsCard({ title, adresse, description, image, url, btn }: { title: string, adresse: string, description: string, image: string, url: string, btn: string }) {
+export function SponsorsCard({ title, adresse, description, image, url, btn, index = 0 }: { title: string, adresse: string, description: string, image: string, url: string, btn: string, index?: number }) {
   const [isHovered, setIsHovered] = React.useState(false)
+  const shouldReduceMotion = useReducedMotion()
+
+  const entryAnimation = shouldReduceMotion
+    ? { opacity: 1, y: 0 }
+    : { opacity: 1, y: 0 }
 
   return (
     <motion.div
@@ -24,8 +29,15 @@ export function SponsorsCard({ title, adresse, description, image, url, btn }: {
       onMouseLeave={() => setIsHovered(false)}
       onFocus={() => setIsHovered(true)}
       onBlur={() => setIsHovered(false)}
+      initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
+      whileInView={entryAnimation}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{
+        opacity: { duration: 0.45, ease: "easeOut", delay: shouldReduceMotion ? 0 : index * 0.08 },
+        y: { duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: shouldReduceMotion ? 0 : index * 0.08 },
+        scale: { duration: 0.3, ease: "easeOut" }
+      }}
       animate={{ scale: isHovered ? 1.01 : 1 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
       tabIndex={0}
     >
       <motion.div

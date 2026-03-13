@@ -36,7 +36,7 @@ export default async function Page() {
                 </div>
             ) : (
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
-                    {sponsors.map((sponsor) => (
+                    {sponsors.map((sponsor, index) => (
                         <SponsorsCard
                             key={sponsor.id}
                             title={sponsor.title}
@@ -45,6 +45,7 @@ export default async function Page() {
                             image={sponsor.image_url}
                             url={sponsor.btn_url}
                             btn={sponsor.btn_text}
+                            index={index}
                         />
                     ))}
                 </div>
