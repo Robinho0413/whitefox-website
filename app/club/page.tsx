@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { BadgeCheck, ChevronLeft, ChevronRight, Handshake, Smile, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardTitle, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
 
 const bubbles = [
   { id: 1, title: "Honnêteté", icon: BadgeCheck },
