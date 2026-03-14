@@ -17,10 +17,10 @@ const Navbar = () => {
 
     const navItems = [
         { name: 'Accueil', path: '/' },
-        { name: 'Inscription', path: '/inscription' },
         { name: 'Club', path: '/club' },
-        { name: 'Sponsors', path: '/sponsors' },
+        { name: 'Inscription', path: '/inscription' },
         { name: 'Galerie', path: '/gallery' },
+        { name: 'Sponsors', path: '/sponsors' },
         { name: 'Contact', path: '/contact' },
     ];
 
