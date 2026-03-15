@@ -6,6 +6,7 @@ import { BadgeCheck, ChevronLeft, ChevronRight, Handshake, Smile, Users } from "
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
+import { FadeInUp } from "@/components/animations/FadeInUp";
 
 const bubbles = [
   { id: 1, title: "Honnêteté", icon: BadgeCheck },
@@ -57,99 +58,108 @@ export default function InfiniteBubbleCarousel() {
 
   return (
     <div className="relative flex flex-col justify-center items-center w-full overflow-hidden mt-10 px-4 py-12 md:p-16 md:px-36 space-y-10">
-      <div className="flex flex-col space-y-1 justify-start items-start w-full">
+      <FadeInUp className="flex flex-col space-y-1 justify-start items-start w-full">
         <h2 className="text-3xl font-semibold">Bienvenue chez</h2>
         <h1 className="text-4xl sm:text-7xl font-bold">Whitefox cheer & pom&apos;s</h1>
-      </div>
+      </FadeInUp>
       <div className="relative flex flex-col justify-center w-full space-y-6">
         <div className="flex flex-col gap-6 w-full">
-          <p>
-            Créée en 2024, l&apos;association Whitefox cheer & pom&apos;s réunit des passionnés de cheerleading et de danse pompom à Brive-la-Gaillarde. Notre association sportive est ouverte à tous dès l&apos;âge de 4 ans. Tout au long de l&apos;année, nous participons à des compétitions, des démonstrations et des animations, afin de partager notre passion et notre énergie avec le public.
-          </p>
-          <div className="flex flex-row gap-6 w-full">
-            <Card>
-              <CardHeader>
-                <CardTitle>Cheerleading</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>
-                  Le cheerleading est un sport complet qui mélange acrobaties, portés, pyramides, danse et esprit d&apos;équipe. Nous mettons un point d&apos;honneur à allier performance et esprit collectif, dans une ambiance toujours motivante et positive.
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Danse Pompom</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>
-                  La danse pompom, met l&apos;accent sur la chorégraphie, la synchronisation et l&apos;énergie. Elle se pratique sur des musiques entraînantes avec des pompoms et permet d&apos;exprimer sa créativité tout en développant le sens du rythme et la confiance en soi.
-                </p>
-              </CardContent>
-            </Card>
+          <FadeInUp delay={0.1}>
+            <p>
+              Créée en 2024, l&apos;association Whitefox cheer & pom&apos;s réunit des passionnés de cheerleading et de danse pompom à Brive-la-Gaillarde. Notre association sportive est ouverte à tous dès l&apos;âge de 4 ans. Tout au long de l&apos;année, nous participons à des compétitions, des démonstrations et des animations, afin de partager notre passion et notre énergie avec le public.
+            </p>
+          </FadeInUp>
+          <div className="flex flex-col sm:flex-row gap-6 w-full">
+            <FadeInUp delay={0.2} className="w-full">
+              <Card style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}>
+                <CardHeader>
+                  <CardTitle>Cheerleading</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>
+                    Le cheerleading est un sport complet qui mélange acrobaties, portés, pyramides, danse et esprit d&apos;équipe. Nous mettons un point d&apos;honneur à allier performance et esprit collectif, dans une ambiance toujours motivante et positive.
+                  </p>
+                </CardContent>
+              </Card>
+            </FadeInUp>
+            <FadeInUp delay={0.3} className="w-full">
+              <Card style={{ boxShadow: "0 10px 25px -3px rgba(59, 165, 155, 0.1), 0 4px 6px -2px rgba(59, 165, 155, 0.05)" }}>
+                <CardHeader>
+                  <CardTitle>Danse Pompom</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>
+                    La danse pompom, met l&apos;accent sur la chorégraphie, la synchronisation et l&apos;énergie. Elle se pratique sur des musiques entraînantes avec des pompoms et permet d&apos;exprimer sa créativité tout en développant le sens du rythme et la confiance en soi.
+                  </p>
+                </CardContent>
+              </Card>
+            </FadeInUp>
           </div>
         </div>
         <div className="flex flex-col-reverse w-full">
-          <div
-            className="relative flex justify-center items-center h-full w-full overflow-hidden sm:hover:scale-105 transition-transform duration-300"
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
-            <button onClick={prevBubble} className="absolute left-0 sm:left-20 p-2 rounded-full z-20">
-              <ChevronLeft size={32} />
-            </button>
-            <div className="relative flex justify-center items-center w-64 h-96">
-              {bubbles.map((bubble, i) => {
-                const position = getRelativePosition(i);
-                const isActive = position === "active";
-                const isLeft = position === "left";
-                const isRight = position === "right";
-                const isBack = position === "back";
-                const ValueIcon = bubble.icon;
+          <FadeInUp delay={0.35}>
+            <div
+              className="relative flex justify-center items-center h-full w-full overflow-hidden sm:hover:scale-105 transition-transform duration-300"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              <button onClick={prevBubble} className="absolute left-0 sm:left-20 p-2 rounded-full z-20">
+                <ChevronLeft size={32} />
+              </button>
+              <div className="relative flex justify-center items-center w-64 h-96">
+                {bubbles.map((bubble, i) => {
+                  const position = getRelativePosition(i);
+                  const isActive = position === "active";
+                  const isLeft = position === "left";
+                  const isRight = position === "right";
+                  const isBack = position === "back";
+                  const ValueIcon = bubble.icon;
 
-                return (
-                  <motion.div
-                    key={bubble.id}
-                    className="absolute w-40 h-40 rounded-full overflow-hidden flex flex-col items-center justify-center"
-                    style={{
-                      zIndex: isActive ? 10 : isLeft || isRight ? 7 : isBack ? 4 : 0,
-                      background: "radial-gradient(circle at center, rgba(47,132,124,0.98) 42%, rgba(47,132,124,0.9) 62%, rgba(47,132,124,0.72) 78%, rgba(47,132,124,0.48) 90%, rgba(47,132,124,0.26) 98%, rgba(47,132,124,0.14) 100%)",
-                    }}
-                    initial={{ opacity: 0.5, scale: 0.8 }}
-                    animate={{
-                      opacity: isActive ? 1 : isBack ? 0.28 : 0.55,
-                      scale: isActive ? 1.24 : isBack ? 0.72 : 0.92,
-                      x: isActive ? 0 : isLeft ? -105 : isRight ? 105 : 0,
-                      y: isActive ? 12 : isBack ? -78 : -20,
-                      filter: isActive ? "brightness(1)" : isBack ? "brightness(0.6)" : "brightness(0.8)",
-                      boxShadow: isActive
-                        ? "0 0 24px rgba(59, 165, 155, 0.62), 0 0 72px rgba(59, 165, 155, 0.34)"
-                        : isBack
-                          ? "0 0 12px rgba(59, 165, 155, 0.28), 0 0 36px rgba(59, 165, 155, 0.14)"
-                          : "0 0 18px rgba(59, 165, 155, 0.44), 0 0 54px rgba(59, 165, 155, 0.24)",
-                    }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <div className="flex flex-col items-center justify-center">
-                      <ValueIcon className="w-14 h-14 text-white" strokeWidth={2.3} />
-                      <h2 className="text-white text-center mt-2 text-sm font-semibold">{bubble.title}</h2>
-                    </div>
-                  </motion.div>
-                );
-              })}
+                  return (
+                    <motion.div
+                      key={bubble.id}
+                      className="absolute w-40 h-40 rounded-full overflow-hidden flex flex-col items-center justify-center"
+                      style={{
+                        zIndex: isActive ? 10 : isLeft || isRight ? 7 : isBack ? 4 : 0,
+                        background: "radial-gradient(circle at center, rgba(47,132,124,0.98) 42%, rgba(47,132,124,0.9) 62%, rgba(47,132,124,0.72) 78%, rgba(47,132,124,0.48) 90%, rgba(47,132,124,0.26) 98%, rgba(47,132,124,0.14) 100%)",
+                      }}
+                      initial={{ opacity: 0.5, scale: 0.8 }}
+                      animate={{
+                        opacity: isActive ? 1 : isBack ? 0.28 : 0.55,
+                        scale: isActive ? 1.24 : isBack ? 0.72 : 0.92,
+                        x: isActive ? 0 : isLeft ? -105 : isRight ? 105 : 0,
+                        y: isActive ? 12 : isBack ? -78 : -20,
+                        filter: isActive ? "brightness(1)" : isBack ? "brightness(0.6)" : "brightness(0.8)",
+                        boxShadow: isActive
+                          ? "0 0 24px rgba(59, 165, 155, 0.62), 0 0 72px rgba(59, 165, 155, 0.34)"
+                          : isBack
+                            ? "0 0 12px rgba(59, 165, 155, 0.28), 0 0 36px rgba(59, 165, 155, 0.14)"
+                            : "0 0 18px rgba(59, 165, 155, 0.44), 0 0 54px rgba(59, 165, 155, 0.24)",
+                      }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <div className="flex flex-col items-center justify-center">
+                        <ValueIcon className="w-14 h-14 text-white" strokeWidth={2.3} />
+                        <h2 className="text-white text-center mt-2 text-sm font-semibold">{bubble.title}</h2>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+              <button onClick={nextBubble} className="absolute right-0 sm:right-20 p-2 rounded-full z-10">
+                <ChevronRight size={32} />
+              </button>
             </div>
-            <button onClick={nextBubble} className="absolute right-0 sm:right-20 p-2 rounded-full z-10">
-              <ChevronRight size={32} />
-            </button>
-          </div>
-          <p className="w-full flex justify-center items-center">
-            Chez les Whitefox cheer & pom&apos;s, nos valeurs sont: honnêteté, esprit d&apos;équipe, respect et plaisir. Nous croyons qu&apos;un bon athlète est avant tout quelqu&apos;un qui agit avec sincérité, soutient ses coéquipiers et s&apos;épanouit en s&apos;amusant. Notre objectif est de créer un environnement où chacun peut progresser, se dépasser et surtout prendre du plaisir.
-          </p>
+          </FadeInUp>
+          <FadeInUp delay={0.2}>
+            <p className="w-full flex justify-center items-center">
+              Chez les Whitefox cheer & pom&apos;s, nos valeurs sont: honnêteté, esprit d&apos;équipe, respect et plaisir. Nous croyons qu&apos;un bon athlète est avant tout quelqu&apos;un qui agit avec sincérité, soutient ses coéquipiers et s&apos;épanouit en s&apos;amusant. Notre objectif est de créer un environnement où chacun peut progresser, se dépasser et surtout prendre du plaisir.
+            </p>
+          </FadeInUp>
         </div>
       </div>
-      <div>
-
+      <FadeInUp delay={0.35}>
         <div className="flex flex-col justify-center items-center">
           <p className="text-center font-semibold text-lg max-w-4xl">
             Que tu sois débutant ou confirmé, l&apos;association Whitefox cheer & pom&apos;s t&apos;ouvre ses portes !
@@ -159,9 +169,10 @@ export default function InfiniteBubbleCarousel() {
           </p>
           <Link href={'/inscription'} className="w-full sm:w-fit">
             <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
+              initial={{ opacity: 0, y: 20, scale: 0.97 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
             >
               <Button className="text-lg font-semibold w-full sm:w-auto" variant={"default"} size={"lg"}>
                 Nous rejoindre !
@@ -169,7 +180,7 @@ export default function InfiniteBubbleCarousel() {
             </motion.div>
           </Link>
         </div>
-      </div>
+      </FadeInUp>
     </div>
   );
 }
