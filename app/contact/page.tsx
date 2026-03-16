@@ -3,6 +3,7 @@ import { EmailCard } from '@/components/card/emailCard';
 import { MapCard } from '@/components/card/mapCard';
 import { SocialCard } from '@/components/card/socialCard';
 import { FadeInUp } from '@/components/animations/FadeInUp';
+import { ContactForm } from '@/components/forms/ContactForm';
 import React from 'react';
 
 export default function Page() {
@@ -30,6 +31,15 @@ export default function Page() {
                     <MapCard />
                 </FadeInUp>
             </div>
+            <FadeInUp delay={0.4} className='mt-3'>
+                <section className='rounded-lg border bg-card text-card-foreground shadow-sm p-6 md:p-8'>
+                    <h2 className='text-xl md:text-2xl font-semibold mb-2'>Envoyez-nous un message</h2>
+                    <p className='text-muted-foreground mb-6'>
+                        Une question ? Nous vous repondrons rapidement.
+                    </p>
+                    <ContactForm />
+                </section>
+            </FadeInUp>
         </div>
     );
 }

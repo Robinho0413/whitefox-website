@@ -3,5 +3,5 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Whitefox Cheer",
-  description: "Whitefox, le club de cheerleading de la région de Brive-la-Gaillarde",
+  description: "Site officiel de l'association Whitefox Cheer à Brive-la-Gaillarde. Découvrez nos entraînements, événements et rejoignez notre équipe de cheerleading.",
 };
