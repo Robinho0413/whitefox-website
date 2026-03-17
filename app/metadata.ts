@@ -7,7 +7,7 @@ export const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Whitefox Cheer",
+    default: "Whitefox Cheer | Cheerleading et danse pompom à Brive-la-Gaillarde",
     template: "%s | Whitefox Cheer",
   },
   description: "Site officiel de l'association Whitefox Cheer à Brive-la-Gaillarde. Découvrez nos entraînements, événements et rejoignez notre équipe de cheerleading et de danse pompom.",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     url: siteUrl,
     siteName: "Whitefox Cheer",
-    title: "Whitefox Cheer",
+    title: "Whitefox Cheer | Cheerleading et danse pompom à Brive-la-Gaillarde",
     description:
       "Association de cheerleading et danse pompom a Brive-la-Gaillarde. Entrainements, actualites, galerie et inscriptions.",
     images: [
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Whitefox Cheer",
+    title: "Whitefox Cheer | Cheerleading et danse pompom à Brive-la-Gaillarde",
     description:
       "Association de cheerleading et danse pompom a Brive-la-Gaillarde.",
     images: ["/images/logo-black.png"],
