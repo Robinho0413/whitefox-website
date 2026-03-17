@@ -25,7 +25,7 @@ export function RotateWords({ text = "Rotate", words = ["Cheer", "Pom's"] }: Rot
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="text-5xl sm:text-7xl lg:text-9xl text-center font-bold tracking-tighter md:leading-[4rem] w-fit flex items-center justify-center gap-1.5"
+            className="text-5xl sm:text-7xl lg:text-8xl text-center font-bold tracking-tighter md:leading-[4rem] w-fit flex items-center justify-center gap-1.5"
         >
             {text}{' '}
             <AnimatePresence mode="wait">

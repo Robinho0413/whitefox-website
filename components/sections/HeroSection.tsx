@@ -11,6 +11,7 @@ export default function HeroSection() {
     const y = useTransform(scrollY, [0, 700], [0, 250]);
     const scale = useTransform(scrollY, [0, 700], [1, 1.05]);
     const buttonY = useTransform(scrollY, [0, 300], [0, 250]);
+    const subtitleOpacity = useTransform(scrollY, [0, 120], [1, 0]);
 
     return (
         <div className="relative w-full h-screen overflow-hidden">
@@ -37,6 +38,12 @@ export default function HeroSection() {
             <div className="absolute inset-0 flex flex-col justify-end bottom-20 items-start space-y-24 z-20 p-4 sm:p-16">
                 <h1 className="flex flex-col gap-1 font-bold text-white">
                     <RotateWords text="Whitefox" words={["Cheer", "Pom's"]} />
+                    <motion.div className="w-fit" style={{ opacity: subtitleOpacity }}>
+                        <p className="text-xs sm:text-2xl font-semibold tracking-wide text-gray-300">
+                            Cheerleading et danse pompom à Brive-la-Gaillarde
+                        </p>
+                        <span className="block w-0 h-0.5 bg-primary-500 animate-underline"></span>
+                    </motion.div>
                 </h1>
                 <Link href={'/club'} className="w-full sm:w-auto">
                     <motion.div
