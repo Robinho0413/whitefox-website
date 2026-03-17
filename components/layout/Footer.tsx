@@ -11,9 +11,9 @@ const Footer: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
                     {/* À propos */}
                     <div>
-                        <h3 className="font-semibold text-lg mb-4">Whitefox cheer & pom&apos;s</h3>
+                        <h3 className="font-semibold text-lg mb-4">Whitefox Cheer</h3>
                         <p className="text-sm text-muted-foreground mb-4">
-                            Association sportive de cheerleading et danse pom-pom basée à Brive-la-Gaillarde.
+                            Association sportive de cheerleading et danse pom-pom basée à Brive-la-Gaillarde (19).
                         </p>
                     </div>
 
@@ -85,7 +85,7 @@ const Footer: React.FC = () => {
                     <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
                         {/* Copyright */}
                         <div className="text-sm text-muted-foreground">
-                            <p>&copy; {new Date().getFullYear()} Association Whitefox. Tous droits réservés.</p>
+                            <p>&copy; {new Date().getFullYear()} Association Whitefox Cheer. Tous droits réservés.</p>
                         </div>
 
                         {/* Liens légaux */}
@@ -102,7 +102,7 @@ const Footer: React.FC = () => {
                     {/* Disclaimer légal simplifié */}
                     <div className="mt-6 text-xs text-muted-foreground bg-muted/30 p-4 rounded-lg">
                         <p>
-                            Ce site présente les activités de l&apos;association Whitefox cheer & pom&apos;s.
+                            Ce site présente les activités de l&apos;association Whitefox Cheer.
                             Ce site utilise un outil de mesure d&apos;audience respectueux de la vie privée (Umami).
                             Aucun cookie n&apos;est utilisé et aucune donnée personnelle n&apos;est stockée.
                             Les statistiques sont collectées de manière anonyme afin d&apos;améliorer l&apos;expérience utilisateur.
