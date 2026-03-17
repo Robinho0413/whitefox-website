@@ -1,5 +1,15 @@
 import AnimatedCategoryCards from './AnimatedCategoryCards';
 import React from 'react';
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Inscriptions",
+    description:
+        "Retrouvez les categories, tarifs et informations pour s'inscrire chez Whitefox Cheer.",
+    alternates: {
+        canonical: "/inscription",
+    },
+};
 
 export default function Page() {
     return (

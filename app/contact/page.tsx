@@ -5,6 +5,16 @@ import { SocialCard } from '@/components/card/socialCard';
 import { FadeInUp } from '@/components/animations/FadeInUp';
 import { ContactForm } from '@/components/forms/ContactForm';
 import React from 'react';
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Contact",
+    description:
+        "Contactez l'association Whitefox Cheer a Brive-la-Gaillarde pour toute question sur les entrainements, inscriptions et evenements.",
+    alternates: {
+        canonical: "/contact",
+    },
+};
 
 export default function Page() {
     return (

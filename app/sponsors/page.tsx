@@ -1,6 +1,16 @@
 import { SponsorsCard } from '@/components/card/sponsorsCard';
 import { createClient } from '@/lib/supabase/client';
 import React from 'react';
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Sponsors",
+    description:
+        "Decouvrez les partenaires qui soutiennent l'association Whitefox Cheer.",
+    alternates: {
+        canonical: "/sponsors",
+    },
+};
 
 type Sponsor = {
     id: string;

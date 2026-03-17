@@ -1,5 +1,15 @@
 import { createClient } from "@/lib/supabase/server";
 import AnimatedAlbumsGrid from "@/components/gallery/AnimatedAlbumsGrid";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Galerie",
+    description:
+        "Photos des evenements, entrainements et competitions de l'association Whitefox Cheer.",
+    alternates: {
+        canonical: "/gallery",
+    },
+};
 
 type Album = {
     id: string;
