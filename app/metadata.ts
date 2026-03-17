@@ -19,8 +19,12 @@ export const metadata: Metadata = {
     "cheer et pom's",
   ],
   icons: {
-    icon: "/images/logo-black.png",
-    apple: "/images/logo-black.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48", type: "image/x-icon" },
+      { url: "/icon", sizes: "192x192", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/icon", sizes: "180x180", type: "image/png" }],
   },
   alternates: {
     canonical: "/",
