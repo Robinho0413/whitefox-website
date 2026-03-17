@@ -1,14 +1,12 @@
 import { ImageResponse } from "next/og";
-import { createElement } from "react";
 
 export const runtime = "nodejs";
 
 export default function Favicon() {
   return new ImageResponse(
-    createElement(
-      "div",
-      {
-        style: {
+    (
+      <div
+        style={{
           fontSize: 64,
           background: "linear-gradient(135deg, #3BA59B 0%, #2A9B8D 100%)",
           width: "100%",
@@ -19,9 +17,10 @@ export default function Favicon() {
           color: "white",
           fontWeight: "bold",
           borderRadius: 16,
-        },
-      },
-      "WF"
+        }}
+      >
+        WF
+      </div>
     ),
     {
       width: 32,
