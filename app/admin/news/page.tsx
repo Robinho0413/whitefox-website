@@ -166,7 +166,7 @@ export default async function AdminNewsPage() {
                                                 width={120}
                                                 height={80}
                                                 src={item.image_url}
-                                                alt="image"
+                                                alt={`Illustration de l'actualite: ${item.title}`}
                                                 objectFit='cover'
                                                 className="rounded-md border"
                                             />

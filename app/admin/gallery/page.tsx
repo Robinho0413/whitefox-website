@@ -162,7 +162,7 @@ export default async function AdminAlbumsPage() {
                                                 width={120}
                                                 height={80}
                                                 src={item.cover_image}
-                                                alt="image"
+                                                alt={`Couverture de l'album: ${item.title}`}
                                                 objectFit='cover'
                                                 className="rounded-md border"
                                             />

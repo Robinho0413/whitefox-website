@@ -18,6 +18,10 @@ export const metadata: Metadata = {
     "association sportive brive",
     "cheer et pom's",
   ],
+  icons: {
+    icon: "/images/logo-black.png",
+    apple: "/images/logo-black.png",
+  },
   alternates: {
     canonical: "/",
   },

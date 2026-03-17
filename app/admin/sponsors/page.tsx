@@ -165,7 +165,7 @@ export default async function AdminSponsorsPage() {
                                                 width={120}
                                                 height={80}
                                                 src={item.image_url}
-                                                alt="image"
+                                                alt={`Logo du sponsor ${item.title}`}
                                                 objectFit='cover'
                                                 className="rounded-md border"
                                             />

@@ -17,7 +17,7 @@ export default function HeroSection() {
             <motion.div style={{ y, scale }} className="absolute w-full h-full z-0">
                 <Image
                     src="/images/bg-image.png"
-                    alt="Background Image"
+                    alt="Equipe Whitefox Cheer en action - Cheerleading et danse pompom à Brive-la-Gaillarde"
                     fill
                     style={{ objectFit: "cover", objectPosition: "top" }}
                     quality={100}
