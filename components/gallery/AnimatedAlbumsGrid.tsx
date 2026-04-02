@@ -46,12 +46,12 @@ export default function AnimatedAlbumsGrid({ albums }: AnimatedAlbumsGridProps) 
                 className="brightness-75 group-hover:brightness-90 transition-brightness duration-300"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-              <div className="absolute bottom-0 left-4 text-white bg-black/30 backdrop-blur-sm w-full p-2">
+              <div className="absolute bottom-0 left-0 text-white bg-black/30 backdrop-blur-sm w-full p-2">
                 <h3 className="text-xl font-semibold mb-1">{album.title}</h3>
                 <p className="text-sm opacity-90">
                   {album.photoCount} {album.photoCount > 1 ? "photos" : "photo"}
                 </p>
-                <p className="text-sm opacity-75 mt-1">{album.description}</p>
+                <p className="text-sm opacity-75 mt-1 line-clamp-2">{album.description}</p>
               </div>
               <div
                 className="absolute inset-0 pointer-events-none rounded-lg"
