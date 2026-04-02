@@ -47,7 +47,7 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({ i, title, description, imag
                 fill
                 src={image_url || "https://yrsgwsncbskkngarpato.supabase.co/storage/v1/object/public/news-images/bg-image.png"}
                 alt={title || "Actualite Whitefox Cheer"}
-                objectFit='cover'
+                objectFit='contain'
               />
             </motion.div>
           </div>
